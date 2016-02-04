@@ -63,6 +63,7 @@
   <gap:splash src="www/res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone"/>
   <access origin="*"/>
   <plugin name="cordova-plugin-whitelist" version="1"/>
+  <allow-navigation href="http://*/*" />
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
