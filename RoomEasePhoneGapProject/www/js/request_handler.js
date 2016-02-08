@@ -1,199 +1,254 @@
-//NOTE: These should be identical to an entry that we would put into the DB
-//If not, we should change these to reflect any changes in the schema
-
-var test_chores_item = 
-{
-	"name_of_chore" : "Take out dishes",
-	"person_performing_chore" : "1234",
-	"completion_end_date" : "1454552752", //This is in UNIX time
-	"on_repeat" : "true",
-	"interval" : "604800" //Note that this is a week
-};
-
-var test_groups_item = 
-{
-	"uids" : 
-		["1111",
-		"2222",
-		"3333"],
-	"reservations":
-		["1234",
-		"5678",
-		"7676"],
-	"lists": 
-		["0000",
-		"4545",
-		"1557"],
-	"fridge_items":
-		["112344",
-		"12341241234213",
-		"124544444"],
-	"chores":
-		["12342222",
-		"8999999",
-		"44444323423"]
-}
-
-var empty_groups_item = 
-{
-	"uids" : [],
-	"reservations": [],
-	"lists": [],
-	"fridge_items" : [],
-	"chores":[]
-}
-
-
-var test_reservations_item = {
-	"name_of_item" : "TV",
-	"group_num" : "1234454",
-	"start_time" : "1454552752",
-	"end_time" : "1454552752",
-	"uid" : "1234444444"
-}
-
-var test_lists_item = {
-	"name_of_list" : "Groceries",
-	"text" : "Buy some cool stuff",
-	"visible_users":
-		["12345567878",
-		"124444433333"],
-	"modifiable_users":
-		["12344444",
-		"1124444444"]
-
-}
-
-var test_fridge_items_item = {
-	"name" : "Blueberries",
-	"group_id": "12344444",
-	"expiration_date" : "111222334444",
-	"owner" : "1112223335555",
-	"sharable" : "yes"
-}
-
-var test_users_item = {
-	"uid": "1222333334444",
-	"name" : "Chevvy Mans",
-	"group_num" : "12233344444"
-}
-
-function RequestHandler( ) {
+/**
+*Creates a RquestHandler object that is able to take and receive 
+*requests at the database located at database_location. The database MUST be
+*of type CouchDB
+*datbase_location: The ip/host and port combination of the location of the database
+**/
+function RequestHandler(database_location) {
 
 	this.databases = {};
-	this.init = init;
-	this.init();
+	this.user_id = null;
+	this.group_id = null;
 
 	//Public functions
-	this.getGroupData = _getGroupData;
-	this.createNewGroup = _createNewGroup;
-	this.registerNewUser = _registerNewUser;
-	this.addUserToGroup = _addUserToGroup;
+	this.assignGroupId = assignGroupId;
+	this.assignUserId = assignUserId;
+	this.createNewGroup = createNewGroup;
+	this.registerNewUser = registerNewUser;
+	this.addUserToGroup = addUserToGroup;
+	this.addItem = addItem;
 
-	//Private functions
-	this.__assemble_group_JSON_object = __assemble_group_JSON_object;
-
+	this.__init = __init;
+	this.__init(database_location);
 }
 
-function _getGroupData(group_id) {
-	console.log(group_id);
-}
-
-function init() {
+/**
+*Only called by the RequestHandler constructor. 
+*Used to run all start up tasks when a RequestHandler object is first created
+**/
+function __init(database_location) {
 	var table_names = ['chores',
 					'fridge_items',
 					'groups',
 					'lists',
 					'reservations',
 					'users']
-	var table_names_test = ['test_chores',
-					'test_fridge_items',
-					'test_groups',
-					'test_lists',
-					'test_reservations',
-					'test_users',
-					'test'] //NOTE: We want to use this table for junk entries that we do not care about
-	var use_test_tables = true;
-	var base_ip = 'http://40.114.43.49:5984/'
 
-	var active_tables = table_names;
-
-	if (use_test_tables) {
-		active_tables = table_names_test;
-	}
-
-	for (var i = 0; i < active_tables.length; i++) {
-		this.databases[active_tables[i]] = new PouchDB(base_ip + active_tables[i]);
+	for (var i = 0; i < table_names.length; i++) {
+		this.databases[table_names[i]] = new PouchDB(database_location + table_names[i]);
 	}
 }
 
-
-var req_handler = new RequestHandler();
-req_handler.getGroupData(1234);
-//req_handler.__assemble_group_JSON_object(1234);
-
-req_handler.createNewGroup();
-req_handler.registerNewUser("1234", "Matthew Mans"));
-req_handler.addUserToGroup("1234", "089d6e77903ccfb44b5bcad1f700ab2f");
-
-//This function will 
-function __assemble_group_JSON_object(group_id){
-	this.databases['test_groups'].get(toString(group_id))
-	.then(function(response) {
-		console.log(response);
-	})
-	.catch(function(err){
-		console.log("Error: Unable to get 'groups' to error.");
-		return {type:null};
-	});
+/**
+*Assigns the following user_id to the request_handler object
+*	user_id: The user_id provided by the Facebook Login API on login
+**/
+function assignUserId(user_id ) {
+	this.user_id = user_id;
 }
 
+/**
+*Assigns the following group_id to the request_handler object
+*	group_id: Assigns the following group_id to the request_handler object
+**/
+function assignGroupId(group_id) {
+	this.group_id = group_id;
+}
 
-//Returns a unique ID of a new group. Returns -1 if unable ot make a group
-function _createNewGroup() {
-	this.databases["test_groups"].post(empty_groups_item)
+/**
+*Creates a new group in the database. Calls callback on error or on success
+*	callback(group_id, error)
+*			group_id: The id of the group that has been created. -1 if group failed to be made.
+*			error: null if group created successfully. String describing an error if an error has occured.
+*/
+function createNewGroup(callback) {
+	var empty_groups_item = 
+	{
+		"uids" : [],
+		"reservations": [],
+		"lists": [],
+		"fridge_items" : [],
+		"chores":[]
+	};
+	this.databases["groups"].post(empty_groups_item)
 	.then(function(response) {
 		if (response.ok == true) {
-			console.log("New group created. ID: " + response.id);
-			returnVal = response.id;	
+			returnVal = response.id;
+			callback(returnVal, null);	
+		} else {
+			callback("-1", null);
 		}
 	})
  	.catch(function(err){
- 		console.log(err);
+ 		callback(null, err);
  	});
 }
 
-function _registerNewUser(facebook_id, name){
-	this.databases["test_users"].post({
+/** 
+*Adds a user to the database with the facebook user_id and and name. Calls callback on error or on success.
+*	facebook_id: The unique_id generated from the Facebook Login API when a user successfully logs into an application
+*	name: The real name of the person registering (Ex: John Doe, Will T. Smith)
+*	callback(is_success, error)
+*		is_success: True if the user was rgistered into the database, false otherwise
+*		error: null if group created successfully. String describing an error if an error has occured.
+**/
+function registerNewUser(facebook_id, name, callback){
+	this.databases["users"].post({
 		"uid": facebook_id,
 		"name": name,
 		"group_num": "-1"
 	})
 	.then(function(response){
-		console.log(response);
-		return 1;
+		callback(true, null);
 	})
 	.catch(function(err){
-		console.log(err);
-		return - 1;
+		callback(false, err);
 	});
 }
 
-function _addUserToGroup(user_id, group_id) {
-	databases = this.databases; //This gets past some weird "this" notation issues
-	databases["test_groups"].get(group_id)
+/** 
+*Adds a user  to the group with the following usr_id and group_id. 
+*If a user is already registered with the group, the function will throw an error.
+*Calls callback on error or on success.
+*	user_id: The id of the user generated from the Facebook API when logging in.
+*	group_id: The id of the group generated on creation.
+*	callback(is_success, error)
+*		is_success: True if the user was sucessfully assigned to the group, false otherwise
+*		error: null if user was added to the group successfully. String describing an error if an error has occured.
+**/
+
+function addUserToGroup(user_id, group_id, callback) {
+	databases = this.databases;
+	databases["groups"].get(group_id)
 	.then(function(response) {
+
+		if ( contains_id(response["uids"], user_id)) {
+			throw "Error: uiser ID already part of this group";
+		}
+
 		response.uids.push(user_id);
-		console.log(response);
 		return response;
+	
 	}).then(function(response){
 		//Note: The 'response' from the previous call is the same as THIS response
-		databases["test_groups"].post(response)
+		databases["groups"].post(response)
 		.then(function(response){
-			console.log("Updated!");
+			//TODO: Check for OK
+			callback(true, null);
 		});
+	}).catch(function(err){
+		callback(false, err);
 	});
 }
 
+/**
+*Adds an item of type item to the database. Calls callback on error or on success.
+*	item: The item to be added.
+*	item_type: The type of the item to be added.
+*	callback(is_success, item_id, error)	
+*		is_success: True if the item was properly added to the database, false otherwise.
+*		item_id: The unique_id of the item that was added to the database if successfully added.
+*		error: null if item was added successfully. String describing error if error occured.
+**/
+function addItem(item, item_type, callback) {
+	if (this.user_id == null || this.group_id == null) {
+		callback(null, "Error: no valid user_id and/or group_id assigned to user object");
+		return;
+	}
+	
+	databases = this.databases;
+	databases["groups"].get(this.group_id)
+	.then(function(response) {
+		if (response.item_type == null){
+			throw "Error: Incorrect item type";
+		} else {
+			response.item_type.push(user_id);
+		}
+		return response;
+	}).then(function(response){
+		databases["groups"].post(response)
+		.then (function(response){
+			//TODO: Check for OK
+			callback(true, response._id, null);
+		});
+	}).catch(function(err){
+		callback(false, "-1", err);
+	});
 
+	callback(false, -1, "Unimplemented");
+	return null;
+}
 
+/**
+* Returns all items of the given type that are assocated with a particular group. Calls callback on error or on success.
+*	type: The type of item that will be fetched from the database
+*	callback(list_of_items, error)
+*		list_of_items: a list containing every item of the given type associated with the group
+*		error: null of item was added successfully. String describing error if error occured.
+**/
+function getAllItemsOfType(type, callback) {
+	if (this.user_id == null || this.group_id == null) {
+		callback(null, "Error: no valid user_id and/or group_id assigned to user object");
+		return;
+	}
+
+	databases = this.databases;
+	databases["groups"].get(this.group_id)
+	.then(function(response){
+		if (response[type] === null ) {
+			//TODO: MAke sure this actually fails properly
+			throw "Error: Type of item not found in the database";
+		} else {
+
+			json_objects = [];
+	 		for (values in response[type]) {
+
+ 				console.log("{ _id: " + values + "}");
+ 				json_objects.push(JSON.parse("{ _id: " + values + "}"));
+	 		}
+		}
+	})
+	.catch(function(err){
+		callback(null, err);
+	});
+}
+
+/**
+*Updates the item in the database to the new version of the item. Calls callack on success or on error.
+*	item: The item to be updated 
+*	callback(is_success, error):
+*		is_success: True if update was successful, false otherwise.
+*		error: null if item was updated successfully. String describing the error if error occured.
+**/	
+function updateItem(item, callback){
+	//TODO: Implement
+	callback(false, "Unimplemented");
+	return null;
+}
+
+/**
+*Deletes the record of the item in the database. Calls callback on success or on error.
+*	item: The item to be deleted
+*	callback(is_success, error)
+*		is_success: True if item was deleted successfully. String describing error if error occured.
+**/
+function deleteItem(item, callback) {
+	//TODO: Implement
+	callback(false, "Unimplemented");
+	return null;
+}
+
+/**
+*Returns true if a list contains the given id, false otherwise
+*	list: The list the potentially contains id
+*	id: The l
+*/	
+function contains_id(list, id) {
+	console.log(id);
+	for (var i = 0; i < list.length; i++) {
+		if (list[i] === id) {
+			return true;
+		} 
+	}
+	return false;
+}
