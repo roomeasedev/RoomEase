@@ -19,7 +19,7 @@ var re = {};
 */
 $(document).ready(function () {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate;
+    var feedTemplate, listTemplate, fridgeTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -36,9 +36,17 @@ $(document).ready(function () {
     }
     
     /**
+    * Sets the HTML value of the injectable page area to the rendered fridge view.
+    */
+    function renderFridgeView() {
+        $('.page').html(fridgeTemplate());
+    }
+    
+    /**
     * Renders the correct view for the injectable area of the viewport.
     * Uses the current hash of the URL to determine which view should be
-    * rendered, then calls the appropriate rendering function.
+    * rendered, then calls the appropriate rendering function. If the hash
+    * is not set (on first load), the feed view is rendered.
     */
     function route() {
         var hash = window.location.hash;
@@ -47,6 +55,8 @@ $(document).ready(function () {
             renderFeedView();
         } else if (hash == "#list") {
             renderListView();
+        } else if (hash == "#fridge") {
+            renderFridgeView();
         }
     }
     
@@ -58,9 +68,10 @@ $(document).ready(function () {
     // for all existing views.  When load finishes, set the values of the
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
-    re.templates.load(["Feed", "List"]).done(function () {
+    re.templates.load(["Feed", "List", "Fridge"]).done(function () {
         feedTemplate = re.templates.get("Feed");
         listTemplate = re.templates.get("List");
+        fridgeTemplate = re.templates.get("Fridge");
         route();
     })
 });

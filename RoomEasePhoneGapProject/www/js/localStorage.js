@@ -1,34 +1,20 @@
-/*
-    Omar AlSughayer 
-    20/04/16
-    This is a simple mckup to store items locally 
-*/
-
-"use strict";
-
-//anonymouse function 
-(function (){
-
+re.storage = (function () {
     //array of all previously stored fridge items, stored locally
     var fridgeItems = window.localStorage.getItem("fridge");
-    
-    if(fridgeItems != null){ //parse the items list if it exists
+    var listItems = window.localStorage.getItem("list");
+
+    if(fridgeItems != null) { //parse the items list if it exists
         fridgeItems = JSON.parse(fridgeItems);
     } else { // create and store the fridge items list if it does not exist
         fridgeItems = [];
-        //fridgeItems = new Array();
         window.localStorage.setItem("fridge", JSON.stringify(fridgeItems))
     }
     
-    /*
-        precondition:   none
-        postcondition:  the STORE and SHOW buttons have been linked to their
-                        respective functions
-    */
-    window.onload = function(){
-        document.getElementById("store").onclick = store;
-        document.getElementById("show").onclick = show;
-        document.getElementById("clear").onclick = clear;
+    if (listItems != null) {
+        listItems = JSON.parse(listItems);
+    } else {
+        listItems = [];
+        window.localStorage.setItem("list", JSON.stringify(listItems));
     }
 
     /*
@@ -36,9 +22,11 @@
         postcondition:  the data within the fields have been stored
                         saved into local storage as an Item object
     */
-    function store(){
-
+    
+    function store(module){
+        console.log("storing " + module);
         //pull the contents of the fields
+        var collection;
         var text = document.getElementById("text").value;
         var owner = document.getElementById("owner").value;
         var date = document.getElementById("date").value;
@@ -70,7 +58,14 @@
         precondition:   none
         postcondition:  prints all the stored items into the textarea
     */
-    function show(){
+    function show(module){
+        var items;
+        if (module == "fridge") {
+            items = fridgeItems;
+        } else if (module == "list") {
+            items = listItems;
+        }
+        
         var allItems = "";
 
         for (var i = 0; i < fridgeItems.length; i++) {
@@ -87,7 +82,7 @@
         postcondition: all data have been cleared from local storage
     */
     function clear(){
-        //clear all date from the local storage
+        //clear all data from the local storage
         window.localStorage.clear();
 
         //nullify the fridge items then add them to the storage again
@@ -98,4 +93,9 @@
         document.getElementById("area").value = null;
     }
 
+    return {
+        'store': store,
+        'show': show,
+        'clear': clear
+    }
 })();

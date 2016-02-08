@@ -1,23 +1,8 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
-
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
+<!-- index.html defines the single page that will be displayed to the user in our application.
+     We are using a single page architecture, so all content is injected into this page's .page
+     div element ( elements common to all views are defined outside of .page, in the body).
+     
 -->
 <html>
     <head>
@@ -41,7 +26,7 @@
                 <div class="nav-wrapper">
                     <ul class="right hide-on-med-and-down teal lighten-1">
                         <li><a href="#feed">Feed</a></li>
-                        <li><a href="#!">Fridge</a></li>
+                        <li><a href="#fridge">Fridge</a></li>
                         <li><a href="#!">Chores</a></li>
                         <li><a href="#list">Lists</a></li>
                         <li><a href="#!">Scheduler</a></li>
@@ -51,7 +36,7 @@
                     <!--Side menu and button animations-->
                     <ul id="slide-out" class="side-nav teal lighten-1">
                         <li class="teal lighten-1"><a href="#feed" class='waves-effect waves-light white-text'>Feed</a></li>
-                        <li class="teal lighten-1"><a href="#!" class='waves-effect waves-light white-text'>Fridge</a></li>
+                        <li class="teal lighten-1"><a href="#fridge" class='waves-effect waves-light white-text'>Fridge</a></li>
                         <li class="teal lighten-1"><a href="#!" class='waves-effect waves-light white-text'>Chores</a></li>
                         <li class="teal lighten-1"><a href="#list" class='waves-effect waves-light white-text'>Lists</a></li>
                         <li class="teal lighten-1"><a href="#!" class='waves-effect waves-light white-text'>Scheduler</a></li>
@@ -77,6 +62,7 @@
         <script type="text/javascript" src="js/lib/handlebars-v4.0.5.js"></script>
         <script type="text/javascript" src="js/re.js"></script>
         <script type="text/javascript" src="js/template-loader.js"></script>
+        <script type="text/javascript" src="js/localStorage.js"></script>
         <!--Enable slideout side menu-->
         <script>
             $(".button-collapse").sideNav({
