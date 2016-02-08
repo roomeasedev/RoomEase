@@ -27,6 +27,12 @@ re.storage = (function () {
         console.log("storing " + module);
         //pull the contents of the fields
         var collection;
+        if (module == "fridge") {
+            collection = fridgeItems;
+        } else if (module == "list") {
+            collection = listItems;
+        }
+        
         var text = document.getElementById("text").value;
         var owner = document.getElementById("owner").value;
         var date = document.getElementById("date").value;
@@ -41,9 +47,9 @@ re.storage = (function () {
                    };
 
         //add the newly created Item object to the items list
-        fridgeItems.push(item);
+        collection.push(item);
         //store the new items list over the same key, overriding the old one
-        window.localStorage.setItem("fridge", JSON.stringify(fridgeItems));
+        window.localStorage.setItem(module, JSON.stringify(collection));
 
         //reset the fields
         document.getElementById("text").value = null;
@@ -51,7 +57,7 @@ re.storage = (function () {
         document.getElementById("date").value = null;
 
         //update the textarea
-        show();
+        show(module);
     }
 
     /*
@@ -69,9 +75,9 @@ re.storage = (function () {
         var allItems = "";
 
         for (var i = 0; i < fridgeItems.length; i++) {
-            allItems += fridgeItems[i].text + " " + 
-                        fridgeItems[i].owner + " " +
-                        fridgeItems[i].date + "\n";
+            allItems += items[i].text + " " + 
+                        items[i].owner + " " +
+                        items[i].date + "\n";
         };
 
         document.getElementById("area").value = allItems;
@@ -87,7 +93,9 @@ re.storage = (function () {
 
         //nullify the fridge items then add them to the storage again
         fridgeItems = [];
-        window.localStorage.setItem("fridge", JSON.stringify(fridgeItems))
+        listItems = [];
+        window.localStorage.setItem("fridge", JSON.stringify(fridgeItems));
+        window.localStorage.setItem("list", JSON.stringify(listItems));
 
         //erase everything from textarea
         document.getElementById("area").value = null;
