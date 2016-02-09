@@ -1,51 +1,72 @@
 # RoomEase
-The code repo of the RoomEase App
-Obtaining source code:
+Welcome, developers! Thanks for checking out our project! RoomEase is an
+application designed to make coordination among roommates streamlined and
+simple.
+
+## Obtaining source code:
 First, ensure you have git installed. If not, run the following command:
 
-sudo apt-get install git-all
+`sudo apt-get install git-all`
  
- Then, run the following command:
+Then, run the following command:
 
-git clone https://github.com/roomeasedev/RoomEase.git
+`git clone https://github.com/roomeasedev/RoomEase.git`
 
-Building From Source:
+## Building From Source:
 
 Before we do anything, run the following commands:
 
-sudo apt-get upgrade
-sudo apt-get update
-sudo apt-get install -y lib32gcc1 libc6-i386 lib32z1 lib32stdc++6
+`sudo apt-get upgrade`
+
+`sudo apt-get update`
+
+`sudo apt-get install -y lib32gcc1 libc6-i386 lib32z1 lib32stdc++6`
 
 Now, ensure you have node.js and npm installed by running the following:
 
-node -v
-npm -v
+`node -v`
 
-If not, run the following commands
+`npm -v`
 
-sudo apt-get update
-sudo apt-get install nodejs
-sudo apt-get install npm
+If not, run the following commands:
+
+`sudo apt-get update`
+
+`sudo apt-get install nodejs`
+
+`sudo apt-get install npm`
 
 Next, install phonegap (cordova) by running the following command:
 
-sudo npm install cordova -g
+`sudo npm install cordova -g`
 
-Note: Depending on the version of node, you may see the following error:
-“The program ‘node’ can be found in the following packages”
+*Note:* Depending on the version of node, you may see the following error:
+
+`“The program ‘node’ can be found in the following packages”`
+
 To fix this, run the following command
-sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+`sudo ln -s /usr/bin/nodejs /usr/bin/node`
 
 Phonegap allows us to work with and build nearly any platform you want. To add a platform to build to, at the top directory of your project (you should see a config.xml) run the following command:
-cordova platform add android Below we are building for android, but the process is nearly identical for other platforms.
-Note: In general, you can add the build resources for any platform by running cordova platform add <platform>.
+
+`cordova platform add android`
+
+Below we are building for android, but the process is nearly identical for other platforms. We will add instructions for other platforms when we create our first prototype for that platform.
+
+*Note: In general, you can add the build resources for any platform by running `cordova platform add <platform>.`*
+
 Now to build to android run the following command:
-cordova build android
+
+`cordova build android`
+
 You may see some errors regarding not having the correct versions of the android SDK installed. These can be resolved by installing the android SDK and installing the latest SDK tools. You may also need to install the jdk by running:
-sudo apt-get install openjdk-7-jdk
-Also, you may get a the following errors: 
-Failed to find ‘ANDROID_HOME’ environment variable.
+
+`sudo apt-get install openjdk-7-jdk`
+
+Also, you may get one of the following errors:
+
+`Failed to find ‘ANDROID_HOME’ environment variable.
 Find to find ‘android’ in current path.
 In this case, you need to set up your ANDROID_HOME and path variables.
 Note: There may be some dependencies that are not part of phonegap by default that need to be installed manually through npm. You may see an error such as cannot find module <module>. This typically can be fixed by running the following command
@@ -94,6 +115,7 @@ In order to add tests, a js file ending in Spec.js or spec.js is added to the ww
 
 If you would like to subscribe or see the results of our nightly build tests go here: *https://groups.google.com/forum/#!forum/roomease*
 If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt *http://gruntjs.com/getting-started* Here are the Gruntfile.js and package.json files we used to do our automated testing.
+
 Gruntfile.js
 `module.exports = function(grunt) {
 
