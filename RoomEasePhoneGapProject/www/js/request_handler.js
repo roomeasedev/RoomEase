@@ -61,7 +61,7 @@ function assignGroupId(group_id) {
 *@ param{function} callback(group_id, error)
 *	@param{string} group_id The id of the group that has been created. -1 if group failed to be made.
 *	@param{string} error null if group created successfully. String describing an error if an error has occured.
-*/
+**/
 function createNewGroup(callback) {
 	var empty_groups_item = 
 	{
