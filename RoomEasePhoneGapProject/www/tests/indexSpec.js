@@ -1,4 +1,8 @@
-// Example test suite using the Jasmine testing framework
+/** 
+* Example test suite using the Jasmine testing framework
+* Include this file as a dependency in spec.html for local testing
+* or for any automated testing suites
+*/
 describe("Example suite", function() {
     it("has successfully loaded jQuery", function() {
         expect($).toBeTruthy();
