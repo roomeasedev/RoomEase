@@ -4,6 +4,7 @@ application designed to make coordination among roommates streamlined and
 simple.
 
 Developer page: http://roomeasedev.github.io/
+Product page: 
 
 ## Obtaining Source Code:
 First, ensure you have git installed. If not, run the following command:
@@ -135,9 +136,14 @@ In order to add tests, create a js file ending in Spec.js or spec.js and add it 
 
 **If you would like to subscribe or see the results of our nightly build,follow this link:** *https://groups.google.com/forum/#!forum/roomease*
 
-If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt: *http://gruntjs.com/getting-started*
+If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt:
+*http://gruntjs.com/getting-started*
 
-Here are the Gruntfile.js and package.json files we used to do our automated testing.
+In order to fully get Grunt working to run our Jasmine tests we had to install a couple npm packages:
+`sudo npm install -g grunt-cli`
+`sudo npm install -g grunt-contrib-jasmine`
+
+Here are the Gruntfile.js and package.json files we used to do our automated testing, these were placed outside of the RoomEase folder.
 
 **Gruntfile.js**
 ```
@@ -179,7 +185,7 @@ module.exports = function(grunt) {
 }
 ```
 
-*Note:* Make sure that you have followed the instructions on “Setting Up Your Database”
+Then write a script that will freshly pull or clone the repo and run grunt using `grunt jasmine`. Now if you set up a crontab using the command `crontab -e` to run that script on a regular basis and email yourself the results you should have fully automated testing!
 
 ## Bug Tracking:
 For all active/known bugs, please refer to the following Spreadsheet:
