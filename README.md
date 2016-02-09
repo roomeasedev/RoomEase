@@ -3,7 +3,7 @@ Welcome, developers! Thanks for checking out our project! RoomEase is an
 application designed to make coordination among roommates streamlined and
 simple.
 
-## Obtaining source code:
+## Obtaining Source Code:
 First, ensure you have git installed. If not, run the following command:
 
 `sudo apt-get install git-all`
@@ -40,9 +40,11 @@ Next, install phonegap (cordova) by running the following command:
 
 `sudo npm install cordova -g`
 
+*Note:* Phonegap and Cordova are for most intents and purposes, are the same platform. There was a namechange at some point in development, so sometimes cordova and phonegap  will be used interchangably. In fact, replacing any commandthat contains `cordova` with `phonegap` will yield the same results, more or less.
+
 *Note:* Depending on the version of node, you may see the following error:
 
-`“The program ‘node’ can be found in the following packages”`
+`The program ‘node’ cannot be found in the following packages`
 
 To fix this, run the following command
 
@@ -52,9 +54,10 @@ Phonegap allows us to work with and build nearly any platform you want. To add a
 
 `cordova platform add android`
 
-Below we are building for android, but the process is nearly identical for other platforms. We will add instructions for other platforms when we create our first prototype for that platform.
+*Note:* There may be some dependencies that are not part of cordova(phonegap) by default that need to be installed manually through npm. You may see an error such as `cannot find module <module>`. This typically can be fixed by running the following command:
+`sudo npm install -g <module>`.
 
-*Note: In general, you can add the build resources for any platform by running `cordova platform add <platform>.`*
+*Note:* Below we are building for Android, but the process is nearly identical for other platforms. We are currently only targeting Android, but in the future we will be building for IOS. That still does not mean you can't try building for IOS right now!
 
 Now to build to android run the following command:
 
@@ -66,58 +69,76 @@ You may see some errors regarding not having the correct versions of the android
 
 Also, you may get one of the following errors:
 
-`Failed to find ‘ANDROID_HOME’ environment variable.
-Find to find ‘android’ in current path.
-In this case, you need to set up your ANDROID_HOME and path variables.
-Note: There may be some dependencies that are not part of phonegap by default that need to be installed manually through npm. You may see an error such as cannot find module <module>. This typically can be fixed by running the following command
-sudo npm install -g <module>
-If everything went well, the console should display where your .apk was built to! Try running it on your Android device. You may or may not be able to receive any server data, for this app requires a database to operate. See “Setting Up Your Database” to see how to set up a local database.
+`Failed to find ‘ANDROID_HOME’ environment variable.`
 
-Running without needing to build:
-Phonegap allows you to run an application without needing to build an apk (or any platform’s equivalence). You can load your app onto your platform of choice without needing to build the application. This will require a separate desktop and mobile application. Follow the instructions located at the following address:
-http://docs.phonegap.com/getting-started/1-install-phonegap/desktop/
+`Failed to find ‘android’ in current path.`
+
+In this case, you need to set up your ANDROID_HOME and path variables.
+
+
+If everything went well, the console should display where your .apk was built to! Try running it on your Android device. You may or may not be able to receive any server data, for this app requires a database to operate. See **“Setting Up Your Local Database”** to see how to set up a local database.
+
+## Running Without Needing to Build:
+
+Phonegap allows you to run an application without needing to build an apk (or any platform’s equivalence). This will require a separate desktop and mobile application. Follow the instructions located at the following address:
+http://docs.phonegap.com/getting-started/1-install-phonegap/desktop/.
 You will want to follow the documentation as if you have already created a project.
 
-Note: If you are on Windows, you should follow the instructions for the Desktop App. If you are on Linux, you should follow the instructions for the CLI (Command Line Interface). If you are on OSX, either should be fine. The above guide shows documentation for both.   
+*Note:* If you are on Windows, you should follow the instructions for the Desktop App. If you are on Linux, you should follow the instructions for the CLI (Command Line Interface). If you are on OSX, either should be fine. The above guide shows documentation for both.   
 
- Setting Up Your Local Database:
+## Setting Up Your Local Database:
 RoomEase uses a NoSQL backend known as CouchDB. CouchDB can run on any server backend or on LocalHost. Typically, couchDB will run on localhost:5984. In general, CouchDB will be running on port 5984. Below are the current steps to install CouchDB on a local machine. Be sure to have CouchDB running when running tests locally. Futon is a GUI interpretation of CouchDB that allows you to see your data entries easily and conveniently.
 
 Follow this guide to getting your database set-up and ensuring that it is working. In particular, be able to add items to the database and be able to access Futon:
 https://www.digitalocean.com/community/tutorials/how-to-install-couchdb-and-futon-on-ubuntu-14-04
 
-To run any unit tests that use the server, please have couchDB running locally.
 
 
+## Directory Structure:
 
-Directory Structure:
-config.xml: Main configuration file. Used by phonegap for global settings.
-platforms: contains platform-specific files such as AndroidManifest.xml.
-plugins: contains code for plugins added to the project.
-www: Location of vast majority of the source code. Main directory to work in.
-www/css:  CSS files. ALL CSS files should go in here. Current external library files: materialize.css, materialize.min.css
-www/font: Contains all font packages. These should not be modified, but others can be added. 
-www/img: Contains all images, symbols, ETC used in the application.
-www/js: Contains all js files in the application. Any file in the lib subdirectory should only be modified in the case where the file is being updated.
-www/res: Contains app symbols along with other resources for platform-specific releases. Used in conjunction with the platforms folder.
-www/templates: HTML Templates that are injected into index.html. All templates are loaded on startup then injected into index.html when needed.
-www/tests: Location of all unit tests. All unit tests should run using Jasmine (a Javascript unit testing platform) at this time. If you need unit tests that run for a different platform, please contact us so we can integrate it into the automatic testing suite. (TODO: Should we have that final line or not?)
-www/index.html: The main document that all other HTML pages will dynamically inject themselves into.
-www/spec: TODO: Figure out what it does. 
+**config.xml:** Main configuration file. Used by phonegap for global settings.
+
+**platforms:** contains platform-specific files such as AndroidManifest.xml.
+
+**plugins:** contains code for plugins added to the project.
+
+**www:** Location of vast majority of the source code. Main directory to work in.
+
+**www/css:**  CSS files. ALL CSS files should go in here. Current external library files: materialize.css, materialize.min.css
+
+**www/font:** Contains all font packages. These should not be modified, but others can be added. 
+
+**www/img:** Contains all images, symbols, ETC used in the application.
+
+**www/js:** Contains all js files in the application. Any file in the lib subdirectory should only be modified in the case where the file is being updated.
+
+**www/res:** Contains app symbols along with other resources for platform-specific releases. Used in conjunction with the platforms folder.
+
+**www/templates:** HTML Templates that are injected into index.html. All templates are loaded on startup then injected into index.html when needed.
+
+**www/tests:** Location of all unit tests. All unit tests should run using Jasmine (a Javascript unit testing platform) at this time.
+
+**www/index.html:** The main document that all other HTML pages will dynamically inject themselves into.
+
+**www/spec.html:** Open this file to run all unit tests.
 
 ## Testing:
 In order to run tests locally from you will need to host a server on your machine. To do this run
 `sudo npm install -g http-server`
 Then run from the www folder of the project run
-`http-server .`
-Now in your web browser you can navigate to *localhost:8080/indexSpec.html* this should bring you to a page describing the results of the tests run by Jasmine.
-In order to add tests, a js file ending in Spec.js or spec.js is added to the www/tests folder, and these files are written using the Jasmine testing framework, for details check out the Jasmine documentation *http://jasmine.github.io/2.4/introduction.html*
+`http-server`.
+Now in your web browser you can navigate to `localhost:8080/indexSpec.html`. This should bring you to a page describing the results of the tests run by Jasmine.
+In order to add tests, create a js file ending in Spec.js or spec.js and add it to the www/tests folder. These files are required to be written using the Jasmine testing framework. For details check out the Jasmine documentation. *http://jasmine.github.io/2.4/introduction.html*
 
-If you would like to subscribe or see the results of our nightly build tests go here: *https://groups.google.com/forum/#!forum/roomease*
-If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt *http://gruntjs.com/getting-started* Here are the Gruntfile.js and package.json files we used to do our automated testing.
+**If you would like to subscribe or see the results of our nightly build,follow this link:** *https://groups.google.com/forum/#!forum/roomease*
 
-Gruntfile.js
-`module.exports = function(grunt) {
+If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt: *http://gruntjs.com/getting-started*
+
+Here are the Gruntfile.js and package.json files we used to do our automated testing.
+
+**Gruntfile.js**
+```
+module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig({
@@ -135,10 +156,12 @@ Gruntfile.js
     
     // Load the plugin that provides the "grunt-contrib-jasmine" task.
     grunt.loadNpmTasks('grunt-contrib-jasmine');  
-};`
+};
+```
 
-package.json
-`{
+**package.json**
+```
+{
   "name": "roomease",
   "version": "0.1.0",
   "description": "",
@@ -150,11 +173,12 @@ package.json
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0"
   }
-}`
+}
+```
 
-Note: Make sure that you have followed the instructions on “Setting Up Your Database”
+*Note:* Make sure that you have followed the instructions on “Setting Up Your Database”
 
-Bug Tracking:
+## Bug Tracking:
 For all active/known bugs, please refer to the following Spreadsheet:
 https://docs.google.com/spreadsheets/d/1TUz7qx3GqziUEGzJB6NABSbTz8rprz-C40Qe7xVgVIM/edit#gid=0
 
