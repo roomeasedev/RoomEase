@@ -3,6 +3,8 @@ Welcome, developers! Thanks for checking out our project! RoomEase is an
 application designed to make coordination among roommates streamlined and
 simple.
 
+Developer page: http://roomeasedev.github.io/
+
 ## Obtaining Source Code:
 First, ensure you have git installed. If not, run the following command:
 
@@ -90,9 +92,10 @@ You will want to follow the documentation as if you have already created a proje
 RoomEase uses a NoSQL backend known as CouchDB. CouchDB can run on any server backend or on LocalHost. Typically, couchDB will run on localhost:5984. In general, CouchDB will be running on port 5984. Below are the current steps to install CouchDB on a local machine. Be sure to have CouchDB running when running tests locally. Futon is a GUI interpretation of CouchDB that allows you to see your data entries easily and conveniently.
 
 Follow this guide to getting your database set-up and ensuring that it is working. In particular, be able to add items to the database and be able to access Futon:
-https://www.digitalocean.com/community/tutorials/how-to-install-couchdb-and-futon-on-ubuntu-14-04
+https://www.digitalocean.com/community/tutorials/how-to-install-couchdb-and-futon-on-ubuntu-14-04.
 
-
+If you wish to see how we have our database set up, refer to this link:
+http://40.114.43.49:5984/_utils/fauxton/#/_all_dbs
 
 ## Directory Structure:
 
@@ -180,5 +183,5 @@ module.exports = function(grunt) {
 
 ## Bug Tracking:
 For all active/known bugs, please refer to the following Spreadsheet:
-https://docs.google.com/spreadsheets/d/1TUz7qx3GqziUEGzJB6NABSbTz8rprz-C40Qe7xVgVIM/edit#gid=0
-
+https://docs.google.com/spreadsheets/d/1cA4G4z5QwtK4EyoeObnpWF133WUGqeTGqy8O8ekPFmY/edit#gid=931147155
+This form is automatically populated with all of the bugs that are reported using our form on our developer website (listed above).
