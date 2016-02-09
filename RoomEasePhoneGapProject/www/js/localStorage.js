@@ -1,3 +1,14 @@
+"use strict";
+/**
+* re.storage is a module which stores information into the window's local storage.
+* In a phonegap application, storing to window.localStorage will allow information
+* to persist locally despite closing the application. This allows us to store information
+* client-side on user's phones, giving us offline capabilities.
+* @return {Object} An object representing re.storage, which has a "show", "store",
+*     and "clear" function. Information in this object is currently tightly coupled
+*     with specific DOM elements, but will be refactored to work more closely with
+*     request handler.
+*/
 re.storage = (function () {
     //array of all previously stored fridge items, stored locally
     var fridgeItems = window.localStorage.getItem("fridge");
@@ -17,12 +28,17 @@ re.storage = (function () {
         window.localStorage.setItem("list", JSON.stringify(listItems));
     }
 
-    /*
-        precondition:   all fields are appropriatly filled
-        postcondition:  the data within the fields have been stored
-                        saved into local storage as an Item object
-    */
-    
+    /**
+     * Stores the information stored in relevant DOM elements on the current
+     * page into local storage, in the array corresponding to the given module.
+     * The data inserted by this method can be retrieved later by calling show
+     * with the same parameter.
+     * @param {String} module The name of the module in which we are storing
+     *     the current data
+     * @precondition:   all fields are appropriatly filled
+     * @postcondition:  the data within the fields have been stored
+     *                   saved into local storage as an Item object
+     */
     function store(module){
         console.log("storing " + module);
         //pull the contents of the fields
@@ -60,9 +76,14 @@ re.storage = (function () {
         show(module);
     }
 
-    /*
-        precondition:   none
-        postcondition:  prints all the stored items into the textarea
+    /**
+    * Loads the information stored in relevant DOM elements on the current
+    * page into local storage, from the array corresponding to the given module.
+    * The data loaded by this method is determined by what was given to the "store"
+    * function with the same module name.
+    * @param {String} module The name of the module from which we are loading
+    *     the local data
+    * @postcondition prints all the stored items into the textarea
     */
     function show(module){
         var items;
@@ -83,9 +104,9 @@ re.storage = (function () {
         document.getElementById("area").value = allItems;
     }
 
-    /*
-        precondition:  none
-        postcondition: all data have been cleared from local storage
+    /**
+    * Clear removes all items from the local storage of the application.
+    * @postcondition all data have been cleared from local storage
     */
     function clear(){
         //clear all data from the local storage
@@ -101,6 +122,8 @@ re.storage = (function () {
         document.getElementById("area").value = null;
     }
 
+    // Returns the public API for re.storage, which is
+    // a store, show, and clear function.
     return {
         'store': store,
         'show': show,

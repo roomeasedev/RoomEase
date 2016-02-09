@@ -4,7 +4,7 @@ application designed to make coordination among roommates streamlined and
 simple.
 
 Developer page: http://roomeasedev.github.io/
-Product page: http://roomeasedev.github.io/projectpage.html
+Product page: <SIDD ADD PRODUCT WEBSITE URL HERE>
 
 ## Obtaining Source Code:
 First, ensure you have git installed. If not, run the following command:
@@ -43,9 +43,9 @@ Next, install phonegap (cordova) by running the following command:
 
 `sudo npm install cordova -g`
 
-*Note:* Phonegap and Cordova are for most intents and purposes, are the same platform. There was a namechange at some point in development, so sometimes cordova and phonegap  will be used interchangably. In fact, replacing any commandthat contains `cordova` with `phonegap` will yield the same results, more or less.
+Note: Phonegap and Cordova are for most intents and purposes, are the same platform. There was a namechange at some point in development, so sometimes cordova and phonegap  will be used interchangably. In fact, replacing any commandthat contains `cordova` with `phonegap` will yield the same results, more or less.
 
-*Note:* Depending on the version of node, you may see the following error:
+Note: Depending on the version of node, you may see the following error:
 
 `The program ‘node’ cannot be found in the following packages`
 
@@ -57,10 +57,10 @@ Phonegap allows us to work with and build nearly any platform you want. To add a
 
 `cordova platform add android`
 
-*Note:* There may be some dependencies that are not part of cordova(phonegap) by default that need to be installed manually through npm. You may see an error such as `cannot find module <module>`. This typically can be fixed by running the following command:
+Note: There may be some dependencies that are not part of cordova(phonegap) by default that need to be installed manually through npm. You may see an error such as `cannot find module <module>`. This typically can be fixed by running the following command:
 `sudo npm install -g <module>`.
 
-*Note:* Below we are building for Android, but the process is nearly identical for other platforms. We are currently only targeting Android, but in the future we will be building for IOS. That still does not mean you can't try building for IOS right now!
+Note: Below we are building for Android, but the process is nearly identical for other platforms. We are currently only targeting Android, but in the future we will be building for IOS. That still does not mean you can't try building for IOS right now!
 
 Now to build to android run the following command:
 
@@ -79,7 +79,7 @@ Also, you may get one of the following errors:
 In this case, you need to set up your ANDROID_HOME and path variables.
 
 
-If everything went well, the console should display where your .apk was built to! Try running it on your Android device. You may or may not be able to receive any server data, for this app requires a database to operate. See **“Setting Up Your Local Database”** to see how to set up a local database.
+If everything went well, the console should display where your .apk was built to! Try running it on your Android device. You may or may not be able to receive any server data, for this app requires a database to operate. See “Setting Up Your Local Database” to see how to set up a local database.
 
 ## Running Without Needing to Build:
 
@@ -87,7 +87,7 @@ Phonegap allows you to run an application without needing to build an apk (or an
 http://docs.phonegap.com/getting-started/1-install-phonegap/desktop/.
 You will want to follow the documentation as if you have already created a project.
 
-*Note:* If you are on Windows, you should follow the instructions for the Desktop App. If you are on Linux, you should follow the instructions for the CLI (Command Line Interface). If you are on OSX, either should be fine. The above guide shows documentation for both.   
+Note: If you are on Windows, you should follow the instructions for the Desktop App. If you are on Linux, you should follow the instructions for the CLI (Command Line Interface). If you are on OSX, either should be fine. The above guide shows documentation for both.   
 
 ## Setting Up Your Local Database:
 RoomEase uses a NoSQL backend known as CouchDB. CouchDB can run on any server backend or on LocalHost. Typically, couchDB will run on localhost:5984. In general, CouchDB will be running on port 5984. Below are the current steps to install CouchDB on a local machine. Be sure to have CouchDB running when running tests locally. Futon is a GUI interpretation of CouchDB that allows you to see your data entries easily and conveniently.
@@ -100,31 +100,31 @@ http://40.114.43.49:5984/_utils/fauxton/#/_all_dbs
 
 ## Directory Structure:
 
-**config.xml:** Main configuration file. Used by phonegap for global settings.
+config.xml: Main configuration file. Used by phonegap for global settings.
 
-**platforms:** contains platform-specific files such as AndroidManifest.xml.
+platforms: contains platform-specific files such as AndroidManifest.xml.
 
-**plugins:** contains code for plugins added to the project.
+plugins: contains code for plugins added to the project.
 
-**www:** Location of vast majority of the source code. Main directory to work in.
+www: Location of vast majority of the source code. Main directory to work in.
 
-**www/css:**  CSS files. ALL CSS files should go in here. Current external library files: materialize.css, materialize.min.css
+www/css:  CSS files. ALL CSS files should go in here. Current external library files: materialize.css, materialize.min.css
 
-**www/font:** Contains all font packages. These should not be modified, but others can be added. 
+www/font: Contains all font packages. These should not be modified, but others can be added. 
 
-**www/img:** Contains all images, symbols, ETC used in the application.
+www/img: Contains all images, symbols, ETC used in the application.
 
-**www/js:** Contains all js files in the application. Any file in the lib subdirectory should only be modified in the case where the file is being updated.
+www/js: Contains all js files in the application. Any file in the lib subdirectory should only be modified in the case where the file is being updated.
 
-**www/res:** Contains app symbols along with other resources for platform-specific releases. Used in conjunction with the platforms folder.
+www/res: Contains app symbols along with other resources for platform-specific releases. Used in conjunction with the platforms folder.
 
-**www/templates:** HTML Templates that are injected into index.html. All templates are loaded on startup then injected into index.html when needed.
+www/templates: HTML Templates that are injected into index.html. All templates are loaded on startup then injected into index.html when needed.
 
-**www/tests:** Location of all unit tests. All unit tests should run using Jasmine (a Javascript unit testing platform) at this time.
+www/tests: Location of all unit tests. All unit tests should run using Jasmine (a Javascript unit testing platform) at this time.
 
-**www/index.html:** The main document that all other HTML pages will dynamically inject themselves into.
+www/index.html: The main document that all other HTML pages will dynamically inject themselves into.
 
-**www/spec.html:** Open this file to run all unit tests.
+www/spec.html: Open this file to run all unit tests.
 
 ## Testing:
 In order to run tests locally from you will need to host a server on your machine. To do this run
@@ -132,12 +132,12 @@ In order to run tests locally from you will need to host a server on your machin
 Then run from the www folder of the project run
 `http-server`.
 Now in your web browser you can navigate to `localhost:8080/indexSpec.html`. This should bring you to a page describing the results of the tests run by Jasmine.
-In order to add tests, create a js file ending in Spec.js or spec.js and add it to the www/tests folder. These files are required to be written using the Jasmine testing framework. For details check out the Jasmine documentation. *http://jasmine.github.io/2.4/introduction.html*
+In order to add tests, create a js file ending in Spec.js or spec.js and add it to the www/tests folder. These files are required to be written using the Jasmine testing framework. For details check out the Jasmine documentation. http://jasmine.github.io/2.4/introduction.html
 
-**If you would like to subscribe or see the results of our nightly build,follow this link:** *https://groups.google.com/forum/#!forum/roomease*
+If you would like to subscribe or see the results of our nightly build,follow this link: https://groups.google.com/forum/#!forum/roomease
 
 If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt:
-*http://gruntjs.com/getting-started*
+http://gruntjs.com/getting-started
 
 In order to fully get Grunt working to run our Jasmine tests we had to install a couple npm packages:
 `sudo npm install -g grunt-cli`
@@ -145,8 +145,8 @@ In order to fully get Grunt working to run our Jasmine tests we had to install a
 
 Here are the Gruntfile.js and package.json files we used to do our automated testing, these were placed outside of the RoomEase folder.
 
-**Gruntfile.js**
-```
+Gruntfile.js:
+
 module.exports = function(grunt) {
 
     // Project configuration.
@@ -166,10 +166,9 @@ module.exports = function(grunt) {
     // Load the plugin that provides the "grunt-contrib-jasmine" task.
     grunt.loadNpmTasks('grunt-contrib-jasmine');  
 };
-```
 
-**package.json**
-```
+package.json:
+
 {
   "name": "roomease",
   "version": "0.1.0",
@@ -183,7 +182,6 @@ module.exports = function(grunt) {
     "grunt-contrib-uglify": "~0.5.0"
   }
 }
-```
 
 Then write a script that will freshly pull or clone the repo and run grunt using `grunt jasmine`. Now if you set up a crontab using the command `crontab -e` to run that script on a regular basis and email yourself the results you should have fully automated testing!
 
@@ -191,6 +189,3 @@ Then write a script that will freshly pull or clone the repo and run grunt using
 For all active/known bugs, please refer to the following Spreadsheet:
 https://docs.google.com/spreadsheets/d/1cA4G4z5QwtK4EyoeObnpWF133WUGqeTGqy8O8ekPFmY/edit#gid=931147155
 This form is automatically populated with all of the bugs that are reported using our form on our developer website (listed above).
-
-## User Documentation:
-To view detailed user documentation, please visit the main project webpage at http://roomeasedev.github.io/projectpage.html
