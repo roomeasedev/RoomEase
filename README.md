@@ -91,23 +91,21 @@ Follow this guide to getting your database set-up and ensuring that it is workin
 To run any unit tests that use the server, please have couchDB running locally.
 
 ## Directory Structure:
-config.xml: Main configuration file. Used by phonegap for global settings.
-platforms: contains platform-specific files such as AndroidManifest.xml.
-plugins: contains code for plugins added to the project.
-www: Location of vast majority of the source code. Main directory to work in.
-www/css:  CSS files. ALL CSS files should go in here. Current external library files: materialize.css, materialize.min.css
-www/font: Contains all font packages. These should not be modified, but others can be added. 
-www/img: Contains all images, symbols, ETC used in the application.
-www/js: Contains all js files in the application. Any file in the lib subdirectory should only be modified in the case where the file is being updated.
-www/res: Contains app symbols along with other resources for platform-specific releases. Used in conjunction with the platforms folder.
-www/templates: HTML Templates that are injected into index.html. All templates are loaded on startup then injected into index.html when needed.
-www/tests: Location of all unit tests. All unit tests should run using Jasmine (a Javascript unit testing platform) at this time. If you need unit tests that run for a different platform, please contact us so we can integrate it into the automatic testing suite. (TODO: Should we have that final line or not?)
-www/index.html: The main document that all other HTML pages will dynamically inject themselves into.
-www/spec: TODO: Figure out what it does.
+**config.xml:** Main configuration file. Used by phonegap for global settings.
+**platforms:** contains platform-specific files such as AndroidManifest.xml.
+**plugins:** contains code for plugins added to the project.
+**www:** Location of vast majority of the source code. Main directory to work in.
+**www/css:**  CSS files. ALL CSS files should go in here. Current external library files: materialize.css, materialize.min.css
+**www/font:** Contains all font packages. These should not be modified, but others can be added. 
+**www/img:** Contains all images, symbols, ETC used in the application.
+**www/js:** Contains all js files in the application. Any file in the lib subdirectory should only be modified in the case where the file is being updated.
+**www/res:** Contains app symbols along with other resources for platform-specific releases. Used in conjunction with the platforms folder.
+**www/templates:** HTML Templates that are injected into index.html. All templates are loaded on startup then injected into index.html when needed.
+**www/tests:** Location of all unit tests. All unit tests should run using Jasmine (a Javascript unit testing platform) at this time. If you need unit tests that run for a different platform, please contact us so we can integrate it into the automatic testing suite. (TODO: Should we have that final line or not?)
+**www/index.html:** The main document that all other HTML pages will dynamically inject themselves into.
+**www/spec:** TODO: Figure out what it does.
 
- 
-
-Testing:
+## Testing:
 In order to run tests locally from you will need to host a server on your machine. To do this run
 sudo npm install -g http-server
 Then run from the www folder of the project run http-server .
