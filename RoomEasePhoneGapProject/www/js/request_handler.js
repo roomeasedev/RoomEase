@@ -57,7 +57,7 @@ function assignGroupId(group_id) {
 
 /**
 *Creates a new group in the database. Calls callback on error or on success
-*	callback(group_id, error)
+*	@param {Function} callback(group_id, error)
 *			group_id: The id of the group that has been created. -1 if group failed to be made.
 *			error: null if group created successfully. String describing an error if an error has occured.
 */

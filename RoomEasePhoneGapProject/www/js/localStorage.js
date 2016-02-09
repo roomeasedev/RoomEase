@@ -1,3 +1,5 @@
+/**
+*/
 re.storage = (function () {
     //array of all previously stored fridge items, stored locally
     var fridgeItems = window.localStorage.getItem("fridge");
