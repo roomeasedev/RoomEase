@@ -4,7 +4,7 @@ application designed to make coordination among roommates streamlined and
 simple.
 
 Developer page: http://roomeasedev.github.io/
-Product page: 
+Product page: http://roomeasedev.github.io/projectpage.html
 
 ## Obtaining Source Code:
 First, ensure you have git installed. If not, run the following command:
