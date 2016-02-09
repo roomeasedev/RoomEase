@@ -20,23 +20,23 @@ var test_groups_item =
 	//All of the entries in the lists should correspond to the _id field of the entries 
 	//They represent
 	//(For example, reservations[1] should be the id of a DB ST reservations[1] == _id)
-	"uids" : 
+	"uid" : 
 		["1111", //These shouyld be FB IDs instead of _id ids, but this is the only exception
 		"2222",  //to the rule
 		"3333"],
-	"reservations":
+	"reservation":
 		["1234",
 		"5678",
 		"7676"],
-	"lists": 
+	"list": 
 		["0000",
 		"4545",
 		"1557"],
-	"fridge_items":
+	"fridge_item":
 		["112344",
 		"12341241234213",
 		"124544444"],
-	"chores":
+	"chore":
 		["12342222",
 		"8999999",
 		"44444323423"]
