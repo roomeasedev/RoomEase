@@ -1,9 +1,11 @@
 # RoomEase
-The code repo of the RoomEase App
+Welcome, developers! Thanks for checking out our project!
+
 ## Obtaining source code:
 First, ensure you have git installed. If not, run the following command:
 
 `sudo apt-get install git-all`
+
  Then, run the following command:
 
 `git clone https://github.com/roomeasedev/RoomEase.git`
@@ -13,40 +15,64 @@ First, ensure you have git installed. If not, run the following command:
 
 Before we do anything, run the following commands:
 `sudo apt-get upgrade`
+
 `sudo apt-get update`
+
 `sudo apt-get install -y lib32gcc1 libc6-i386 lib32z1 lib32stdc++6`
 
 Now, ensure you have node.js and npm installed by running the following:
+
 `node -v`
+
 `npm -v`
 
 If not, run the following commands
+
 `sudo apt-get update`
+
 `sudo apt-get install nodejs`
+
 `sudo apt-get install npm`
 
+
 Next, install phonegap (cordova) by running the following command:
+
 `sudo npm install cordova -g`
 
 Note: Depending on the version of node, you may see the following error:
+
 `“The program ‘node’ can be found in the following packages”`
+
 To fix this, run the following command
+
 `sudo ln -s /usr/bin/nodejs /usr/bin/node`
 
 Phonegap allows us to work with and build nearly any platform you want. To add a platform to build to, at the top directory of your project (you should see a config.xml) run the following command:
+
 `cordova platform add android`
-Below we will describe the process of building for android, but the process is nearly identical for other platforms. Instructions for other platforms will be included when we introduce our first prototype for those platforms.
-*Note: In general, you can add the build resources for any platform by running `cordova platform add <platform>`.*
+
+Below we will describe the process of building for android, but the process is nearly identical for other platforms. Instructions for other platforms will be included when we introduce our first prototype for those platforms. *Note: In general, you can add the build resources for any platform by running `cordova platform add <platform>`.*
+
 Now to build to android run the following command:
+
 `cordova build android`
+
 You may see some errors regarding not having the correct versions of the android SDK installed. These can be resolved by installing the android SDK and installing the latest SDK tools. You may also need to install the jdk by running:
+
 `sudo apt-get install openjdk-7-jdk`
+
 Also, you may get a the following errors: 
+
 `Failed to find ‘ANDROID_HOME’ environment variable.`
+
 `Failed to find ‘android’ in current path.`
+
 In this case, you need to set up your ANDROID_HOME and path variables.
-Note: There may be some dependencies that are not part of phonegap by default that need to be installed manually through npm. You may see an error such as `cannot find module <module>`. This typically can be fixed by running the following command
+
+Note: There may be some dependencies that are not part of phonegap by default that need to be installed manually through npm. You may see an error such as `cannot find module <module>`. This typically can be fixed by running the following command:
+
 `sudo npm install -g <module>`
+
 If everything went well, the console should display where your .apk was built to! Try running it on your Android device. You may or may not be able to receive any server data, since this app requires a database to operate. See “Setting Up Your Database” to see how to set up a local database.
 
 ## Running without needing to build:
