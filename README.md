@@ -191,3 +191,6 @@ Then write a script that will freshly pull or clone the repo and run grunt using
 For all active/known bugs, please refer to the following Spreadsheet:
 https://docs.google.com/spreadsheets/d/1cA4G4z5QwtK4EyoeObnpWF133WUGqeTGqy8O8ekPFmY/edit#gid=931147155
 This form is automatically populated with all of the bugs that are reported using our form on our developer website (listed above).
+
+## User Documentation:
+To view detailed user documentation, please visit the main project webpage at http://roomeasedev.github.io/projectpage.html
