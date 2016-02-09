@@ -68,7 +68,6 @@ https://www.digitalocean.com/community/tutorials/how-to-install-couchdb-and-futo
 To run any unit tests that use the server, please have couchDB running locally.
 
 
-
 Directory Structure:
 config.xml: Main configuration file. Used by phonegap for global settings.
 platforms: contains platform-specific files such as AndroidManifest.xml.
@@ -88,12 +87,51 @@ www/spec: TODO: Figure out what it does.
 
 Testing:
 In order to run tests locally from you will need to host a server on your machine. To do this run
-sudo npm install -g http-server
-Then run from the www folder of the project run http-server .
-Now in your web browser you can navigate to localhost:
-Describe automatic testing plan
+`sudo npm install -g http-server`
+Then run from the www folder of the project run
+`http-server .`
+Now in your web browser you can navigate to *localhost:8080/indexSpec.html* this should bring you to a page describing the results of the tests run by Jasmine.
+In order to add tests, a js file ending in Spec.js or spec.js is added to the www/tests folder, and these files are written using the Jasmine testing framework, for details check out the Jasmine documentation *http://jasmine.github.io/2.4/introduction.html*
 
-Note: Make sure that you have followed the instructions on “Setting Up Your Database”
+If you would like to subscribe or see the results of our nightly build tests go here: *https://groups.google.com/forum/#!forum/roomease*
+If you're interested in setting up your own automated testing, you'll need to install Grunt, follow the instructions here on how to get started with Grunt *http://gruntjs.com/getting-started* Here are the Gruntfile.js and package.json files we used to do our automated testing.
+Gruntfile.js
+`module.exports = function(grunt) {
+
+    // Project configuration.
+    grunt.initConfig({
+        jasmine: {
+            src:['./RoomEase/RoomeEasePhoneGapProject/www/js/lib/jquery-2.1.3.min.js',
+                 './RoomEase/RoomeEasePhoneGapProject/www/js/lib/materialize.min.js',
+                 './RoomEase/RoomeEasePhoneGapProject/wwwjs/lib/handlebars-v4.0.5.js',
+                 './RoomEase/RoomeEasePhoneGapProject/www/js/re.js',
+                 './RoomEase/RoomeEasePhoneGapProject/www/js/template-loader.js',
+                 './RoomEase/RoomeEasePhoneGapProject/www/js/localStorage.js',
+                 './RoomEase/RoomeEasePhoneGapProject/www/tests/indexSpec.js'
+                 ]
+            }
+    });
+    
+    // Load the plugin that provides the "grunt-contrib-jasmine" task.
+    grunt.loadNpmTasks('grunt-contrib-jasmine');  
+};`
+
+package.json
+`{
+  "name": "roomease",
+  "version": "0.1.0",
+  "description": "",
+  "main": "Gruntfile.js",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jasmine": "^1.0.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0"
+  }
+}`
+
+Then write a script that will freshly pull or clone the repo and then run the grunt script, now if you set up a crontab using the command `crontab -e` to run that script on a regular basis and email yourself the results you should have fully automated testing!
 
 Bug Tracking:
 For all active/known bugs, please refer to the following Spreadsheet:
