@@ -27,12 +27,6 @@ function RequestHandler(database_location, user_id, group_id) {
 *Used to run all start up tasks when a RequestHandler object is first created
 **/
 function __init(database_location) {
-	var table_names = ['chores',
-					'fridge_items',
-					'groups',
-					'lists',
-					'reservations',
-					'users']
 
 	//KV mapping from the type of an item to the table it belongs to
 
@@ -45,48 +39,64 @@ function __init(database_location) {
 		"user":'users'
 	};
 
+	this.type_to_table = type_to_table;
+
 	for (var key in type_to_table) {
 		this.databases[type_to_table[key]] = 
-		new PouchDB(type_to_table[key] + table_names[i]);
+		new PouchDB(database_location + type_to_table[key]);
 	}
 }
 
 
 /**
 *Adds an item of type item to the database. Calls callback on error or on success.
+*NOTE: An item CANNOT have an _id or _rev associated when it is added. The item retuened in 
+*the callback will have these fields added in. 
 *	item: The item to be added.
 *	callback(is_success, item_id, error)	
 *		is_success: True if the item was properly added to the database, false otherwise.
-*		item_id: The unique_id of the item that was added to the database if successfully added.
+*		revised_item: An item identical to the item passed as input, but with identifiers added
 *		error: null if item was added successfully. String describing error if error occured.
 **/
 function addItem(item, callback) {
-	if(item == null || item_type == null){
+	if(item == null || item.type == null){
 		throw "Error: item or item_type are null";
-	} else if (type_to_table[item_type] == null) {
+	} else if (this.type_to_table[item.type] == null) {
 		throw "Invalid item type";
 	}
 	
-	databases = this.databases;
-	databases["groups"].get(this.group_id)
-	.then(function(response) {
-		if (response.item_type == null){
-			throw "Error: Incorrect item type";
-		} else {
-			response.item_type.push(user_id);
+	var databases = this.databases;
+	var group_id = this.group_id;
+
+	databases[this.type_to_table[item.type]].post(item)
+	.then(function(response){
+		if (response.ok) {
+			console.log(response);
+			databases["groups"].get(group_id)
+			.then(function(grp_response) {
+				//TODO: check error type
+				console.log(grp_response);
+				grp_response[item.type].push(response.id);
+				return grp_response;
+			})
+			.then(function(grp_response){
+				console.log(grp_response);
+				databases["groups"].post(grp_response);
+			}).then(function(){
+				returnItem = item;
+				returnItem["_id"] = response.id;
+				returnItem["_rev"] = response.rev;
+				callback(true, returnItem, null);
+			});
 		}
-		return response;
-	}).then(function(response){
-		databases["groups"].post(response)
-		.then (function(response){
-			//TODO: Check for OK
-			callback(true, response._id, null);
-		});
-	}).catch(function(err){
-		callback(false, "-1", err);
+
+
+	}).catch(function(err) {
+		callback(false, null, null);
+		console.log(err);
 	});
 
-	callback(false, -1, "Unimplemented");
+
 	return null;
 }
 
@@ -103,7 +113,10 @@ function getAllItemsOfType(type, callback) {
 		return;
 	}
 
+
+	response_array = [];
 	databases = this.databases;
+	type_to_table = this.type_to_table;
 	databases["groups"].get(this.group_id)
 	.then(function(response){
 		if (response[type] === null ) {
@@ -112,11 +125,27 @@ function getAllItemsOfType(type, callback) {
 		} else {
 
 			json_objects = [];
-	 		for (values in response[type]) {
+			ids = [];
+	 		for (var i = 0; i < response[type].length; i++) {
 
- 				console.log("{ _id: " + values + "}");
- 				json_objects.push(JSON.parse("{ _id: " + values + "}"));
+	 			json_string = "{ \"_id\":\"" + response[type][i] + "\"}";
+	 			json_obj = JSON.parse(json_string);
+	 			json_objects.push(json_obj);
+	 			ids.push(response[type][i]);
 	 		}
+	 		console.log(json_objects);
+	 		console.log(ids);
+
+	 		databases[type_to_table[type]].allDocs({
+	 			include_docs: true,
+	 			attachments: true,
+	 			keys: ids 
+	 		}).then(function(result){
+	 			for (var i = 0; i < result.rows.length; i++){
+	 				response_array.push(result.rows[i].doc);
+	 			}
+	 			callback(response_array, null);
+	 		})
 		}
 	})
 	.catch(function(err){
@@ -144,9 +173,38 @@ function updateItem(item, callback){
 *		is_success: True if item was deleted successfully. String describing error if error occured.
 **/
 function deleteItem(item, callback) {
-	//TODO: Implement
-	callback(false, "Unimplemented");
-	return null;
+
+	databases = this.databases;
+
+	databases["groups"].get(this.group_id)
+	.then(function (result){
+
+		if (result[item.type] == null) {
+			throw "Error";
+		}
+		
+		if (!contains_id(result[item.type], item._id)){
+			console.log("Foo");
+			callback(true, null);//In the case where an intem has already been deleted, just say it succeeded
+			return;
+		}
+		index = result[item.type].indexOf(item._id);
+		removed_item_id = result[item.type].splice(index, 1);
+		console.log(result[item.type]);
+		databases["groups"].post(result);
+	
+	}).then(function(result){
+
+		databases[type_to_table[item.type]].get(item._id)
+		.then(function(get_result){
+			databases[type_to_table[item.type]].remove(get_result);
+			callback(true, null);
+		});
+
+	})
+	.catch(function(err){
+		callback(false, err);
+	});
 }
 
 /**

@@ -1,7 +1,15 @@
-function LoginHandler() {
+function LoginHandler(database_location) {
+
 	this.createNewGroup = createNewGroup;
 	this.registerNewUser = registerNewUser;
 	this.addUserToGroup = addUserToGroup;
+	tables = ["groups", "users"];
+	this.databases = {};
+
+	for (var i = 0; i < tables.length; i++) {
+		this.databases[tables[i]] = 
+		new PouchDB(database_location + tables[i]);
+	}
 }
 
 /**
@@ -13,11 +21,11 @@ function LoginHandler() {
 function createNewGroup(callback) {
 	var empty_groups_item = 
 	{
-		"uids" : [],
-		"reservations": [],
-		"lists": [],
-		"fridge_items" : [],
-		"chores":[]
+		"uid" : [],
+		"reservation": [],
+		"list": [],
+		"fridge_item" : [],
+		"chore":[]
 	};
 	this.databases["groups"].post(empty_groups_item)
 	.then(function(response) {
@@ -66,16 +74,16 @@ function registerNewUser(facebook_id, name, callback){
 *		error: null if user was added to the group successfully. String describing an error if an error has occured.
 **/
 
-function addUserToGroup(user_id, group_id, callback) {
+function addUserToGroup(facebook_id, group_id, callback) {
 	databases = this.databases;
 	databases["groups"].get(group_id)
 	.then(function(response) {
 
-		if ( contains_id(response["uids"], user_id)) {
+		if ( contains_id(response["uid"], user_id)) {
 			throw "Error: uiser ID already part of this group";
 		}
 
-		response.uids.push(user_id);
+		response.uid.push(user_id);
 		return response;
 	
 	}).then(function(response){
