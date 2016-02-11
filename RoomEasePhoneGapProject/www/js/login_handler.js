@@ -43,21 +43,43 @@ re.loginHandler = (function() {
 	*Adds a user to the database with the facebook user_id and and name. Calls callback on error or on success.
 	*	facebook_id: The unique_id generated from the Facebook Login API when a user successfully logs into an application
 	*	name: The real name of the person registering (Ex: John Doe, Will T. Smith)
-	*	callback(is_success, error)
-	*		is_success: True if the user was rgistered into the database, false otherwise
+	*	callback(is_success, prev_registered, error)
+	*		is_success: True if the user was NEWLY rgistered into the database, false otherwise
+	*		prev_registered: True if the user was previously registered to DB, false otherwise
 	*		error: null if group created successfully. String describing an error if an error has occured.
 	**/
 	function registerNewUser(facebook_id, name, callback){
-		databases["users"].post({
-			"uid": facebook_id,
-			"name": name,
-			"group_num": "-1"
+
+		var already_registered = false;
+		var name_of_map_reduce_function = 'get_by_uids/uids'; //Note: This is a function that
+															//is stored server side
+
+		databases["users"].query(name_of_map_reduce_function, {
+		  key          : facebook_id,
+		  include_docs : true
+		}).then(function (result) {
+
+			//Ensure that no duplicate FB IDs end upin DB
+			if (result.rows.length != 0 ){
+				already_registered = true;
+				callback(false, true, "User already registered");
+			} else {
+				//Put FB ID into DB
+				return databases["users"]
+				.post({
+				 	"uid": facebook_id,
+				 	"name": name,
+				 	"group_num": "-1"
+				 });
+			}
 		})
 		.then(function(response){
-			callback(true, null);
+			if ( !already_registered ) {
+				callback(true,false, null);
+			}
 		})
-		.catch(function(err){
-			callback(false, err);
+		.catch(function (err) {
+		  callback(false, false, err);
 		});
 	}
 
@@ -67,31 +89,35 @@ re.loginHandler = (function() {
 	*Calls callback on error or on success.
 	*	user_id: The id of the user generated from the Facebook API when logging in.
 	*	group_id: The id of the group generated on creation.
-	*	callback(is_success, error)
+	*	callback(is_success, already_in_grp, error)
 	*		is_success: True if the user was sucessfully assigned to the group, false otherwise
 	*		error: null if user was added to the group successfully. String describing an error if an error has occured.
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
+
+		var already_in_grp = false;
 		databases["groups"].get(group_id)
 		.then(function(response) {
 
 			if ( contains_id(response["uid"], facebook_id)) {
-				throw "Error: uiser ID already part of this group";
+				already_in_grp = true;
+				callback(false, true, "Error: uiser ID already part of this group");
+			} else {
+				response.uid.push(facebook_id);
+				return response;
 			}
-
-			response.uid.push(facebook_id);
-			return response;
-		
 		}).then(function(response){
 			//Note: The 'response' from the previous call is the same as THIS response
-			databases["groups"].post(response)
-			.then(function(response){
-				//TODO: Check for OK
-				callback(true, null);
-			});
+			if(!already_in_grp){
+				databases["groups"].post(response)
+				.then(function(response){
+					//TODO: Check for OK
+					callback(true, false, null);
+				});
+			}
 		}).catch(function(err){
-			callback(false, err);
+			callback(false, false, err);
 		});
 	}
 
@@ -120,7 +146,6 @@ re.loginHandler = (function() {
 	*	id: The l
 	*/	
 	function contains_id(list, id) {
-		console.log(id);
 		for (var i = 0; i < list.length; i++) {
 			if (list[i] === id) {
 				return true;
@@ -128,7 +153,7 @@ re.loginHandler = (function() {
 		}
 		return false;
 	}
-	
+
 	return {
 		'init': init,
 		'createNewGroup': createNewGroup,
