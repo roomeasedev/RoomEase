@@ -17,6 +17,7 @@ re.loginHandler = (function() {
 	*			error: null if group created successfully. String describing an error if an error has occured.
 	*/
 	function createNewGroup(callback) {
+		console.log("HERE!!!");
 		var empty_groups_item = 
 		{
 			"uid" : [],
