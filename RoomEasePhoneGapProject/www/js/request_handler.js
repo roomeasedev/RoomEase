@@ -36,56 +36,49 @@ re.requestHandler = (function(){
 		return true;
 	}
 
-
 	/**
 	*Adds an item of type item to the database. Calls callback on error or on success.
-	*NOTE: An item CANNOT have an _id or _rev associated when it is added. The item retuened in 
-	*the callback will have these fields added in. 
+	*NOTE: An item CANNOT have an _id or _rev associated when it is added. The item returned in 
+	*the callback will have these fields added in.
 	*	item: The item to be added.
-	*	callback(is_success, item_id, error)	
+	*	callback(is_success, revised_item, error)	
 	*		is_success: True if the item was properly added to the database, false otherwise.
 	*		revised_item: An item identical to the item passed as input, but with identifiers added
 	*		error: null if item was added successfully. String describing error if error occured.
 	**/
 	function addItem(item, callback) {
-		if(item == null || item.type == null){
-			throw "Error: item or item_type are null";
+		if (user_id == null || group_id == null) {
+			callback(null, "Error: no valid user_id and/or group_id assigned to user object");
+			return;
+		} else if(item == null || item.type == null){
+			callback(false, null, "Error: item or item_type are null");
+			return;
 		} else if (type_to_table[item.type] == null) {
-			throw "Invalid item type";
+			callback(false, null, "Invalid item type");
+			return;
 		}
 		
-		group_id;
-
 		databases[type_to_table[item.type]].post(item)
 		.then(function(response){
 			if (response.ok) {
-				console.log(response);
 				databases["groups"].get(group_id)
 				.then(function(grp_response) {
 					//TODO: check error type
-					console.log(grp_response);
 					grp_response[item.type].push(response.id);
 					return grp_response;
 				})
 				.then(function(grp_response){
-					console.log(grp_response);
-					databases["groups"].post(grp_response);
-				}).then(function(){
-					var returnItem = item;
+					return databases["groups"].post(grp_response);
+				}).then(function(post_response){
+					var returnItem = JSON.parse(JSON.stringify(item));
 					returnItem["_id"] = response.id;
 					returnItem["_rev"] = response.rev;
 					callback(true, returnItem, null);
 				});
 			}
-
-
 		}).catch(function(err) {
 			callback(false, null, null);
-			console.log(err);
 		});
-
-
-		return null;
 	}
 
 	/**
@@ -100,7 +93,6 @@ re.requestHandler = (function(){
 			callback(null, "Error: no valid user_id and/or group_id assigned to user object");
 			return;
 		}
-
 
 		var response_array = [];
 
@@ -121,6 +113,8 @@ re.requestHandler = (function(){
 		 			attachments: true,
 		 			keys: ids 
 		 		}).then(function(result){
+		 			console.log("Result rows");
+		 			console.log(result.rows);
 		 			for (var i = 0; i < result.rows.length; i++){
 		 				response_array.push(result.rows[i].doc);
 		 			}
@@ -136,24 +130,61 @@ re.requestHandler = (function(){
 	/**
 	*Updates the item in the database to the new version of the item. Calls callack on success or on error.
 	*	item: The item to be updated 
-	*	callback(is_success, error):
+	*	callback(is_success, was_deleted, error):
 	*		is_success: True if update was successful, false otherwise.
+	*		was_deleted: True if the item was not updated for it was not located in the DB (Most likely due ot deletion)
+	*		updated_item: The item with the updated parameters
 	*		error: null if item was updated successfully. String describing the error if error occured.
 	**/	
 	function updateItem(item, callback){
-		//TODO: Implement
-		callback(false, "Unimplemented");
-		return null;
+		if (user_id == null || group_id == null) {
+			callback(false, false, null, "Error: no valid user_id and/or group_id assigned to user object");
+			return;
+		} else if(item == null || item.type == null){
+			callback(false, false, null, "Error: item or item_type are null");
+			return;
+		} else if (type_to_table[item.type] == null) {
+			callback(false, false, null, "Invalid item type");
+			return;
+		}
+
+		databases["groups"].get(group_id)
+		.then(function(response){
+			if (response[item.type] === null ) {
+				//TODO: MAke sure this actually fails properly
+				throw "Error: Type of item not found in the database";
+			} else if (!contains_id(response[item.type], item._id)){
+				callback(false, true, null, "Item was already deleted");
+				return null;
+			}
+
+			return databases[type_to_table[item.type]].post(item);
+
+		}).then(function(response) {
+			if(response != null){
+				var item_copy = JSON.parse(JSON.stringify(item)); //This does a deep copy
+				item_copy._id = response.id;
+				item_copy._rev = response.rev;
+				callback(true, false, item_copy, null);
+			}
+		}).catch(function(error){
+			callback(false, false, null, error);
+		});
+
 	}
 
 	/**
 	*Deletes the record of the item in the database. Calls callback on success or on error.
 	*	item: The item to be deleted
-	*	callback(is_success, error)
+	*	callback(is_sucess, error)
 	*		is_success: True if item was deleted successfully. String describing error if error occured.
 	**/
 	function deleteItem(item, callback) {
-
+		
+		if (user_id == null || group_id == null) {
+			callback(null, "Error: no valid user_id and/or group_id assigned to user object");
+			return;
+		}
 
 		databases["groups"].get(group_id)
 		.then(function (result){
@@ -163,7 +194,6 @@ re.requestHandler = (function(){
 			}
 			
 			if (!contains_id(result[item.type], item._id)){
-				console.log("Foo");
 				callback(true, null);//In the case where an intem has already been deleted, just say it succeeded
 				return;
 			}
@@ -191,7 +221,6 @@ re.requestHandler = (function(){
 	*	id: The l
 	*/	
 	function contains_id(list, id) {
-		console.log(id);
 		for (var i = 0; i < list.length; i++) {
 			if (list[i] === id) {
 				return true;
@@ -202,6 +231,7 @@ re.requestHandler = (function(){
 
 	return {
 		'addItem': addItem,
+		'updateItem': updateItem,
 		'getAllItemsOfType': getAllItemsOfType,
 		'deleteItem': deleteItem,
 		'init': init,
