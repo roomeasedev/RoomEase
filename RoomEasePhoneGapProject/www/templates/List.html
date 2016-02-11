@@ -11,3 +11,14 @@
 <button id="show" onclick="re.storage.show('list')">Show</button>
 <button id="clear" onclick="re.storage.clear('list')">Clear</button><br>
 <textarea rows="20" columns="40" id="area"></textarea>
+
+<!-- This section should dynamically insert all of the lists into the page-->
+{{#lists}}
+    <div class="list-item"><span class="white-text left-align">{{ name_of_list }}</span>
+        {{#items}}
+            <ul>
+                <li>{{ this }}</li>
+            </ul>
+        {{/items}}
+    </div>
+{{/lists}}
