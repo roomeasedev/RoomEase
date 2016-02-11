@@ -46,7 +46,8 @@ var test_groups_login_info_item = {
 	"_id" :"123456789",
 	"_rev": "123445554353",
 	"group_id": "123456789", //This will be the number of the group when it is first generated
-	"group_name": "MatthewMans#1", //Unique ID for the group. Contains the Creator's name along with a random 5 digit code. Garunteed unique 
+	"group_prefix": "MatthewMans", //Unique ID for the group. Contains the Creator's name along with a random 5 digit code. Garunteed unique
+	"group_suffix": "1", //Note that no prefix and suffix combo should be identical
 	"group_password": "12345678" //Random 8 digit password
 }
 //=========================================================================
