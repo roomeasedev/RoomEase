@@ -18,6 +18,12 @@ var re = {};
 * of the templates for the various views so they are ready to be displayed.
 */
 $(document).ready(function () {
+    //Initialize login handler and request_handler
+    re.loginHandler.init("http://40.114.43.49:5984/");
+    
+    //TODO: Add userid and groupid
+    //re.requestHandler.init("http://40.114.43.49:5984/", );
+    
     // Define various templates, which hold the compiled templates for each of the views.
     var feedTemplate, listTemplate, fridgeTemplate;
     
@@ -25,6 +31,17 @@ $(document).ready(function () {
     * Sets the HTML value of the injectable page area to the rendered list view.
     */
     function renderListView() {
+        var lists;
+        /* Gets all lists from database and renders the list view with these
+        *  lists embedded. 
+        */
+        re.requestHandler.getAllItemsOfType("list", function(allLists, error) {
+            if(allLists == null) {
+                console.log(error);
+            } else {
+                lists = allLists;
+            }
+        });
         $('.page').html(listTemplate());
     }
     
