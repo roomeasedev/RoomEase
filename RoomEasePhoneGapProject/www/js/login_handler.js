@@ -1,6 +1,6 @@
 re.loginHandler = (function() {
 
-	var tables = ["groups", "users"];
+	var tables = ["groups", "users", "group_login"];
 	var databases = {};
 
 	function init(database_location) {
@@ -92,12 +92,15 @@ re.loginHandler = (function() {
 	*	group_id: The id of the group generated on creation.
 	*	callback(is_success, already_in_grp, error)
 	*		is_success: True if the user was sucessfully assigned to the group, false otherwise
+	*		already_in_grp: True if the user was already in the group
 	*		error: null if user was added to the group successfully. String describing an error if an error has occured.
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
 
 		var already_in_grp = false;
+		var name_of_map_reduce_function = 'get_by_uids/uids';
+
 		databases["groups"].get(group_id)
 		.then(function(response) {
 
@@ -105,8 +108,24 @@ re.loginHandler = (function() {
 				already_in_grp = true;
 				callback(false, true, "Error: uiser ID already part of this group");
 			} else {
+
+				//Update the "users" entry with the proper group number
+				databases["users"].query(name_of_map_reduce_function, {
+		 		 key          : facebook_id,
+		 		 include_docs : true
+				})
+				.then(function (result) {
+					if(result.rows.length != 1){
+						throw "Error: Multiple entries for the same user ID"
+					} else {
+					 	result.rows[0].doc.group_num = group_id;
+						return databases["users"].post(result.rows[0].doc);
+					}
+				});
+
 				response.uid.push(facebook_id);
 				return response;
+
 			}
 		}).then(function(response){
 			//Note: The 'response' from the previous call is the same as THIS response
@@ -127,8 +146,7 @@ re.loginHandler = (function() {
 	*group_id: The id that is generated to identify the group. Normally reutned by the 
 	*function createNewGroup(). If a group has already been registered, then the information in the 
 	*callback will be the information that was generated when the group was registered for the first time.
-	*
-	*group_name_prefix: The prefix of the name of the group.
+	*group_name_prefix: The prefix of the name of the group. No whitespace allowed.
 	*callback(is_success, group_name, group_password, error)
 	*	is_success: true if the group was properly given a name and password, false otherwise
 	*	group_name: the name of the group that the user will identify loggining into their group with
@@ -136,7 +154,6 @@ re.loginHandler = (function() {
 	*	error: null if registration successful. e 
 	**/
 	function generateGroupLoginInfo(group_id, group_name_prefix, callback) {
-		///TODO: implement
 		callback(false, null, null, null, "Unimplemented");
 	}
 
