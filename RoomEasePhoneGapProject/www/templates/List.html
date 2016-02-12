@@ -1,16 +1,8 @@
 <!--    Template for the List view that will be injected into Index.html at runtime when
         the user navigates to the List page. It will include the grocery list of the current
         user and the group lists that will be dynamically loaded from local storage.  -->
-<h2>List View</h2>
-<form>
-    <input type="text" placeholder="Text" id="text"><br>
-    <input type="text" placeholder="Owner" id="owner"><br>
-    <input type="date" id="date"><br>
-</form>
-<button id="store" onclick="re.storage.store('list')">Store</button>
-<button id="show" onclick="re.storage.show('list')">Show</button>
-<button id="clear" onclick="re.storage.clear('list')">Clear</button><br>
-<textarea rows="20" columns="40" id="area"></textarea>
+
+<h2>Lists</h2>
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
@@ -26,3 +18,15 @@
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
+
+<!--
+<form>
+    <input type="text" placeholder="Text" id="text"><br>
+    <input type="text" placeholder="Owner" id="owner"><br>
+    <input type="date" id="date"><br>
+</form>
+<button id="store" onclick="re.storage.store('list')">Store</button>
+<button id="show" onclick="re.storage.show('list')">Show</button>
+<button id="clear" onclick="re.storage.clear('list')">Clear</button><br>
+<textarea rows="20" columns="40" id="area"></textarea
+-->
