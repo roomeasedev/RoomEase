@@ -81,6 +81,11 @@ $(document).ready(function () {
     */
     function renderFridgeView() {
         $('.page').html(fridgeTemplate());
+        
+        // Initialize tabs
+        $(document).ready(function(){
+        $('ul.tabs').tabs();
+  });
     }
     
     /**
