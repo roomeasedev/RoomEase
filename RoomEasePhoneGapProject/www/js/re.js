@@ -28,7 +28,7 @@ $(document).ready(function () {
     
     // Attach an event listener to route to the proper view
     // when the hash of the URL is changed.
-    $(window).onhashchange = route;
+    window.onhashchange = route;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -38,13 +38,14 @@ $(document).ready(function () {
         /* Gets all lists from database and renders the list view with these
         *  lists embedded. 
         */
+        /*
         re.requestHandler.getAllItemsOfType("list", function(allLists, error) {
             if(allLists == null) {
                 console.log(error);
             } else {
                 lists = allLists;
             }
-        });
+        });*/
         $('.page').html(listTemplate());
     }
     
@@ -68,9 +69,6 @@ $(document).ready(function () {
     * rendered, then calls the appropriate rendering function. If the hash
     * is not set (on first load), the feed view is rendered.
     */
-    
-    
-    
     function route() {
         var hash = window.location.hash;
         console.log(hash);
