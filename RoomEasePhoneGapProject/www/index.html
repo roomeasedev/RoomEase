@@ -20,6 +20,12 @@
         <title>RoomEase</title>
     </head>
     <body>
+        <!-- This here be code setting up the Facebook SDK
+        NOTE: Facebook tells us to put this in directly after the body tag
+        which is the reason why it is placed here and not at the bottom -->
+        <script type="text/javascript" src="js/facebooksdk.js"></script>
+        <script type="text/javascript" src="js/facebook.js"></script>
+
         <div>
             <nav class="teal lighten-1">
                 <div class="nav-wrapper">
@@ -43,6 +49,7 @@
                     </ul>
                     <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu" style="margin-left: 10px"></i></a>
                 </div>
+
             </nav>
 
             <div class="page"></div>
@@ -52,6 +59,19 @@
             <!--Example of button with wave animation and toast popup-->
             <div class="center-align">
                 <button class="btn waves-effect waves-light pink">Press</button>
+            </div>
+            
+            
+            <!--
+                Below we include the Login Button social plugin. This button uses
+                the JavaScript SDK to present a graphical Login button that triggers
+                the FB.login() function when clicked.
+            -->
+
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+            </fb:login-button>
+            
+            <div id="status">
             </div>
         </div>
 
@@ -72,24 +92,6 @@
                 menuWidth: 200,
                 closeOnClick: true
             });
-        </script>
-        <!-- This here be code setting up the Facebook SDK -->
-        <script>
-            window.fbAsyncInit = function() {
-              FB.init({
-                appId      : '1530835750579447',
-                xfbml      : true,
-                version    : 'v2.5'
-              });
-            };
-          
-            (function(d, s, id){
-               var js, fjs = d.getElementsByTagName(s)[0];
-               if (d.getElementById(id)) {return;}
-               js = d.createElement(s); js.id = id;
-               js.src = "//connect.facebook.net/en_US/sdk.js";
-               fjs.parentNode.insertBefore(js, fjs);
-             }(document, 'script', 'facebook-jssdk'));
         </script>
     </body>
 </html>
