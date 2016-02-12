@@ -1,7 +1,21 @@
 .list-item {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     transition: box-shadow .25s;
-    margin: 0.5rem 0 1rem 0;
-  border-radius: 2px;
-  background-color: #80cbc4;
+    margin: 0.5rem 0 1rem 1rem;
+    border-radius: 2px;
+    background-color: #80cbc4;
+    width: 45%;
+    padding: 0.1rem 0.5rem 0.5rem 0.85rem;
+}
+
+ul{
+    margin:0 0 0 1.25em;
+    padding:0;
+}
+
+
+li{
+    margin:0;
+    padding:0;
+    line-height: 1.25em;
 }

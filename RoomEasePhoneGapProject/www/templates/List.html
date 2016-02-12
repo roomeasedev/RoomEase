@@ -14,10 +14,10 @@
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <div class="list-item"><span class="white-text left-align">{{ this.name_of_list }}</span>
+    <div class="list-item"><h5 class="white-text left-align" style="margin-bottom: 0">{{ this.name_of_list }}</h5>
         {{#items}}
             <ul>
-                <li>{{ this }}</li>
+                <li class="white-text" style="font-size: 1.7em">{{ this }}</li>
             </ul>
         {{/items}}
     </div>
