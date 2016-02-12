@@ -24,7 +24,7 @@ re.templates = (function () {
     * @param {Array} templateNames an array of names, where each name is a string for
     *     which there is a valid <name>.html file in the templates directory
     */
-    var load = function (templateNames) {
+    var load = function(templateNames) {
         var deferred = [];
     
         $.each(templateNames, function(index, templateName) {

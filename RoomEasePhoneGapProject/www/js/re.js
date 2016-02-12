@@ -18,10 +18,12 @@ var re = {};
 */
 $(document).ready(function () {
     //Initialize login handler and request_handler
-    //re.loginHandler.init("http://40.114.43.49:5984/");
-    
-    //TODO: Add userid and groupid
-    //re.requestHandler.init("http://40.114.43.49:5984/", );
+    re.loginHandler.init("http://40.114.43.49:5984/");
+
+    // Example group and user ID are chosen from DB. These values are hard coded so request
+    // handler cooperates.
+    re.requestHandler.init("http://40.114.43.49:5984/",
+                        "893308038", "089d6e77903ccfb44b5bcad1f7157b47");
     
     // Define various templates, which hold the compiled templates for each of the views.
     var feedTemplate, listTemplate, fridgeTemplate;
