@@ -6,7 +6,6 @@
 * correct view to the user based on the current routing of the page
 * (the hash of the URL).
 */
-
 // Define a global object, re, to use as a namespace. re is the namespace
 // on which other namespaces will be created.
 var re = {};
@@ -19,13 +18,17 @@ var re = {};
 */
 $(document).ready(function () {
     //Initialize login handler and request_handler
-    re.loginHandler.init("http://40.114.43.49:5984/");
+    //re.loginHandler.init("http://40.114.43.49:5984/");
     
     //TODO: Add userid and groupid
     //re.requestHandler.init("http://40.114.43.49:5984/", );
     
     // Define various templates, which hold the compiled templates for each of the views.
     var feedTemplate, listTemplate, fridgeTemplate;
+    
+    // Attach an event listener to route to the proper view
+    // when the hash of the URL is changed.
+    $(window).onhashchange = route;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -65,21 +68,23 @@ $(document).ready(function () {
     * rendered, then calls the appropriate rendering function. If the hash
     * is not set (on first load), the feed view is rendered.
     */
+    
+    
+    
     function route() {
         var hash = window.location.hash;
         console.log(hash);
         if (!hash || hash == "#feed") {
             renderFeedView();
-        } else if (hash == "#list") {
+        } else if (hash == "#list") {      
             renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
         }
     }
     
-    // Attach an event listener to route to the proper view
-    // when the hash of the URL is changed.
-    $(window).on('hashchange', route);
+    
+
     
     // Call the load function of re.templates, compiling the HTML templates
     // for all existing views.  When load finishes, set the values of the
