@@ -36,7 +36,7 @@
   <gap:plugin name="org.apache.cordova.network-information"/>
   <gap:plugin name="org.apache.cordova.splashscreen"/>
   <gap:plugin name="org.apache.cordova.vibration"/>
-  <gap:plugin name="com.phonegap.plugins.facebookconnect" version="v2.5">
+  <gap:plugin name="com.phonegap.plugins.facebookconnect" version="2.5">
         <param name="APP_ID" value="1530835750579447" />
         <param name="APP_NAME" value="RoomEase" />
   </gap:plugin>
