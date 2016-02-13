@@ -64,8 +64,14 @@ $(document).ready(function () {
                     "1124444444"]
 
             }];
+            
+            
             $('.page').html(listTemplate(lists));
-
+            
+            $('#new-list-btn').click(function() {
+                
+                $('.popup').css('display', 'block');                         
+            });
         });
     }
     
