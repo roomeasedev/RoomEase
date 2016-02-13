@@ -131,7 +131,7 @@ describe("Login Handler suite", function() {
 		
 		waitsFor(function(){
 			return finished;
-		}, "Add new user never returned", 5000);
+		}, "Add new user never returned", 10000);
 
 		re.loginHandler.addUserToGroup(facebook_id, group_num, callback);
 		
@@ -139,6 +139,29 @@ describe("Login Handler suite", function() {
 			expect(success).not.toBeTruthy();
 			expect(in_grp).toBeTruthy();
 			expect(error).not.toBeNull();
+		});
+	});
+
+
+
+	it("Create group login info", function() {
+
+		var finished = false;
+
+		var callback = function(is_success, group_name, group_password, error){
+			console.log(group_name);
+			console.log(group_password);
+			console.log(error);
+			finished = true;
+		}
+		
+		waitsFor(function(){
+			return finished;
+		}, "Add new user never returned", 5000);
+
+		re.loginHandler.generateGroupLoginInfo(group_num, "MatthewMans", callback);
+		
+		runs(function(){
 		});
 	});
 });

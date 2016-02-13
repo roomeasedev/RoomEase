@@ -17,7 +17,6 @@ re.loginHandler = (function() {
 	*			error: null if group created successfully. String describing an error if an error has occured.
 	*/
 	function createNewGroup(callback) {
-		console.log("HERE!!!");
 		var empty_groups_item = 
 		{
 			"uid" : [],
@@ -154,10 +153,45 @@ re.loginHandler = (function() {
 	*	error: null if registration successful. e 
 	**/
 	function generateGroupLoginInfo(group_id, group_name_prefix, callback) {
-		callback(false, null, null, null, "Unimplemented");
+		
+		var random_8_digit_pwd = (Math.floor(Math.random()*900000) + 100000).toString();
+		var suffix = null;
+		databases["group_login"].query('group_login/prefix_count', {
+			key: group_name_prefix,
+ 		 	include_docs : true
+		})
+		.then(function(result){
+				suffix = (result.rows.length).toString();
+				return databases["group_login"].post({
+						"group_id": group_id,
+						"group_prefix": group_name_prefix, 
+						"group_suffix": suffix,
+						"group_name": group_name_prefix +'#' + suffix,
+						"group_password": random_8_digit_pwd 
+				});
+		}).then(function(result){
+			callback(true, group_name_prefix + "#" + suffix, random_8_digit_pwd, null);
+		})
+		.catch(function(err){
+			callback(false, null, null, err);
+		});
 	}
 
+	/**
+	*callback(is_success, group_number, error)
+	**/
+	function getGroupNumber(group_name, group_password, callback) {
+		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
+		databases["group_login"].query('group_login/get_group_obj_by_name', {
+			key: group_name,
+			include_docs: true
+		})
+		.then(function(result){
+			console.log(result);
+		}).catch(function(err){
 
+		});
+	}
 	/**
 	*Returns true if a list contains the given id, false otherwise
 	*	list: The list the potentially contains id
@@ -176,7 +210,8 @@ re.loginHandler = (function() {
 		'init': init,
 		'createNewGroup': createNewGroup,
 		'registerNewUser': registerNewUser,
-		'addUserToGroup': addUserToGroup
+		'addUserToGroup': addUserToGroup,
+		'generateGroupLoginInfo': generateGroupLoginInfo
 	}
 })();
 
