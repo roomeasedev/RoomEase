@@ -145,7 +145,8 @@ re.loginHandler = (function() {
 	*group_id: The id that is generated to identify the group. Normally reutned by the 
 	*function createNewGroup(). If a group has already been registered, then the information in the 
 	*callback will be the information that was generated when the group was registered for the first time.
-	*group_name_prefix: The prefix of the name of the group. No whitespace allowed.
+	*group_name_prefix: The prefix of the name of the group. No whitespace allowed. Recommended to be 
+	*the name of the person who creates the group without whitespace. (Example: JohnDoe)
 	*callback(is_success, group_name, group_password, error)
 	*	is_success: true if the group was properly given a name and password, false otherwise
 	*	group_name: the name of the group that the user will identify loggining into their group with
