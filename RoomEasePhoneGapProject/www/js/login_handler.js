@@ -170,25 +170,45 @@ re.loginHandler = (function() {
 						"group_password": random_8_digit_pwd 
 				});
 		}).then(function(result){
-			callback(true, group_name_prefix + "#" + suffix, random_8_digit_pwd, null);
+			if(result.ok){
+				callback(true, group_name_prefix + "#" + suffix, random_8_digit_pwd, null);
+			} else {
+				throw "Error: Something went wrong while generating group login info";
+			}
 		})
 		.catch(function(err){
 			callback(false, null, null, err);
 		});
 	}
 
-	/**
-	*callback(is_success, group_number, error)
+	/** 
+	*Given a group name and correct password, determines the group number associated with
+	*the group name and password. Callback called on success or on error.
+	*group_name: The name of the group (Usually follows the format string#int (Example: JohnDoe#1234))
+	*group_password: The password associated with the group_name
+	*callback(is_success, incorrect_pwd, group_number, error)
+	*	is_success: True if the function completed without any errors, false otherwise
+	*	incorrect_pwd: True if the password that was provided was incorrect, false otherwise
+	*	group_number: null if gorpu_name and group_password are correct, otherwise is the group_number associated with
+	*					the group_name
+	*	error: String describing if an error occured, null if no error occured.
 	**/
 	function getGroupNumber(group_name, group_password, callback) {
 		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
 		databases["group_login"].query('group_login/get_group_obj_by_name', {
 			key: group_name,
-			include_docs: true
+			include_docs: true,
+ 			attachments: true
+
 		})
 		.then(function(result){
-			console.log(result);
+			if (result.rows[0].doc.group_password === group_password) {
+				callback(true, false, result.rows[0].doc.group_id, null);
+			} else {
+				callback(false, true, null, "Error: Incorrect password");
+			}
 		}).catch(function(err){
+			callback(false, false, null, err);
 
 		});
 	}
@@ -211,7 +231,8 @@ re.loginHandler = (function() {
 		'createNewGroup': createNewGroup,
 		'registerNewUser': registerNewUser,
 		'addUserToGroup': addUserToGroup,
-		'generateGroupLoginInfo': generateGroupLoginInfo
+		'generateGroupLoginInfo': generateGroupLoginInfo,
+		'getGroupNumber': getGroupNumber
 	}
 })();
 

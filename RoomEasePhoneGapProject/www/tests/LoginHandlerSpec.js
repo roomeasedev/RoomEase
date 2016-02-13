@@ -5,6 +5,8 @@ describe("Login Handler suite", function() {
 	var facebook_id = (Math.floor((Math.random() * 1000000000) + 1)).toString();
 	var group_num = "-1";
 	var name = "Matthew Mans";
+	var group_login_name = null;
+	var group_login_password = null;
 	re.loginHandler.init(db_location);
 	
 	it("Create New Group", function( ){
@@ -142,16 +144,16 @@ describe("Login Handler suite", function() {
 		});
 	});
 
-
-
 	it("Create group login info", function() {
 
 		var finished = false;
 
 		var callback = function(is_success, group_name, group_password, error){
-			console.log(group_name);
-			console.log(group_password);
-			console.log(error);
+			group_login_name = group_name;
+			group_login_password = group_password;
+			expect(group_login_name).not.toBeNull();
+			expect(group_login_password).not.toBeNull();
+			expect(error).toBeNull();
 			finished = true;
 		}
 		
@@ -160,9 +162,66 @@ describe("Login Handler suite", function() {
 		}, "Add new user never returned", 5000);
 
 		re.loginHandler.generateGroupLoginInfo(group_num, "MatthewMans", callback);
+	});
+
+	it("Create group login info with same login token", function() {
+
+		var finished = false;
+
+		var callback = function(is_success, group_name, group_password, error){
+			expect(group_login_name).not.toBeNull();
+			expect(group_login_password).not.toBeNull();
+			expect(error).toBeNull();
+
+			var prev_suffix = parseInt((group_login_name.split("#"))[1]);
+			var cur_suffix = parseInt((group_name.split("#"))[1]);
+			expect(cur_suffix - 1).toEqual(prev_suffix);
+			finished = true;
+		}
 		
-		runs(function(){
-		});
+		waitsFor(function(){
+			return finished;
+		}, "Add new user never returned", 5000);
+
+		re.loginHandler.generateGroupLoginInfo(group_num, "MatthewMans", callback);
+	});
+
+	it("Get group login info", function() {
+
+		var finished = false;
+
+		var callback = function(is_success, incorrect_pwd, group_number, error){
+			expect(error).toBeNull();
+			expect(is_success).toBeTruthy();
+			expect(incorrect_pwd).not.toBeTruthy();
+			expect(group_number).toEqual(group_num);
+			finished = true;
+		}
+		
+		waitsFor(function(){
+			return finished;
+		}, "Add new user never returned", 5000);
+
+		re.loginHandler.getGroupNumber(group_login_name, group_login_password, callback);
+	});
+
+	it("Get group login info fail on bad passwd", function() {
+
+		var finished = false;
+
+		var callback = function(is_success, incorrect_pwd, group_number, error){
+			expect(error).not.toBeNull();
+			expect(is_success).not.toBeTruthy();
+			expect(incorrect_pwd).toBeTruthy();
+			expect(group_number).toBeNull();
+			finished = true;
+		}
+		
+		waitsFor(function(){
+			return finished;
+		}, "Add new user never returned", 5000);
+
+		re.loginHandler.getGroupNumber(group_login_name, "123434352435325232", callback);
 	});
 });
 
