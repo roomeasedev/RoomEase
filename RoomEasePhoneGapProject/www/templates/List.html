@@ -21,7 +21,15 @@
 </div>
 
 <!-- Small popup menu to add new list, hidden by default -->
-<div class="popup"></div>
+<div class="popup">  
+    <form>
+        <input type="text" placeholder="List Name" id="text"><br>
+        <input type="text" placeholder="Owner" id="owner"><br>
+        <input type="date" id="date"><br>
+    </form>
+    <button id="store" onclick="re.storage.store('list')">Store</button>
+    <textarea rows="20" columns="40" id="area"></textarea>
+</div>
 
 <!--
 <form>
@@ -32,5 +40,5 @@
 <button id="store" onclick="re.storage.store('list')">Store</button>
 <button id="show" onclick="re.storage.show('list')">Show</button>
 <button id="clear" onclick="re.storage.clear('list')">Clear</button><br>
-<textarea rows="20" columns="40" id="area"></textarea
+<textarea rows="20" columns="40" id="area"></textarea>
 -->
