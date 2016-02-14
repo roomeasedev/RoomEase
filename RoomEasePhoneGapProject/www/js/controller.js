@@ -1,4 +1,4 @@
-re.controller = (function () {
+re.controller = (function() {
 
 	var list_items = [];
 	var fridge_items = [];
@@ -13,7 +13,7 @@ re.controller = (function () {
 		} else {
 			//Splash screen
 		}
-		console.log("init finished!");
+		console.log("re.controller init finished!");
 	}
     
     /* creates a JSON list object to add to database & handles any resulting errors
@@ -21,7 +21,8 @@ re.controller = (function () {
      * items: string of items to put into list
      * return value: null on error & the newly created item on success
      */
-    function addList(listName, items) {    
+    function addList(listName, items) {
+        console.log("entered re.controller addList");
         var newlist = {
             "type": "list",
             "name_of_list": listName,
@@ -37,20 +38,20 @@ re.controller = (function () {
 
         re.requestHandler.addItem(newlist, function(is_success, revised_item, error) {
             if (is_success) {
-                window.alert("Successfully added list");
+                return revised_item;
             } else {
                 // process the error as alert to user
                 $('.error-popup').css('display', 'block');
-                $('error-popup').click(function() {
+                $('.error-popup').click(function() {
                    $('.error-popup').css('display', 'none'); 
                 });
+                return null;
             }
         });
     }
 
 	return {
-
-		'init': init
+		'init': init,
+        'addList': addList
 	}
-
 })();

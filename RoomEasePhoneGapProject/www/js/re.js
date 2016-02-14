@@ -25,6 +25,8 @@ $(document).ready(function () {
     re.requestHandler.init("http://40.114.43.49:5984/",
                         "893308038", "089d6e77903ccfb44b5bcad1f7157b47");
     
+    re.controller.init();
+    
     // Define various templates, which hold the compiled templates for each of the views.
     var feedTemplate, listTemplate, fridgeTemplate;
     
@@ -58,11 +60,10 @@ $(document).ready(function () {
                     // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
                     $('.popup').css('display', 'none')
                     var listName = $('#name').val();
-                    var items = $('#items').val();   
-                    newlist = re.controller.addList(listName, items); 
+                    var items = $('#items').val();
+                    var newlist = re.controller.addList(listName, items); 
                     if (newlist != null) {
-                        lists.push(newlist);
-                        $('.page').html(listTemplate(lists));
+                        route();
                     }
                 });
             });
@@ -84,8 +85,8 @@ $(document).ready(function () {
         
         // Initialize tabs
         $(document).ready(function(){
-        $('ul.tabs').tabs();
-  });
+            $('ul.tabs').tabs();
+        });
     }
     
     /**
