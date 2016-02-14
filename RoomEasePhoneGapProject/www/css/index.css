@@ -27,9 +27,9 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     display: none;
     width: 70%;
-    height: 30%;
+    height: 50%;
     left: 15%;
-    top: 40%;
+    top: 15%;
     background-color: #26a69a;
     transition: box-shadow .25s;
     margin .5rem 0 1rem 1rem;

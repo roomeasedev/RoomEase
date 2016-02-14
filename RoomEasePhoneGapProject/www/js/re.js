@@ -68,9 +68,17 @@ $(document).ready(function () {
             
             $('.page').html(listTemplate(lists));
             
-            $('#new-list-btn').click(function() {
+            $('#new-list-btn').click(function() {                
+                $('.popup').css('display', 'block');
                 
-                $('.popup').css('display', 'block');                         
+                // stores the new list in the database on "Save" button click
+                $('#store').click(function() {
+                    // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
+                    $('.popup').css('display', 'none')
+                    re.controller.addList($('#name'), $('#items')); 
+                })
+                
+                // recompile list html?
             });
         });
     }
