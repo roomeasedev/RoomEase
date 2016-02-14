@@ -58,7 +58,7 @@ $(document).ready(function () {
                 // stores the new list in the database on "Save" button click
                 $('#store').click(function() {
                     // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-                    $('.popup').css('display', 'none')
+                    $('.popup').css('display', 'none');
                     var listName = $('#name').val();
                     var items = $('#items').val();
                     var text = $('descrip-text').val();
@@ -66,6 +66,10 @@ $(document).ready(function () {
                     // TODO: put in some form of reloading
                     //       location.reload() doesn't work; lists won't ever be displayed even if in database
                 });
+                
+                $('#cancel').click(function() {
+                    $('.popup').css('display', 'none');
+                })
             });
         });
     }
