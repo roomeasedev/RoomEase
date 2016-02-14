@@ -61,10 +61,10 @@ $(document).ready(function () {
                     $('.popup').css('display', 'none')
                     var listName = $('#name').val();
                     var items = $('#items').val();
-                    var newlist = re.controller.addList(listName, items); 
-                    if (newlist != null) {
-                        route();
-                    }
+                    re.controller.addList(listName, items); 
+                    console.log("returned from controller call");
+                    // TODO: put in some form of reloading
+                    //       location.reload() doesn't work; lists won't ever be displayed even if in database
                 });
             });
         });

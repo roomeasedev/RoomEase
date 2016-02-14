@@ -22,7 +22,6 @@ re.controller = (function() {
      * return value: null on error & the newly created item on success
      */
     function addList(listName, items) {
-        console.log("entered re.controller addList");
         var newlist = {
             "type": "list",
             "name_of_list": listName,
@@ -38,12 +37,14 @@ re.controller = (function() {
 
         re.requestHandler.addItem(newlist, function(is_success, revised_item, error) {
             if (is_success) {
+                console.log("successfully added list");
                 return revised_item;
             } else {
                 // process the error as alert to user
+                console.log(error);
                 $('.error-popup').css('display', 'block');
-                $('.error-popup').click(function() {
-                   $('.error-popup').css('display', 'none'); 
+                $('#error-close').click(function() {
+                   $('.error-popup').css('display', 'none');  
                 });
                 return null;
             }
