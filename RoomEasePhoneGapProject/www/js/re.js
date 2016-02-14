@@ -61,8 +61,8 @@ $(document).ready(function () {
                     $('.popup').css('display', 'none')
                     var listName = $('#name').val();
                     var items = $('#items').val();
-                    re.controller.addList(listName, items); 
-                    console.log("returned from controller call");
+                    var text = $('descrip-text').val();
+                    re.controller.addList(listName, items, text); 
                     // TODO: put in some form of reloading
                     //       location.reload() doesn't work; lists won't ever be displayed even if in database
                 });

@@ -21,11 +21,11 @@ re.controller = (function() {
      * items: string of items to put into list
      * return value: null on error & the newly created item on success
      */
-    function addList(listName, items) {
+    function addList(listName, items, text) {
         var newlist = {
             "type": "list",
             "name_of_list": listName,
-            "text": "SOME TEXT ITEM",
+            "text": text,
             "items": items.split(" "),
             "visible_users":
                 ["12345567878", //Hardcoding in IDs for now
