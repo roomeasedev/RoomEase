@@ -26,6 +26,7 @@ re.controller = (function() {
             "type": "list",
             "name_of_list": listName,
             "text": text,
+            // TODO: not sure what to split on -- all whitespace may be incorrect
             "items": items.split(" "),
             "visible_users":
                 ["12345567878", //Hardcoding in IDs for now
