@@ -29,7 +29,22 @@ h1, h2, h3, h4, h5, h6 {
     width: 70%;
     height: 50%;
     left: 15%;
-    top: 15%;
+    top: 25%;
+    background-color: #26a69a;
+    transition: box-shadow .25s;
+    margin .5rem 0 1rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+    z-index: 998;
+}
+
+.error-popup {
+    position: fixed;
+    display: none;
+    width: 70%;
+    height: 20%;
+    left: 15%;
+    top: 25%;
     background-color: #26a69a;
     transition: box-shadow .25s;
     margin .5rem 0 1rem 1rem;
