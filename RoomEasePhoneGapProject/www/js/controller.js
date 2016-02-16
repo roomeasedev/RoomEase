@@ -19,7 +19,6 @@ re.controller = (function() {
     /* creates a JSON list object to add to database & handles any resulting errors
      * name: the name of the list
      * items: string of items to put into list
-     * return value: null on error & the newly created item on success
      */
     function addList(listName, items, text) {
         var newlist = {
@@ -35,19 +34,18 @@ re.controller = (function() {
                 ["12344444", //Hardcoded
                 "1124444444"]
         }
-
-        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) {
+        
+        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
             if (is_success) {
                 console.log("successfully added list");
-                return revised_item;
             } else {
-                // process the error as alert to user
                 console.log(error);
+                // let user know an error occurred and prompt them to try again
                 $('.error-popup').css('display', 'block');
-                $('#error-close').click(function() {
-                   $('.error-popup').css('display', 'none');  
+                $('#exit-error').click(function() {
+                    $('.error-popup').css('display', 'none');
+                    $('.new-list-popup').css('display', 'block');
                 });
-                return null;
             }
         });
     }

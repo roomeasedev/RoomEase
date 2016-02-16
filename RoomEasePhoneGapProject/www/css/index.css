@@ -1,10 +1,11 @@
 .list-item {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     transition: box-shadow .25s;
-    margin: 0.5rem 0 1rem 1rem;
+/*    margin: 0.5rem 0 1rem 1rem;*/
+    margin: 1rem auto;
     border-radius: 2px;
     background-color: #80cbc4;
-    width: 45%;
+    width: 95%;
     padding: 0.1rem 0.5rem 0.5rem 0.85rem;
 }
 
@@ -23,7 +24,11 @@ h1, h2, h3, h4, h5, h6 {
     color: #f8bbd0 !important;
 }
 
-.popup {
+h2 {
+    margin: 1rem 1rem;
+}
+
+.new-list-popup {
     position: fixed;
     display: none;
     width: 70%;
@@ -67,19 +72,21 @@ input:focus {
     border-radius: 4px;
     background-color: #4db6ac;
     color: white;
+    focus: none;
     margin-bottom: 5px;
 }
 
 .error-popup {
     position: fixed;
     display: none;
-    width: 25%;
-    height: 25%;
+    width: 70%;
+    height: 20%;
     left: 15%;
-    top: 25%;
+    top: 40%;
     background-color: #26a69a;
     transition: box-shadow .25s;
     margin .5rem 0 1rem 1rem;
+    padding: 10px;
     border-radius: 4px;
     box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
     z-index: 998;
