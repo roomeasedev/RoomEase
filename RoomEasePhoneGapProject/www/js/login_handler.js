@@ -3,6 +3,68 @@ re.loginHandler = (function() {
 	var tables = ["groups", "users", "group_login"];
 	var databases = {};
 
+	/**
+    * attempts to log the user into their Facebook account
+    * @param {function(String, function)} the callback function
+    *     with parameters (user_id, errorHandler)
+    * @postcondition:  user have been logged into their facebook
+    *     account and callbacl function have been invoked with 
+    *     the right parameters
+    */
+    function login(callback) {
+        // initialize openFB library with your app's ID
+        // TODO: this id is a testAppID, change to appropriate ID
+        openFB.init({appId: '935583189852299'});
+        // logs into Facebook with only "email" as a scope
+        openFB.login(
+            function onSuccess(response) { 
+                // get the user's info if connection was successful
+                if(response.status == "connected"){
+                    getInfo(callback);
+                } else { // callback with the error message if connection failed
+                    callback(null, response.error);
+                }
+            }, ["email"]);
+            /**
+            * response is a JSON object on the form
+            * {
+            *     status:       "connected" or "undefind"
+            *     authResponse: {accessToken: ..... }
+            *     error:        ErrorType
+            * }
+            */
+    }
+
+    /**
+    * gets the user's Facebook ID and invokes the callback appropriately
+    * @param {function(String, function)} the callback function
+    *     with parameters (user_id, errorHandler)
+    * @precondition:   user have been logged into their Facebook
+    *     account successfully
+    * @postcondition:  callback function have been invoked with 
+    *     the right parameters
+    */
+    function getInfo(callback) {
+        //send a GET request to Facebook to retreave the user's ID
+        openFB.api({
+            // HTTP method defaulted to GET
+            path: '/me',
+            success: function(data) {
+                      console.log(JSON.stringify(data));
+                      var fbid = data.id;
+                      // alert user's id for testing purposes
+                      //alert(fbid);
+                      // if the call was successful call back with the id and no error
+                      callback(fbid, null);
+                    },
+            error: function errorHandler(error) {
+                      // if the call was not successful call back with no id and 
+                      //     pass the error to callback function
+                      callback(null, error);
+                    }
+                });
+    }
+
 	function init(database_location) {
 		for (var i = 0; i < tables.length; i++) {
 			databases[tables[i]] = 
