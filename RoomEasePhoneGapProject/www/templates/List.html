@@ -6,12 +6,12 @@
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <div class="list-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
-        {{#items}}
-            <ul>
+    <div class="list-item" id="{{ this.name_of_list }}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
+        <ul>
+            {{#items}}
                 <li class="white-text" style="font-size: 1.4em">{{ this }}</li>
-            </ul>
-        {{/items}}
+            {{/items}}
+        </ul>
     </div>
 {{/each}}
 
