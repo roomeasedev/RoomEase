@@ -6,13 +6,17 @@
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <div class="list-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
-        {{#items}}
-            <ul>
-                <li class="white-text" style="font-size: 1.4em">{{ this }}</li>
-            </ul>
-        {{/items}}
-    </div>
+    <button id='list-{{this._id}}'>
+        <div class="list-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
+            <!-- display this.text-->
+            <h3 class="white-text left-align" style="font-size: 1.4em;">{{this.text}}</h3>
+            {{#items}}
+                <ul>
+                    <li class="white-text" style="font-size: 1.2em">{{ this }}</li>
+                </ul>
+            {{/items}}
+        </div>
+    </button>
 {{/each}}
 
 <!-- Button to add new list -->
@@ -38,6 +42,7 @@
     <!-- later on, add buttons to choose who can see & modify this list; using dummy variables for now -->
 </div>
 
+<!-- Error popup displayed in case adding a list went wrong-->
 <div class="error-popup">
     <header class="white-text center-align" style="margin: 1.4rem auto;">SORRY! SOMETHING WENT WRONG. PLEASE TRY AGAIN</header>
     <button class="btn waves-effect waves-light" 

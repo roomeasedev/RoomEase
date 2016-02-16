@@ -38,6 +38,7 @@ re.controller = (function() {
         re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
             if (is_success) {
                 console.log("successfully added list");
+                
             } else {
                 console.log(error);
                 // let user know an error occurred and prompt them to try again
