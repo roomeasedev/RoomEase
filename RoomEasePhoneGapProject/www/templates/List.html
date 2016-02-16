@@ -2,17 +2,17 @@
         the user navigates to the List page. It will include the grocery list of the current
         user and the group lists that will be dynamically loaded from local storage.  -->
 
-<h2>Lists</h2>
+<h2>LISTS</h2>
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <button id='list-{{this._id}}'>
-        <div class="list-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
+    <button id='list-{{this._id}}' style="border: none; background: transparent; display: block; width: 95%;">
+        <div class="list-item"><header class="white-text left-align" style="margin-top: 0.2em; font-size: 1.6em; text-transform: uppercase; font-weight: bold;">{{ this.name_of_list }}</header>
             <!-- display this.text-->
-            <h3 class="white-text left-align" style="font-size: 1.4em;">{{this.text}}</h3>
+            <p class="white-text left-align" style="font-size: 1.4em; font-style: italic; margin: 0;">{{this.text}}</p>
             {{#items}}
                 <ul>
-                    <li class="white-text" style="font-size: 1.2em">{{ this }}</li>
+                    <li class="white-text left-align" style="font-size: 1.4em">{{ this }}</li>
                 </ul>
             {{/items}}
         </div>

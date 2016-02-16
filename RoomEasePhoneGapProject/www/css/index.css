@@ -2,7 +2,7 @@
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     transition: box-shadow .25s;
 /*    margin: 0.5rem 0 1rem 1rem;*/
-    margin: 1rem auto;
+    margin: .5rem auto;
     border-radius: 2px;
     background-color: #80cbc4;
     width: 95%;
