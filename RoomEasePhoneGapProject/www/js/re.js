@@ -75,15 +75,12 @@ $(document).ready(function () {
                 });
             });
             
-            // TODO: Get longpress to work to edit lists. Right now it
-            // seems like the .longpress() itself isn't working, looping
-            // through and finding the lists by elements should be working
-            /*for (let list of lists) {
-                console.log(list.name_of_list);
-                $('#list.name_of_list').longpress(function() {               
-                    alert('You just longpress-ed the ' + list.name_of_list + 'list');
+            // TODO: Add edit functionality on longpress
+            for (let list of lists) {
+                $('#' + list._id).longpress(function(e) {
+                    alert('Success!');
                 });
-            }*/
+            }
         });
     }
     
