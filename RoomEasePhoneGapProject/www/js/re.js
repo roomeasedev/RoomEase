@@ -28,7 +28,7 @@ $(document).ready(function () {
     re.controller.init();
     
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate;
+    var feedTemplate, listTemplate, fridgeTemplate, facebookLoginTemplate;
     
     // Attach an event listener to route to the proper view
     // when the hash of the URL is changed.
@@ -106,6 +106,10 @@ $(document).ready(function () {
         });
     }
     
+    function renderFacebookLoginView() {
+        $('.page').html(facebookLoginTemplate());
+    }
+    
     /**
     * Renders the correct view for the injectable area of the viewport.
     * Uses the current hash of the URL to determine which view should be
@@ -121,6 +125,8 @@ $(document).ready(function () {
             renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
+        } else if (hash == "#fb") {
+            renderFacebookLoginView();
         }
     }
     
@@ -129,10 +135,11 @@ $(document).ready(function () {
     // for all existing views.  When load finishes, set the values of the
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
-    re.templates.load(["Feed", "List", "Fridge"]).done(function () {
+    re.templates.load(["Feed", "List", "Fridge", "FacebookLogin"]).done(function () {
         feedTemplate = re.templates.get("Feed");
         listTemplate = re.templates.get("List");
         fridgeTemplate = re.templates.get("Fridge");
+        facebookLoginTemplate = re.templates.get("FacebookLogin");
         route();
     })
 });
