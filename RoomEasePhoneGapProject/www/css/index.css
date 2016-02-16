@@ -14,7 +14,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 1rem 1rem;
 }
 
-input:focus, textarea:focus {
+input:focus, {
     focus: none;
     color: white;
 }
@@ -85,6 +85,5 @@ input:focus, textarea:focus {
     border-radius: 4px;
     background-color: #4db6ac;
     color: white;
-    focus: none;
     margin-bottom: 5px;
 }
