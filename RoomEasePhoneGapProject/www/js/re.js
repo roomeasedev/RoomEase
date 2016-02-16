@@ -48,7 +48,6 @@ $(document).ready(function () {
             } else {
                 lists = allLists;
             }
-            console.log(lists);
                         
             $('.page').html(listTemplate(lists));
             
@@ -73,8 +72,18 @@ $(document).ready(function () {
                     $('#name').val('');
                     $('#items').val('');
                     $('#descrip-text').val('');
-                })
+                });
             });
+            
+            // TODO: Get longpress to work to edit lists. Right now it
+            // seems like the .longpress() itself isn't working, looping
+            // through and finding the lists by elements should be working
+            /*for (let list of lists) {
+                console.log(list.name_of_list);
+                $('#list.name_of_list').longpress(function() {               
+                    alert('You just longpress-ed the ' + list.name_of_list + 'list');
+                });
+            }*/
         });
     }
     

@@ -6,19 +6,13 @@
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <button style="border: none; background: transparent; display: block; width: 95%;"
-            onclick="re.controller.editList({{ this._id }})">
-        <div class="list-item">
-            <header class="white-text left-align" style="margin-top: 0.2em; font-size: 1.6em; 
-                                                         text-transform: uppercase; font-weight: bold;">{{ this.name_of_list }}</header>
-            <p class="white-text left-align" style="font-size: 1.4em; font-style: italic; margin: 0;">{{this.text}}</p>
+    <div class="list-item" id="{{ this.name_of_list }}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
+        <ul>
             {{#items}}
-                <ul>
-                    <li class="white-text left-align" style="font-size: 1.4em">{{ this }}</li>
-                </ul>
+                <li class="white-text" style="font-size: 1.4em">{{ this }}</li>
             {{/items}}
-        </div>
-    </button>
+        </ul>
+    </div>
 {{/each}}
 
 
