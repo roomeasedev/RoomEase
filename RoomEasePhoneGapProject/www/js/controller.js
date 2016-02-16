@@ -38,7 +38,7 @@ re.controller = (function() {
         re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
             if (is_success) {
                 console.log("successfully added list");
-                
+                // TODO: reload the page
             } else {
                 console.log(error);
                 // let user know an error occurred and prompt them to try again
@@ -50,6 +50,20 @@ re.controller = (function() {
             }
         });
     }
+    
+    /* the onclick function called by a list item
+     *
+     */
+    function editList(listID) {
+        window.alert("about to edit");
+    }
+    
+    /* registers a Handlebars helper 
+     *
+     */
+    Handlebars.registerHelper('json', function(context) {
+        return JSON.stringify(context);
+    });
 
 	return {
 		'init': init,

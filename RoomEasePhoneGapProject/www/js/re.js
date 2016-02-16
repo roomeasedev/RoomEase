@@ -52,6 +52,7 @@ $(document).ready(function () {
                         
             $('.page').html(listTemplate(lists));
             
+            // TO DO: refactor this into controller?
             $('#new-list-btn').click(function() {                
                 $('.new-list-popup').css('display', 'block');
                 

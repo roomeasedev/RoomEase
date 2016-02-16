@@ -6,9 +6,11 @@
 
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <button id='list-{{this._id}}' style="border: none; background: transparent; display: block; width: 95%;">
-        <div class="list-item"><header class="white-text left-align" style="margin-top: 0.2em; font-size: 1.6em; text-transform: uppercase; font-weight: bold;">{{ this.name_of_list }}</header>
-            <!-- display this.text-->
+    <button style="border: none; background: transparent; display: block; width: 95%;"
+            onclick="re.controller.editList({{ this._id }})">
+        <div class="list-item">
+            <header class="white-text left-align" style="margin-top: 0.2em; font-size: 1.6em; 
+                                                         text-transform: uppercase; font-weight: bold;">{{ this.name_of_list }}</header>
             <p class="white-text left-align" style="font-size: 1.4em; font-style: italic; margin: 0;">{{this.text}}</p>
             {{#items}}
                 <ul>
@@ -19,30 +21,31 @@
     </button>
 {{/each}}
 
+
 <!-- Button to add new list -->
 <div class="fixed-action-btn" id="new-list-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
+
 
 <!-- Small popup menu to add new list, hidden by default -->
 <div class="new-list-popup">  
     <form>
         <input type="text" placeholder="List Name" id="name"><br>
         <input type="text" placeholder="Describe this list" id="descrip-text"><br>
+        <textarea id="items" placeholder="Items"></textarea>
     </form>
-    <textarea id="items" placeholder="Items"></textarea>
     <button class="btn waves-effect waves-light" 
             style="background-color: #4db6ac; box-shadow: none; text-align: center; width: 49.5%; float: left; margin-right: 1%;" 
-            type="submit" name="action" id="store">Save
-    </button>
+            type="submit" name="action" id="store">Save</button>
     <button class="btn waves-effect waves-light" 
             style="background-color: #4db6ac; box-shadow: none; text-align: center; width: 49.5%;" 
-            type="submit" name="action" id="cancel">Cancel
-    </button>
+            type="submit" name="action" id="cancel">Cancel</button>
     <!-- later on, add buttons to choose who can see & modify this list; using dummy variables for now -->
 </div>
 
-<!-- Error popup displayed in case adding a list went wrong-->
+
+<!-- Error popup displayed in case adding a list went wrong, hidden by default -->
 <div class="error-popup">
     <header class="white-text center-align" style="margin: 1.4rem auto;">SORRY! SOMETHING WENT WRONG. PLEASE TRY AGAIN</header>
     <button class="btn waves-effect waves-light" 
