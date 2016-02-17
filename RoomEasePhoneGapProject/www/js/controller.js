@@ -6,7 +6,7 @@ re.controller = (function() {
 	var chores_items = [];
 
 	function init() {
-		if (window.localStorage.getItem("facebook_id") == null){
+		if (window.localStorage.getItem("user_id") == null){
 			//Facebook Login
 		} else if (window.localStorage.getItem("group_id") == null){
 			//Add group window
