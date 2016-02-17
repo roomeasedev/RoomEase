@@ -2,7 +2,7 @@
 
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate, facebookLoginTemplate;
+    var feedTemplate, listTemplate, fridgeTemplate, facebookLoginTemplate, groupLoginTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -50,6 +50,10 @@ re.render = (function() {
         $('.page').html(facebookLoginTemplate());
     }
     
+    function renderGroupLoginView() {
+        $('.page').html(groupLoginTemplate());
+    }
+    
     /**
     * Renders the correct view for the injectable area of the viewport.
     * Uses the current hash of the URL to determine which view should be
@@ -67,6 +71,8 @@ re.render = (function() {
             renderFridgeView();
         } else if (hash == "#feed") {
             renderFeedView();
+        } else if (hash == "#gl") {
+            renderGroupLoginView();
         }
     }
     
@@ -80,6 +86,7 @@ re.render = (function() {
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
+            groupLoginTemplate = re.templates.get("GroupLogin");
             // Attach an event listener to route to the proper view
             // when the hash of the URL is changed.
             window.onhashchange = route;
