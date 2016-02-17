@@ -83,7 +83,7 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
-        re.templates.load(["Feed", "List", "Fridge", "FacebookLogin"]).done(function () {
+        re.templates.load(["Feed", "List", "Fridge", "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
