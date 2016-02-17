@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Zag";
-    src: url("../fonts/zag/Zag-Bold.otf") format("opentype")
+    src: url("../font/zag/Zag-Bold.otf") format("opentype");
 }
 
 ul{
@@ -128,25 +128,16 @@ input:focus, {
 
 
 #facebook-login {
-  background-color: #26A69A;
-  position: fixed;
+  background-color: #1cbb9b;
   height: 100%;
   width: 100%;
-  top: 0px;
-  left: 0px;
 }
-    
-    #facebook-login p {
-        text-align: center;
-        color: #00415d;
-        font-size: 1.5em; 
-    }
-    
+
     #facebook-login .login-box{
         position:relative;
         margin: 10px auto;
-        width: 90%;
-        height: 60%;
+        width: 500px;
+        height: 380px;
         background-color: #fff;
         padding: 10px;
         border-radius: 3px;
@@ -156,13 +147,13 @@ input:focus, {
     }
     
     #facebook-login  .lb-header{
-      position:relative;
-      font-size: 2.5em;
+      posit ion:relative;
       color: #00415d;
       margin: 5px 5px 10px 5px;
       padding-bottom:10px;
       border-bottom: 1px solid #eee;
       text-align:center;
+      height:28px;
     }
     
     #facebook-login .lb-header a{
@@ -188,6 +179,7 @@ input:focus, {
     }
 
     #facebook-login .social-login{
+      margin-top: 100px;
       margin-left: auto;
       margin-right: auto;
       width: 50%;
