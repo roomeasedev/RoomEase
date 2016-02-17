@@ -22,7 +22,9 @@ re.render = (function() {
             $('.page').html(listTemplate(lists));
             
             for (let list of lists) {
-                $('#' + list._id).longpress(re.controller.editList(list._id));
+                $('#' + list._id).longpress(function() {
+                    re.controller.editList(list._id);
+                });
             }
         });
     }
