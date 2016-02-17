@@ -18,6 +18,15 @@ re.loginHandler = (function() {
         // logs into Facebook with only "email" as a scope
         openFB.login(
             function onSuccess(response) { 
+            	/**
+	            * response is a JSON object on the form
+	            * {
+	            *     status:       "connected" or "undefind"
+	            *     authResponse: {accessToken: ..... }
+	            *     error:        ErrorType
+	            * }
+	            */
+	            
                 // get the user's info if connection was successful
                 if(response.status == "connected"){
                     getInfo(callback);
@@ -25,14 +34,6 @@ re.loginHandler = (function() {
                     callback(null, response.error);
                 }
             }, ["email"]);
-            /**
-            * response is a JSON object on the form
-            * {
-            *     status:       "connected" or "undefind"
-            *     authResponse: {accessToken: ..... }
-            *     error:        ErrorType
-            * }
-            */
     }
 
     /**
