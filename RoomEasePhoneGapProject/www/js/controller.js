@@ -13,6 +13,14 @@ re.controller = (function() {
 		} else {
 			//Splash screen
 		}
+
+        //Initialize login handler and request_handler
+        re.loginHandler.init("http://40.114.43.49:5984/");
+
+        // Example group and user ID are chosen from DB. These values are hard coded so request
+        // handler cooperates.
+        re.requestHandler.init("http://40.114.43.49:5984/",
+                        "893308038", "089d6e77903ccfb44b5bcad1f7157b47");
 		console.log("re.controller init finished!");
 	}
     

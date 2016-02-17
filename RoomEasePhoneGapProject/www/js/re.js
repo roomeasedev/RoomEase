@@ -16,16 +16,7 @@ var re = {};
 * URL hash and render the correct view accordingly. Loads (compiles) all
 * of the templates for the various views so they are ready to be displayed.
 */
-$(document).ready(function () {
-    //Initialize login handler and request_handler
-    re.loginHandler.init("http://40.114.43.49:5984/");
-
-    // Example group and user ID are chosen from DB. These values are hard coded so request
-    // handler cooperates.
-    re.requestHandler.init("http://40.114.43.49:5984/",
-                        "893308038", "089d6e77903ccfb44b5bcad1f7157b47");
-    
+$(document).ready(function () {  
     re.controller.init();
-    
     re.render.init();
 });
