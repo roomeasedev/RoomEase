@@ -17,6 +17,8 @@
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
         <link type="text/css" rel="stylesheet" href="css/index.css"  media="screen,projection"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
 
         <title>RoomEase</title>
     </head>
@@ -26,10 +28,9 @@
         which is the reason why it is placed here and not at the bottom -->
         <script type="text/javascript" src="js/facebooksdk.js"></script>
         <script type="text/javascript" src="js/facebook.js"></script>
-
         <div>
-            <nav class="teal lighten-1">
-                <div class="nav-wrapper"  id="navbar">
+            <nav class="teal lighten-1" id="navbar" style="display: none">
+                <div class="nav-wrapper">
                     <ul class="right hide-on-med-and-down teal lighten-1">
                         <li><a href="#feed">Feed</a></li>
                         <li><a href="#fridge">Fridge</a></li>
@@ -48,7 +49,7 @@
                         <li class="teal lighten-1"><a href="#!" class='waves-effect waves-light white-text'>Scheduler</a></li>
                         <li class="teal lighten-1"><a href="#!" class='waves-effect waves-light white-text'>Settings</a></li>
                     </ul>
-                    <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu" style="margin-left: 10px"></i></a>
+                    <a href="#" id="sout" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu" style="margin-left: 10px"></i></a>
                 </div>
 
             </nav>
@@ -82,12 +83,5 @@
         <script type="text/javascript" src="js/login_handler.js"></script>
         <script type="text/javascript" src="js/controller.js"></script>
         
-        <!--Enable slideout side menu-->
-        <script>
-            $(".button-collapse").sideNav({
-                menuWidth: 200,
-                closeOnClick: true
-            });
-        </script>
     </body>
 </html>

@@ -90,16 +90,25 @@ input:focus, {
 
 
 #facebook-login {
-  background-color: #1cbb9b;
+  background-color: #26A69A;
+  position: fixed;
   height: 100%;
   width: 100%;
+  top: 0px;
+  left: 0px;
 }
-
+    
+    #facebook-login p {
+        text-align: center;
+        color: #00415d;
+        font-size: 1.5em; 
+    }
+    
     #facebook-login .login-box{
         position:relative;
         margin: 10px auto;
-        width: 500px;
-        height: 380px;
+        width: 90%;
+        height: 60%;
         background-color: #fff;
         padding: 10px;
         border-radius: 3px;
@@ -109,13 +118,13 @@ input:focus, {
     }
     
     #facebook-login  .lb-header{
-      posit ion:relative;
+      position:relative;
+      font-size: 2.5em;
       color: #00415d;
       margin: 5px 5px 10px 5px;
       padding-bottom:10px;
       border-bottom: 1px solid #eee;
       text-align:center;
-      height:28px;
     }
     
     #facebook-login .lb-header a{
@@ -141,7 +150,6 @@ input:focus, {
     }
 
     #facebook-login .social-login{
-      margin-top: 100px;
       margin-left: auto;
       margin-right: auto;
       width: 50%;
