@@ -12,13 +12,14 @@ re.render = (function() {
         /* Gets all lists from database and renders the list view with these
         *  lists embedded. 
         */
-        re.requestHandler.getAllItemsOfType("list", function(allLists, error) {
+        re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
             if(allLists == null) {
                 console.log(error);
             } else {
                 lists = allLists;
             }
-                        
+            
+            $('.page-title').html('List');
             $('.page').html(listTemplate(lists));
             
             for (let list of lists) {
