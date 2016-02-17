@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Zag";
-    src: url("../fonts/zag/Zag-Bold.ttf") format("truetype")
+    src: url("../fonts/zag/Zag-Bold.otf") format("opentype")
 }
 
 ul{
@@ -18,6 +18,15 @@ h1, h2, h3, h4, h5, h6 {
     color: #f8bbd0 !important;
     margin: 1rem 1rem;
     font-family: Zag;
+}
+
+a {
+    font-family: Zag;
+    font-size: 2em;
+}
+
+#slide-out a {
+    font-size: 1.5em;
 }
 
 input:focus, {
@@ -94,7 +103,7 @@ input:focus, {
     background-color: #4db6ac;
     box-shadow: none;
     text-align: center;
-    width: 31%;
+    width: 30%;
     margin: 2% 0 0 0;
 }
 

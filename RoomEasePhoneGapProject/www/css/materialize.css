@@ -8004,19 +8004,19 @@ small {
 }
 
 .tabs .tab a:hover {
-  color: #b2dfdb;
+  color: #B2DFDB;
 }
 
 .tabs .tab.disabled a {
-  color: #b2dfdb;
+  color: #B2DFDB;
   cursor: default;
 }
 
 .tabs .indicator {
   position: absolute;
   bottom: 0;
-  height: 2px;
-  background-color: #b2dfdb;
+  height: 6px;
+  background-color: #B2DFDB;
   will-change: left, right;
 }
 

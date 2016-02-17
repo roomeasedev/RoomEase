@@ -21,35 +21,8 @@ re.render = (function() {
                         
             $('.page').html(listTemplate(lists));
             
-            // TO DO: refactor this into controller?
-            $('#new-list-btn').click(function() {                
-                $('.new-list-popup').css('display', 'block');
-                
-                // stores the new list in the database on "Save" button click
-                $('#store').click(function() {
-                    // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-                    $('.new-list-popup').css('display', 'none');
-                    var listName = $('#name').val();
-                    var items = $('#items').val();
-                    var text = $('#descrip-text').val();
-                    re.controller.addList(listName, items, text);
-                    // TODO: put in some form of reloading
-                    //       location.reload() doesn't work; lists won't ever be displayed even if in database
-                });
-                
-                $('#cancel').click(function() {
-                    $('.new-list-popup').css('display', 'none');
-                    $('#name').val('');
-                    $('#items').val('');
-                    $('#descrip-text').val('');
-                });
-            });
-            
-            // TODO: Add edit functionality on longpress
             for (let list of lists) {
-                $('#' + list._id).longpress(function(e) {
-                    alert('Success!');
-                });
+                $('#' + list._id).longpress(re.controller.editList(list._id));
             }
         });
     }

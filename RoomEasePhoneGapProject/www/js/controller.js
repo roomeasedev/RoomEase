@@ -22,15 +22,20 @@ re.controller = (function() {
     function makeNewList() {
         $('#new-list-btn').css('display', 'none');
         $('.new-list-popup').css('display', 'block');
-                
-        // stores the new list in the database on "Save" button click
-        $('#store').click(function() {
+        
+        // Hide Delete button and resize Cancel and Done buttons
+        $('#delete').css('display', 'none');
+        $('#cancel').css('width', '49%');
+        $('#done').css('width', '49%');
+        
+        // Adds the new list to the database when the done button is pressed
+        $('#done').click(function() {
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
             $('#new-list-btn').css('display', 'block');
             $('.new-list-popup').css('display', 'none');
+            resetButtons();
             var listName = $('#name').val();
             var items = $('#items').val();
-            var text = $('#descrip-text').val();
             re.controller.addListToDatabase(listName, items, text);
             // TODO: put in some form of reloading
             //       location.reload() doesn't work; lists won't ever be displayed even if in database
@@ -40,13 +45,22 @@ re.controller = (function() {
         $('#cancel').click(function() {
             $('#new-list-btn').css('display', 'block');
             $('.new-list-popup').css('display', 'none');
+            resetButtons();
             $('#name').val('');
             $('#items').val('');
-            $('#descrip-text').val('');
         });
     }
     
-    /* creates a JSON list object to add to database & handles any resulting errors
+    /* Resets the sizes of the Cancel and Done buttons and makes the
+     * delete button visible again.
+     */
+    function resetButtons() {
+        $('#delete').css('display', 'block');
+        $('#cancel').css('width', '30%');
+        $('#done').css('width', '30%');
+    }
+    
+    /* Creates a JSON list object to add to database & handles any resulting errors
      * name: the name of the list
      * items: string of items to put into list
      */
@@ -88,11 +102,31 @@ re.controller = (function() {
         }
     }
     
-    /* the longpress function
+    /* The longpress function
      *
      */
     function editList(listID) {
-        window.alert("about to edit");
+        $('#new-list-btn').css('display', 'none');
+        $('.new-list-popup').css('display', 'block');
+        
+        //TODO: Have this update the list item in the database
+        // Adds the new list to the database when the done button is pressed
+        $('#done').click(function() {
+            $('#new-list-btn').css('display', 'block');
+            $('.new-list-popup').css('display', 'none');
+            
+            // TODO: put in some form of reloading
+            //       location.reload() doesn't work; lists won't ever be displayed even if in database
+        });
+
+        //TODO: Have this clear fields
+        // clears the fields in popup & closes it
+        $('#cancel').click(function() {
+            $('#new-list-btn').css('display', 'block');
+            $('.new-list-popup').css('display', 'none');
+            $('#name').val('');
+            $('#items').val('');
+        });
     }
     
 	return {
