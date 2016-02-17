@@ -26,7 +26,7 @@ re.loginHandler = (function() {
 	            *     error:        ErrorType
 	            * }
 	            */
-	            
+
                 // get the user's info if connection was successful
                 if(response.status == "connected"){
                     getInfo(callback);
@@ -294,6 +294,9 @@ re.loginHandler = (function() {
 			} 
 		}
 		return false;
+
+		// wouldn't this be faster?
+		//return list.indexOf(id) >= 0;
 	}
 
 	return {
