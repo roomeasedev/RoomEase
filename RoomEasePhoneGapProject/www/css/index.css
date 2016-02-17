@@ -74,7 +74,7 @@ input:focus, {
     width: 100%;
     height: 90%;
     top: 10%;
-    display: block;
+    display: none;
 }
 
 .list-entry {
@@ -88,8 +88,8 @@ input:focus, {
     background-color: #4db6ac;
     box-shadow: none;
     text-align: center;
-    width: 32%;
-    margin: 1% 0 0 0;
+    width: 31%;
+    margin: 2% 0 0 0;
 }
 
 /** the following are components of .new-list-popup **/
