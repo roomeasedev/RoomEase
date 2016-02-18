@@ -138,6 +138,7 @@ re.render = (function() {
     
     return {
         'init': init,
+        'route': route,
         'renderLoginView': renderFacebookLoginView,
         'renderFeedView': renderFeedView,
         'renderListView': renderListView,

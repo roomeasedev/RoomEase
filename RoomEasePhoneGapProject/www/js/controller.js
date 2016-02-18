@@ -31,7 +31,7 @@ re.controller = (function() {
     function rhAddCallback(is_success, revised_item, error) { 
         if (is_success) {
             console.log("successfully added list");
-            re.render.renderListView();
+            re.render.route();
             // TODO: scroll to where the new list is
         } else {
             console.log(error);
@@ -39,7 +39,6 @@ re.controller = (function() {
             $('.error-popup').css('display', 'block');
             $('#exit-error').click(function() {
                 $('.error-popup').css('display', 'none');
-                $('.new-list-popup').css('display', 'block');
             });
         }
     }
@@ -63,6 +62,17 @@ re.controller = (function() {
             "modifiable_users":
                 ["12344444", //Hardcoded
                 "1124444444"]
+        }
+    }
+    
+    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
+        return test_reservations_item = {
+            "type": "reservation",
+            "name_of_item" : name_of_res,
+            "start_time" : start_time,
+            "end_time" : end_time,
+            "start_date" : start_date,
+            "end_date" : end_date,
         }
     }
     
@@ -120,7 +130,7 @@ re.controller = (function() {
         });
     }
 
-    function makeNewReservation( ){
+    function makeNewReservation(){
         $('#new-reservation-btn').css('display', 'none');
         $('.new-reservation-popup').css('display', 'block');
         
@@ -129,54 +139,26 @@ re.controller = (function() {
         $('#cancel').css('width', '49%');
         $('#done').css('width', '49%');
         
-        // Adds the new list to the database when the done button is pressed
+        // Adds the new reservation to the database when the done button is pressed
         $('#done').click(function() {
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
             $('#new-reservation-btn').css('display', 'block');
             $('.new-reservation-popup').css('display', 'none');
             resetButtons();
-            var listName = $('#name').val();
+            var reserveName = $('#name').val();
             var start_time = $('#start-time').val();
             var end_time = $("#end-time").val();
             var start_date = $("#start-date").val();
             var end_date = $("#end-date").val();
-            
+            newReserve = createReservation(reserveName, start_time, end_time, start_date, end_date);
+            re.requestHandler.addItem(newReserve, rhAddCallback);
         });
 
         // clears the fields in popup & closes it
-        $('#new-reservation-btn').css('display', 'block');
-        $('.new-reservation-popup').css('display', 'none');
-        resetButtons();
-    }
-
-    //callback(is_success, error)
-    function addReservationToDatabase(reservation_name, start_time, end_time, start_date, end_date){
-        var newlist = createReservation(reservation_name, start_time, end_time, start_date, end_date);        
-        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
-            if (is_success) {
-                console.log("successfully added schedule item");
-                re.render.renderSchedulerView();
-            } else {
-                console.log(error);
-                // let user know an error occurred and prompt them to try again
-                $('.error-popup').css('display', 'block');
-                $('#exit-error').click(function() {
-                    $('.error-popup').css('display', 'none');
-                    $('.new-list-popup').css('display', 'block');
-                });
-            }
+        $('#cancel').click(function() {
+            $('#new-reservation-btn').css('display', 'block');
+            $('.new-reservation-popup').css('display', 'none');
+            resetButtons();            
         });
-    }
-    
-    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
-        return test_reservations_item = {
-            "type": "reservation",
-            "name_of_item" : name_of_res,
-            "start_time" : start_time,
-            "end_time" : end_time,
-            "start_date" : start_date,
-            "end_date" : end_date,
-        }
     }
     
     /* Edits an existing list
@@ -193,16 +175,23 @@ re.controller = (function() {
         $('#next-item').on('focus', changeFocus);
         
         // TODO: populates popup with current items in list
+        //       --> currently can't grab an item with just the id, either in database or in local copy
+        /*   thisList = list_items[listId]
+             $('#name').val(listId.name);
+             for (let item of thisList.items) {
+                $('#next-item')
+             }
+        */
         
-        //TODO: Have this update the list item in the database
+        // TODO: Have this update the list item in the database
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
             hidePopup();
             var listName = $('#name').val();
-            var listItems = [];
+            var editedItems = [];
             var inputs = $('#list-items :input');
             inputs.each(function() {
-                listItems.push($(this).val());
+                editedItems.push($(this).val());
             });
             var editedList = createList(listName, listItems);
             re.requestHandler.updateItem(editedList, rhAddCallback);
@@ -226,6 +215,7 @@ re.controller = (function() {
         $('#next-item').on('focus', changeFocus);
     } 
     
+    // TODO: make this function general --> be able to pass in id of popup to change
     function hidePopup() {
         // clears the fields in popup & closes it
         $('#new-list-btn').css('display', 'block');
@@ -238,7 +228,6 @@ re.controller = (function() {
         'list_items': list_items,
         'makeNewList': makeNewList,
         'makeNewReservation': makeNewReservation,
-        'addReservationToDatabase': addReservationToDatabase, 
         'editList': editList,
         'changeFocus': changeFocus,
         'hidePopup': hidePopup
