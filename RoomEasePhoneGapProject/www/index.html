@@ -28,34 +28,36 @@
         <!-- This here be code setting up the Facebook SDK
         NOTE: Facebook tells us to put this in directly after the body tag
         which is the reason why it is placed here and not at the bottom -->
-        <script type="text/javascript" src="js/facebooksdk.js"></script>
-        <script type="text/javascript" src="js/facebook.js"></script>
+        <script type="text/javascript" src="js/lib/facebooksdk.js"></script>
+        <script type="text/javascript" src="js/lib/facebook.js"></script>
         <div>
-            <nav class="teal lighten-1" id="navbar" style="display: none">
-                <div class="nav-wrapper">
-                    <a class="page-title" style="margin-left: 3%; font-size: 2.75em"></a>
-                    <ul class="right hide-on-med-and-down teal lighten-1">
-                        <li><a href="#feed">Feed</a></li>
-                        <li><a href="#fridge">Fridge</a></li>
-                        <li><a href="#!">Chores</a></li>
-                        <li><a href="#list">Lists</a></li>
-                        <li><a href="#scheduler">Scheduler</a></li>
-                        <li><a href="#!" class='white-text'>Settings</a></li>
-                    </ul>
-                    
-                    <!--Side menu and button animations-->
-                    <ul id="slide-out" class="side-nav teal lighten-1">
-                        <li class="teal lighten-1"><a href="#feed" class='waves-effect waves-light white-text'>Feed</a></li>
-                        <li class="teal lighten-1"><a href="#fridge" class='waves-effect waves-light white-text'>Fridge</a></li>
-                        <li class="teal lighten-1"><a href="#chores" class='waves-effect waves-light white-text'>Chores</a></li>
-                        <li class="teal lighten-1"><a href="#list" class='waves-effect waves-light white-text'>Lists</a></li>
-                        <li class="teal lighten-1"><a href="#scheduler" class='waves-effect waves-light white-text'>Scheduler</a></li>
-                        <li class="teal lighten-1"><a href="#settings" class='waves-effect waves-light white-text'>Settings</a></li>
-                    </ul>
-                    <a href="#" id="sout" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu" style="margin-left: 10px"></i></a>
-                </div>
+            <div class="navbar-fixed">
+                <nav class="teal lighten-1" id="navbar" style="display: none">
+                    <div class="nav-wrapper">
+                        <a class="page-title" style="margin-left: 3%; font-size: 2.75em"></a>
+                        <ul class="right hide-on-med-and-down teal lighten-1">
+                            <li><a href="#feed">Feed</a></li>
+                            <li><a href="#fridge">Fridge</a></li>
+                            <li><a href="#!">Chores</a></li>
+                            <li><a href="#list">Lists</a></li>
+                            <li><a href="#scheduler">Scheduler</a></li>
+                            <li><a href="#!" class='white-text'>Settings</a></li>
+                        </ul>
 
-            </nav>
+                        <!--Side menu and button animations-->
+                        <ul id="slide-out" class="side-nav teal lighten-1">
+                            <li class="teal lighten-1"><a href="#feed" class='waves-effect waves-light white-text'>Feed</a></li>
+                            <li class="teal lighten-1"><a href="#fridge" class='waves-effect waves-light white-text'>Fridge</a></li>
+                            <li class="teal lighten-1"><a href="#chores" class='waves-effect waves-light white-text'>Chores</a></li>
+                            <li class="teal lighten-1"><a href="#list" class='waves-effect waves-light white-text'>Lists</a></li>
+                            <li class="teal lighten-1"><a href="#scheduler" class='waves-effect waves-light white-text'>Scheduler</a></li>
+                            <li class="teal lighten-1"><a href="#settings" class='waves-effect waves-light white-text'>Settings</a></li>
+                        </ul>
+                        <a href="#" id="sout" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu" style="margin-left: 10px"></i></a>
+                    </div>
+
+                </nav>
+            </div>
 
             <div class="page"></div>
             
