@@ -15,7 +15,7 @@ li{
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #f8bbd0 !important;
+    color: #f8bbd0;
     margin: 1rem 1rem;
     font-family: Zag;
 }
@@ -236,6 +236,10 @@ input:focus, {
     -webkit-font-smoothing: antialiased;
 }
 
+#grouptitle {
+    color: #00415D !important;
+}
+
 
 /* Pen Title */
 .pen-title {
@@ -343,7 +347,7 @@ input:focus, {
 }
 .container.active .card.alt .toggle {
   position: absolute;
-  top: 85px;
+  top: 240px;
   left: 120px;
   box-shadow: none;
   -webkit-transform: scale(10);
@@ -412,10 +416,10 @@ input:focus, {
 .card .title {
   position: relative;
   z-index: 1;
-  border-left: 5px solid #ed2553;
+  border-left: 5px solid #00415D;
   margin: 0 0 15px;
   padding: 10px 0 10px 25px;
-  color: #ed2553;
+  color: #00415D;
   font-size: 32px;
   font-weight: 600;
   text-transform: uppercase;
@@ -582,7 +586,7 @@ input:focus, {
 .card.alt .toggle {
   position: relative;
   top: -20px;
-  background: #ed2553;
+  background: #00415D;
   width: 75px;
   height: 75px;
   border-radius: 100%;
