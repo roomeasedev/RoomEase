@@ -28,7 +28,7 @@ re.controller = (function() {
      */
     function makeNewList() {
         $('#new-list-btn').css('display', 'none');
-        $('.new-list-popup').css('display', 'block');
+        $('.popupBackground').css('display', 'block');
         
         // Clear old list items from popup
         clearItems('list-items');
@@ -45,7 +45,7 @@ re.controller = (function() {
         $('#done').click(function() {
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
             $('#new-list-btn').css('display', 'block');
-            $('.new-list-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             resetButtons();
             var listName = $('#name').val();
             var listItems = [];
@@ -66,7 +66,7 @@ re.controller = (function() {
                     $('.error-popup').css('display', 'block');
                     $('#exit-error').click(function() {
                         $('.error-popup').css('display', 'none');
-                        $('.new-list-popup').css('display', 'block');
+                        $('.popupBackground').css('display', 'block');
                     });
                 }
             });
@@ -75,7 +75,7 @@ re.controller = (function() {
         // clears the fields in popup & closes it
         $('#cancel').click(function() {
             $('#new-list-btn').css('display', 'block');
-            $('.new-list-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             resetButtons();
             $('#name').val('');
             $('#items').val('');
@@ -84,7 +84,7 @@ re.controller = (function() {
 
     function makeNewReservation( ){
         $('#new-reservation-btn').css('display', 'none');
-        $('.new-reservation-popup').css('display', 'block');
+        $('.popupBackground').css('display', 'block');
         
         // Hide Delete button and resize Cancel and Done buttons
         $('#create-cancel').css('width', '49%');
@@ -94,7 +94,7 @@ re.controller = (function() {
         $('#create-done').click(function() {
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
             $('#new-reservation-btn').css('display', 'block');
-            $('.new-reservation-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             resetButtons();
             var listName = $('#name').val();
             var start_time = $('#start-time').val();
@@ -114,7 +114,7 @@ re.controller = (function() {
         $('#create-cancel').click(function() {
             console.log("Pressed cancel delete!");
             $('#new-reservation-btn').css('display', 'block');
-            $('.new-reservation-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             resetButtons();
             $('#name').val('');
             $('#items').val('');
@@ -147,7 +147,7 @@ re.controller = (function() {
                 $('.error-popup').css('display', 'block');
                 $('#exit-error').click(function() {
                     $('.error-popup').css('display', 'none');
-                    $('.new-list-popup').css('display', 'block');
+                    $('.popupBackground').css('display', 'block');
                 });
             }
         });
@@ -167,7 +167,7 @@ re.controller = (function() {
                 $('.error-popup').css('display', 'block');
                 $('#exit-error').click(function() {
                     $('.error-popup').css('display', 'none');
-                    $('.new-list-popup').css('display', 'block');
+                    $('.popupBackground').css('display', 'block');
                 });
             }
         });
@@ -208,7 +208,7 @@ re.controller = (function() {
      */
     function editList(listId) {
         $('#new-list-btn').css('display', 'none');
-        $('.new-list-popup').css('display', 'block');
+        $('.popupBackground').css('display', 'block');
         
         // Clear old list items from popup
         clearItems('list-items');
@@ -220,7 +220,7 @@ re.controller = (function() {
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
             $('#new-list-btn').css('display', 'block');
-            $('.new-list-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             var listName = $('#name').val();
             var listItems = [];
             var inputs = $('#list-items :input');
@@ -239,7 +239,7 @@ re.controller = (function() {
                     $('.error-popup').css('display', 'block');
                     $('#exit-error').click(function() {
                         $('.error-popup').css('display', 'none');
-                        $('.new-list-popup').css('display', 'block');
+                        $('.popupBackground').css('display', 'block');
                     });
                 }
             });
@@ -249,7 +249,7 @@ re.controller = (function() {
         // clears the fields in popup & closes it
         $('#cancel').click(function() {
             $('#new-list-btn').css('display', 'block');
-            $('.new-list-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             $('#name').val('');
             $('#items').val('');
         });
@@ -333,7 +333,7 @@ re.controller = (function() {
             $('.error-popup').css('display', 'block');
             $('#exit-error').click(function() {
                 $('.error-popup').css('display', 'none');
-                $('.new-list-popup').css('display', 'block');
+                $('.popupBackground').css('display', 'block');
             });
         }
     }
