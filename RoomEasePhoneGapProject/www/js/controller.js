@@ -78,7 +78,7 @@ re.controller = (function() {
             if (is_success) {
                 console.log("successfully added list");
                 // TODO: reload
-                re.renderListView();
+                re.render.renderListView();
             } else {
                 console.log(error);
                 // let user know an error occurred and prompt them to try again
@@ -135,13 +135,26 @@ re.controller = (function() {
             $('#name').val('');
             $('#items').val('');
         });
+        
+        //TODO: Have this clear fields
+        // clears the fields in popup & closes it
+        $('#delete').click(function() {
+            deleteList(listID);
+        });
     }
+    
+        
+    function deleteList(listID) {
+        
+    }
+    
     
 	return {
 		'init': init,
         'makeNewList': makeNewList,
         'addListToDatabase': addListToDatabase,
         'createList': createList,
-        'editList': editList
+        'editList': editList,
+        '_list_items': list_items
 	}
 })();
