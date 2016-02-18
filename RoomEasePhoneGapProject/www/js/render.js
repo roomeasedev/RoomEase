@@ -32,7 +32,7 @@ re.render = (function() {
 
     function renderSchedulerView(){
         var reservations;
-        
+        console.log("Rendering schedule view");
          re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
             if(allReservations == null) {
                 console.log(error);
@@ -40,7 +40,21 @@ re.render = (function() {
                 reservations = allReservations;
             }
             
-            $('.page-title').html('List');
+            //Categorize all of the different reservations into groups
+            var reservation_dictionary = {};
+            for(var i = 0; i < reservations.length; i++){
+                name = reservations[i].name_of_item.toLocaleLowerCase();
+                
+                if(reservation_dictionary[name] === undefined){
+                    reservation_dictionary[name] = [];
+                }
+                //TODO: Make sure these come in order
+                reservation_dictionary[name].push(reservations[i]);
+            }             
+            $('.page-title').html('Reservations');
+            
+             //TODO: Make it so we use reservation_dictionary to aggregate all of the 
+             //Reservations based off of what they are
             $('.page').html(scheduleTemplate(reservations));
             
             for (let reservation of reservations) {
@@ -49,14 +63,8 @@ re.render = (function() {
                 });
             }
         });
-        
-         $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year
-            format: 'dd/mm/yyyy'    
-
-        });
-     }
+    }
+                
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
@@ -134,6 +142,7 @@ re.render = (function() {
         'renderLoginView': renderFacebookLoginView,
         'renderFeedView': renderFeedView,
         'renderListView': renderListView,
-        'renderFridgeView': renderFridgeView
+        'renderFridgeView': renderFridgeView,
+        'renderSchedulerView': renderSchedulerView
     };
 })();

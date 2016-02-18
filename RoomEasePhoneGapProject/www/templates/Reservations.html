@@ -3,7 +3,7 @@
         the user currently has selected and these reservations will be dynamically loaded from local storage.  -->
 
         <!--    Template for the Scheduler view that will be injected into Index.html at runtime when
-        the user navigates to the List page. -->
+        the user navigates to the Scheduler page. -->
 <script>
     document.getElementById("navbar").style.display = "";
     $(".button-collapse").sideNav({
@@ -13,13 +13,12 @@
 </script>
 <!-- This section should dynamically insert all of the reservations into the page-->
 {{#each this}}
-    <div class="reservation-item" id="{{ this._id }}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_item }}</header>
+    <div class="reservation-item" id=""><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">  {{this.name_of_item}}</header>
         <ul>
-            {{#items}}
-                <li class="white-text" style="font-size: 1.4em">{{ this }}</li>
-            {{/items}}
+            <li class="white-text" style="font-size: 1.4em"> Start on {{ this.start_date }} at {{ this.start_time }}</li>  
+            <li class="white-text" style="font-size: 1.4em">End on {{ this.end_date}} at {{ this.end_time }}</li>  
         </ul>
-    </div>
+</div>
 {{/each}}
 
 
@@ -29,7 +28,7 @@
 </div>
 
 
-<!-- Small popup menu to add new list, hidden by default -->
+<!-- Small popup menu to add new schedule item, hidden by default -->
 <div class="new-reservation-popup">
     <div class="popup">  
         <form>
@@ -37,9 +36,20 @@
         </form>
         <div class="reservation-entry">
             <form>
-                <!--<input type="text" placeholder="Start Time" id="start-time" onfocus=""><br>
-                <input type="text" placeholder="End Time" id="end-time" onfocus=""><br>-->
-                <input type="date" class="datepicker" id="datepicker">
+                Start Time:
+                <input type="time" id="start-time" onfocus=""><br>
+            </form>
+            <form>
+                End Time:
+                <input type="time" id="end-time" onfocus=""><br>
+            </form>
+            <form>
+                Start date:
+                <input type="date" id="start-date"/>
+            </form>
+            <form>
+                End date:
+            <input type="date" id="end-date"/>
             </form>
         </div>
         <div id="buttons">

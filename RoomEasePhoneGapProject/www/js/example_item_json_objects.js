@@ -59,8 +59,10 @@ var test_reservations_item = {
 	"type": "reservation",
 	"name_of_item" : "TV",
 	"group_num" : "1234454", //_id of group
-	"start_time" : "1454552752",
-	"end_time" : "1454552752",
+	"start_time" : "12:34",
+	"end_time" : "12:34",
+    "start_date" : "yyyy-mm-dd",
+    "end_date" : "yyyy-mm-dd",
 	"uid" : "1234444444" //FB id of the person who reserved the item
 }
 

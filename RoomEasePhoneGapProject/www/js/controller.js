@@ -82,8 +82,12 @@ re.controller = (function() {
             var listName = $('#name').val();
             var start_time = $('#start-time').val();
             var end_time = $("#end-time").val();
-            console.log("Start time: " +start_time);
-            console.log("End time: " + end_time);
+            var start_date = $("#start-date").val();
+            var end_date = $("#end-date").val();
+            
+            re.controller.addReservationToDatabase(listName, start_time, end_time, start_date, end_date, function(is_success, error){
+                re.render.renderSchedulerView();
+            });
             //re.controller.addListToDatabase(listName, items, text);
             // TODO: put in some form of reloading
             //       location.reload() doesn't work; lists won't ever be displayed even if in database
@@ -131,8 +135,24 @@ re.controller = (function() {
         });
     }
 
-    function addReservationToDatabase(reservation_name, start_time, end_time, uid){
-        //TODO: Implement
+    //callback(is_success, error)
+    function addReservationToDatabase(reservation_name, start_time, end_time, start_date, end_date, callback){
+        var newlist = createReservation(reservation_name, start_time, end_time, start_date, end_date);        
+        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
+            if (is_success) {
+                console.log("successfully added schedule item");
+                callback(true, null);
+            } else {
+                console.log(error);
+                callback(false, error);
+                // let user know an error occurred and prompt them to try again
+                $('.error-popup').css('display', 'block');
+                $('#exit-error').click(function() {
+                    $('.error-popup').css('display', 'none');
+                    $('.new-list-popup').css('display', 'block');
+                });
+            }
+        });
     }
     
     /* Creates a JSON list object with listName, items, & text
@@ -151,6 +171,17 @@ re.controller = (function() {
             "modifiable_users":
                 ["12344444", //Hardcoded
                 "1124444444"]
+        }
+    }
+    
+    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
+        return test_reservations_item = {
+            "type": "reservation",
+            "name_of_item" : name_of_res,
+            "start_time" : start_time,
+            "end_time" : end_time,
+            "start_date" : start_date,
+            "end_date" : end_date,
         }
     }
     
