@@ -8,7 +8,6 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered list view.
     */
     function renderListView() {
-        var lists;
         /* Gets all lists from database and renders the list view with these
         *  lists embedded. 
         */
@@ -16,13 +15,13 @@ re.render = (function() {
             if(allLists == null) {
                 console.log(error);
             } else {
-                lists = allLists;
+                re.controller.list_items = allLists;
             }
             
             $('.page-title').html('List');
-            $('.page').html(listTemplate(lists));
+            $('.page').html(listTemplate(re.controller.list_items));
             
-            for (let list of lists) {
+            for (let list of re.controller.list_items) {
                 $('#' + list._id).longpress(function() {
                     re.controller.editList(list._id);
                 });
