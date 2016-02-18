@@ -94,13 +94,13 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        if (hash == "#fb") {
+        if (!hash || hash == "#fb") {
             renderFacebookLoginView();
         } else if (hash == "#list") {      
             renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
-        } else if (!hash || hash == "#feed") {
+        } else if (hash == "#feed") {
             renderFeedView();
         } else if (hash == "#gl") {
             renderGroupLoginView();
