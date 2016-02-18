@@ -232,7 +232,6 @@ re.loginHandler = (function() {
 
 	return {
 		'init': init,
-		'login': login,
 		'createNewGroup': createNewGroup,
 		'registerNewUser': registerNewUser,
 		'addUserToGroup': addUserToGroup,

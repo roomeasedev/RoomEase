@@ -1,8 +1,9 @@
 re.fbHandler = (function() {
     
-    function storeUserId(userInfo) {
+    function moveToGroupLogin(userInfo) {
         window.localStorage['user_id'] = userInfo['id'];
-        console.log(window.localStorage['user_id']);
+        alert(window.localStorage['user_id']);
+        window.location.hash = "#gl";
     }
     	/**
     * attempts to log the user into their Facebook account
@@ -13,6 +14,7 @@ re.fbHandler = (function() {
     *     the right parameters
     */
     function login(callback) {
+        alert("login called");
         // initialize openFB library with your app's ID
         // TODO: this id is a testAppID, change to appropriate ID
         openFB.init({appId: '935583189852299'});
@@ -27,7 +29,6 @@ re.fbHandler = (function() {
 	            *     error:        ErrorType
 	            * }
 	            */
-
                 // get the user's info if connection was successful
                 if(response.status == "connected"){
                     getInfo(callback);
@@ -47,6 +48,7 @@ re.fbHandler = (function() {
     *     the right parameters
     */
     function getInfo(callback) {
+        alert("getInfo called");
         // send a GET request to Facebook to retreave the user's ID
         openFB.api({
             // HTTP method defaulted to GET
@@ -74,7 +76,7 @@ re.fbHandler = (function() {
     }
     
     return {
-        'storeUserId': storeUserId,
+        'moveToGroupLogin': moveToGroupLogin,
         'login': login,
         'getInfo': getInfo
     };
