@@ -14,7 +14,6 @@ re.fbHandler = (function() {
     *     the right parameters
     */
     function login(callback) {
-        alert("login called");
         // initialize openFB library with your app's ID
         // TODO: this id is a testAppID, change to appropriate ID
         openFB.init({appId: '935583189852299'});
