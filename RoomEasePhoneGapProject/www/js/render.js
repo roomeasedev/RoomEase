@@ -19,8 +19,6 @@ re.render = (function() {
                 lists = allLists;
             }
             
-            re.controller._list_items = lists;
-            
             $('.page-title').html('List');
             $('.page').html(listTemplate(lists));
             
