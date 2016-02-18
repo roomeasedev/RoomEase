@@ -110,7 +110,7 @@ re.controller = (function() {
             var editedList = createList(listName, listItems);
             re.requestHandler.updateItem(editedList, function(is_success, revised_item, error) { 
                 if (is_success) {
-                    console.log("successfully added list");
+                    console.log("successfully edited list");
                     re.render.renderListView();
                     // TODO: scroll to where the new list is
                 } else {
