@@ -6,6 +6,9 @@ re.controller = (function() {
 	var chores_items = [];
 
 	function init() {
+        //Initialize login handler and request_handler
+        re.loginHandler.init("http://40.114.43.49:5984/");
+
 		if (window.localStorage.getItem("user_id") == null){
 			//Facebook Login
 		} else if (window.localStorage.getItem("group_id") == null){
@@ -13,10 +16,6 @@ re.controller = (function() {
 		} else {
 			//Splash screen
 		}
-
-        //Initialize login handler and request_handler
-        re.loginHandler.init("http://40.114.43.49:5984/");
-
         // Example group and user ID are chosen from DB. These values are hard coded so request
         // handler cooperates.
         re.requestHandler.init("http://40.114.43.49:5984/",
@@ -58,6 +57,41 @@ re.controller = (function() {
             $('#items').val('');
         });
     }
+
+    function makeNewReservation( ){
+        $('#new-reservation-btn').css('display', 'none');
+        $('.new-reservation-popup').css('display', 'block');
+        
+        // Hide Delete button and resize Cancel and Done buttons
+        $('#delete').css('display', 'none');
+        $('#cancel').css('width', '49%');
+        $('#done').css('width', '49%');
+        
+        // Adds the new list to the database when the done button is pressed
+        $('#done').click(function() {
+            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
+            $('#new-reservation-btn').css('display', 'block');
+            $('.new-reservation-popup').css('display', 'none');
+            resetButtons();
+            var listName = $('#name').val();
+            var start_time = $('#start-time').val();
+            var end_time = $("#end-time").val();
+            console.log("Start time: " +start_time);
+            console.log("End time: " + end_time);
+            //re.controller.addListToDatabase(listName, items, text);
+            // TODO: put in some form of reloading
+            //       location.reload() doesn't work; lists won't ever be displayed even if in database
+        });
+
+        // clears the fields in popup & closes it
+        $('#cancel').click(function() {
+            $('#new-reservation-btn').css('display', 'block');
+            $('.new-reservation-popup').css('display', 'none');
+            resetButtons();
+            $('#name').val('');
+            $('#items').val('');
+        });
+    }
     
     /* Resets the sizes of the Cancel and Done buttons and makes the
      * delete button visible again.
@@ -89,6 +123,10 @@ re.controller = (function() {
                 });
             }
         });
+    }
+
+    function addReservationToDatabase(reservation_name, start_time, end_time, uid){
+        //TODO: Implement
     }
     
     /* Creates a JSON list object with listName, items, & text
@@ -136,11 +174,15 @@ re.controller = (function() {
             $('#items').val('');
         });
     }
+
+
     
 	return {
 		'init': init,
         'makeNewList': makeNewList,
+        'makeNewReservation': makeNewReservation,
         'addListToDatabase': addListToDatabase,
+        'addReservationToDatabase': addReservationToDatabase, 
         'createList': createList,
         'editList': editList
 	}

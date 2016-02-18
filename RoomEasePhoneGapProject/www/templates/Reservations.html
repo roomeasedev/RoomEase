@@ -1,3 +1,63 @@
 <!--    Template for the Reservations view that will be injected into Index.html at runtime when the user navigates
         to the Reservations page. It will include the list of reservation items (shower, tv, laundry, etc.) that
         the user currently has selected and these reservations will be dynamically loaded from local storage.  -->
+
+        <!--    Template for the Scheduler view that will be injected into Index.html at runtime when
+        the user navigates to the List page. -->
+<script>
+    document.getElementById("navbar").style.display = "";
+    $(".button-collapse").sideNav({
+        menuWidth: 200,
+        closeOnClick: true
+    });
+</script>
+<!-- This section should dynamically insert all of the reservations into the page-->
+{{#each this}}
+    <div class="reservation-item" id="{{ this._id }}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_item }}</header>
+        <ul>
+            {{#items}}
+                <li class="white-text" style="font-size: 1.4em">{{ this }}</li>
+            {{/items}}
+        </ul>
+    </div>
+{{/each}}
+
+
+<!-- Button to add new chore-->
+<div class="fixed-action-btn" onclick="re.controller.makeNewReservation()" id="new-reservation-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
+</div>
+
+
+<!-- Small popup menu to add new list, hidden by default -->
+<div class="new-reservation-popup">
+    <div class="popup">  
+        <form>
+            <input type="text" placeholder="Resrvation Item" id="name"><br>
+        </form>
+        <div class="reservation-entry">
+            <form>
+                <!--<input type="text" placeholder="Start Time" id="start-time" onfocus=""><br>
+                <input type="text" placeholder="End Time" id="end-time" onfocus=""><br>-->
+                <input type="date" class="datepicker" id="datepicker">
+            </form>
+        </div>
+        <div id="buttons">
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float:left" name="action" id="cancel">Cancel</button>
+            
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float:right" name="action" id="done">Done</button>
+            
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="position: absolute; left: 35%" name="action" id="delete">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Error popup displayed in case adding a list went wrong, hidden by default -->
+<div class="error-popup">
+    <header class="white-text center-align" style="margin: 1.4rem auto;">SORRY! SOMETHING WENT WRONG. PLEASE TRY AGAIN</header>
+    <button class="btn waves-effect waves-light" 
+            style="background-color: #4db6ac; box-shadow: none; text-align: center; width: 100%;" type="submit" name="action" id="exit-error">Try Again</button>
+</div>

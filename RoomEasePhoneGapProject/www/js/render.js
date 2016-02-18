@@ -2,7 +2,7 @@
 
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate, facebookLoginTemplate, groupLoginTemplate;
+    var feedTemplate, listTemplate, fridgeTemplate, scheduleTemplate, facebookLoginTemplate, groupLoginTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -29,6 +29,34 @@ re.render = (function() {
             }
         });
     }
+
+    function renderSchedulerView(){
+        var reservations;
+        
+         re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
+            if(allReservations == null) {
+                console.log(error);
+            } else {
+                reservations = allReservations;
+            }
+            
+            $('.page-title').html('List');
+            $('.page').html(scheduleTemplate(reservations));
+            
+            for (let reservation of reservations) {
+                $('#' + reservation._id).longpress(function() {
+                    //TODO: Do something on long press
+                });
+            }
+        });
+        
+         $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year
+            format: 'dd/mm/yyyy'    
+
+        });
+     }
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
@@ -66,16 +94,18 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        if (!hash || hash == "#fb") {
+        if (hash == "#fb") {
             renderFacebookLoginView();
         } else if (hash == "#list") {      
             renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
-        } else if (hash == "#feed") {
+        } else if (!hash || hash == "#feed") {
             renderFeedView();
         } else if (hash == "#gl") {
             renderGroupLoginView();
+        } else if (hash == "#scheduler") {
+            renderSchedulerView();
         }
     }
     
@@ -84,10 +114,11 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
-        re.templates.load(["Feed", "List", "Fridge", "FacebookLogin", "GroupLogin"]).done(function () {
+        re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
+            scheduleTemplate = re.templates.get("Reservations");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupLoginTemplate = re.templates.get("GroupLogin");
             // Attach an event listener to route to the proper view
