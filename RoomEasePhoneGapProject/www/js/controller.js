@@ -31,6 +31,9 @@ re.controller = (function() {
         $('#new-list-btn').css('display', 'none');
         $('.new-list-popup').css('display', 'block');
         
+        // Bind Focus listener to next-item
+        $('#next-item').on('focus', changeFocus);
+        
         // Hide Delete button and resize Cancel and Done buttons
         $('#delete').css('display', 'none');
         $('#cancel').css('width', '49%');
@@ -117,6 +120,9 @@ re.controller = (function() {
         $('#new-list-btn').css('display', 'none');
         $('.new-list-popup').css('display', 'block');
         
+        // Bind Focus listener to next-item
+        $('#next-item').on('focus', changeFocus);
+        
         //TODO: Have this update the list item in the database
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
@@ -138,8 +144,14 @@ re.controller = (function() {
     }
     
     function changeFocus() {
-        $('#next-item').click(null);
-        $('#list-items').append('<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%" onfocus="re.controller.changeFocus()"><br>');
+        $('#next-item').off('focus');
+        $('#next-item').attr('id', 'list-item');
+        $('#list-items').append(
+            '<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
+        );
+        
+        // Bind Focus listener to next-item
+        $('#next-item').on('focus', changeFocus);
     }
     
 	return {
