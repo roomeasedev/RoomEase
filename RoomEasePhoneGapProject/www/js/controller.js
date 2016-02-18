@@ -69,12 +69,11 @@ re.controller = (function() {
         $('.new-reservation-popup').css('display', 'block');
         
         // Hide Delete button and resize Cancel and Done buttons
-        $('#delete').css('display', 'none');
-        $('#cancel').css('width', '49%');
-        $('#done').css('width', '49%');
+        $('#create-cancel').css('width', '49%');
+        $('#create-done').css('width', '49%');
         
         // Adds the new list to the database when the done button is pressed
-        $('#done').click(function() {
+        $('#create-done').click(function() {
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
             $('#new-reservation-btn').css('display', 'block');
             $('.new-reservation-popup').css('display', 'none');
@@ -94,7 +93,8 @@ re.controller = (function() {
         });
 
         // clears the fields in popup & closes it
-        $('#cancel').click(function() {
+        $('#create-cancel').click(function() {
+            console.log("Pressed cancel delete!");
             $('#new-reservation-btn').css('display', 'block');
             $('.new-reservation-popup').css('display', 'none');
             resetButtons();
@@ -218,6 +218,28 @@ re.controller = (function() {
         });
     }
 
+    function editReservationItem(reservationId){
+        $('#new-reservation-btn').css('display', 'none');
+        $('.delete-reservation-popup').css('display', 'block');
+        //$('#' + reservationId).css('display', 'block');
+                
+        //TODO: Have this update the list item in the database
+        // Adds the new list to the database when the done button is pressed
+        $('#delete-delete').click(function() {
+            $('#new-reservation-btn').css('display', 'block');
+            $('.delete-reservation-popup').css('display', 'none');
+            $("#" + reservationId).css('display', 'none'); //Lazy delete
+            // TODO: put in some form of reloading
+            //       location.reload() doesn't work; lists won't ever be displayed even if in database
+        });
+
+        //TODO: Have this clear fields
+        // clears the fields in popup & closes it
+        $('#delete-cancel').click(function() {
+            $('#new-reservation-btn').css('display', 'block');
+            $('.delete-reservation-popup').css('display', 'none');
+        });    
+    }
 
     
     /* Switches the onfocus method from the previous next-item input field to a new one
@@ -250,6 +272,7 @@ re.controller = (function() {
         'addReservationToDatabase': addReservationToDatabase, 
         'createList': createList,
         'editList': editList,
+        'editReservationItem': editReservationItem,
         'changeFocus': changeFocus
 	}
 })();
