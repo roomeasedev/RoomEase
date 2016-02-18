@@ -2,7 +2,7 @@
 
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate, facebookLoginTemplate, groupLoginTemplate;
+    var feedTemplate, listTemplate, fridgeTemplate, scheduleTemplate, facebookLoginTemplate, groupLoginTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -28,6 +28,42 @@ re.render = (function() {
             }
         });
     }
+
+    function renderSchedulerView(){
+        var reservations;
+        console.log("Rendering schedule view");
+         re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
+            if(allReservations == null) {
+                console.log(error);
+            } else {
+                reservations = allReservations;
+            }
+            
+            //Categorize all of the different reservations into groups
+            var reservation_dictionary = {};
+            for(var i = 0; i < reservations.length; i++){
+                name = reservations[i].name_of_item.toLocaleLowerCase();
+                
+                if(reservation_dictionary[name] === undefined){
+                    reservation_dictionary[name] = [];
+                }
+                //TODO: Make sure these come in order
+                reservation_dictionary[name].push(reservations[i]);
+            }             
+            $('.page-title').html('Reservations');
+            
+             //TODO: Make it so we use reservation_dictionary to aggregate all of the 
+             //Reservations based off of what they are
+            $('.page').html(scheduleTemplate(reservations));
+            
+            for (let reservation of reservations) {
+                $('#' + reservation._id).longpress(function() {
+                    //TODO: Do something on long press
+                });
+            }
+        });
+    }
+                
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
@@ -75,6 +111,8 @@ re.render = (function() {
             renderFeedView();
         } else if (hash == "#gl") {
             renderGroupLoginView();
+        } else if (hash == "#scheduler") {
+            renderSchedulerView();
         }
     }
     
@@ -83,10 +121,11 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
-        re.templates.load(["Feed", "List", "Fridge", "FacebookLogin", "GroupLogin"]).done(function () {
+        re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
+            scheduleTemplate = re.templates.get("Reservations");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupLoginTemplate = re.templates.get("GroupLogin");
             // Attach an event listener to route to the proper view
@@ -102,6 +141,7 @@ re.render = (function() {
         'renderLoginView': renderFacebookLoginView,
         'renderFeedView': renderFeedView,
         'renderListView': renderListView,
-        'renderFridgeView': renderFridgeView
+        'renderFridgeView': renderFridgeView,
+        'renderSchedulerView': renderSchedulerView
     };
 })();
