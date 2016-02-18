@@ -49,10 +49,13 @@ re.controller = (function() {
             $('.new-list-popup').css('display', 'none');
             resetButtons();
             var listName = $('#name').val();
-            var items = $('#items').val();
-            re.controller.addListToDatabase(listName, items, text);
-            // TODO: put in some form of reloading
-            //       location.reload() doesn't work; lists won't ever be displayed even if in database
+            var listItems = [];
+            var inputs = $('#list-items :input');
+            inputs.each(function() {
+                listItems.push($(this).val());
+            });
+            var newlist = createList(listName, listItems);
+            addListToDatabase(newlist);
         });
 
         // clears the fields in popup & closes it
@@ -63,57 +66,6 @@ re.controller = (function() {
             $('#name').val('');
             $('#items').val('');
         });
-    }
-    
-    /* Resets the sizes of the Cancel and Done buttons and makes the
-     * delete button visible again.
-     */
-    function resetButtons() {
-        $('#delete').css('display', 'block');
-        $('#cancel').css('width', '30%');
-        $('#done').css('width', '30%');
-    }
-    
-    /* Creates a JSON list object to add to database & handles any resulting errors
-     * name: the name of the list
-     * items: string of items to put into list
-     */
-    function addListToDatabase(listName, items, text) {
-        var newlist = re.controller.createList(listName, items, text);        
-        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
-            if (is_success) {
-                console.log("successfully added list");
-                // TODO: reload
-                re.renderListView();
-            } else {
-                console.log(error);
-                // let user know an error occurred and prompt them to try again
-                $('.error-popup').css('display', 'block');
-                $('#exit-error').click(function() {
-                    $('.error-popup').css('display', 'none');
-                    $('.new-list-popup').css('display', 'block');
-                });
-            }
-        });
-    }
-    
-    /* Creates a JSON list object with listName, items, & text
-     *
-     */
-    function createList(listName, items, text) {
-        return list = {
-            "type": "list",
-            "name_of_list": listName,
-            "text": text,
-            // TODO: not sure what to split on -- all whitespace may be incorrect
-            "items": items.split(" "),
-            "visible_users":
-                ["12345567878", //Hardcoding in IDs for now
-                    "124444433333"], 
-            "modifiable_users":
-                ["12344444", //Hardcoded
-                "1124444444"]
-        }
     }
     
     /* Edits an existing list
@@ -162,6 +114,48 @@ re.controller = (function() {
         $('#next-item').on('focus', changeFocus);
     }
     
+/********************* "PRIVATE" METHODS **************************/
+    
+    /* Creates a JSON list object to add to database & handles any resulting errors
+     * name: the name of the list
+     * items: string of items to put into list
+     */
+    function addListToDatabase(newlist) {    
+        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
+            if (is_success) {
+                console.log("successfully added list");
+                // TODO: reload
+                re.render.renderListView();
+            } else {
+                console.log(error);
+                // let user know an error occurred and prompt them to try again
+                $('.error-popup').css('display', 'block');
+                $('#exit-error').click(function() {
+                    $('.error-popup').css('display', 'none');
+                    $('.new-list-popup').css('display', 'block');
+                });
+            }
+        });
+    }
+    
+    /* Creates a JSON list object with listName, & items
+     *
+     */
+    function createList(listName, items) {
+        return list = {
+            "type": "list",
+            "name_of_list": listName,
+            "text": "",
+            "items": items,
+            "visible_users":
+                ["12345567878", //Hardcoding in IDs for now
+                    "124444433333"], 
+            "modifiable_users":
+                ["12344444", //Hardcoded
+                "1124444444"]
+        }
+    }
+    
     /* Clears the list elements from a popup
      * @param containerId The id of the text container in the popup to be emptied
      */
@@ -171,11 +165,18 @@ re.controller = (function() {
         );
     }
     
+    /* Resets the sizes of the Cancel and Done buttons and makes the
+     * delete button visible again.
+     */
+    function resetButtons() {
+        $('#delete').css('display', 'block');
+        $('#cancel').css('width', '30%');
+        $('#done').css('width', '30%');
+    }
+    
 	return {
 		'init': init,
         'makeNewList': makeNewList,
-        'addListToDatabase': addListToDatabase,
-        'createList': createList,
         'editList': editList,
         'changeFocus': changeFocus
 	}
