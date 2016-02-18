@@ -78,7 +78,7 @@ re.render = (function() {
                                             end_time_nums[0],
                                             end_time_nums[1]);
                 
-                function appendZero(number){
+                var appendZero = function(number){
                     if(number < 10) {
                         return "0" + number;
                     } else {
