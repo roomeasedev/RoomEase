@@ -137,11 +137,17 @@ re.controller = (function() {
         });
     }
     
+    function changeFocus() {
+        $('#next-item').click(null);
+        $('#list-items').append('<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%" onfocus="re.controller.changeFocus()"><br>');
+    }
+    
 	return {
 		'init': init,
         'makeNewList': makeNewList,
         'addListToDatabase': addListToDatabase,
         'createList': createList,
-        'editList': editList
+        'editList': editList,
+        'changeFocus': changeFocus
 	}
 })();
