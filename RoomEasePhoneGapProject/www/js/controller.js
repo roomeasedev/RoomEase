@@ -31,6 +31,9 @@ re.controller = (function() {
         $('#new-list-btn').css('display', 'none');
         $('.new-list-popup').css('display', 'block');
         
+        // Clear old list items from popup
+        clearItems('list-items');
+        
         // Bind Focus listener to next-item
         $('#next-item').on('focus', changeFocus);
         
@@ -113,12 +116,15 @@ re.controller = (function() {
         }
     }
     
-    /* The longpress function
+    /* Edits an existing list
      *
      */
-    function editList(listID) {
+    function editList(listId) {
         $('#new-list-btn').css('display', 'none');
         $('.new-list-popup').css('display', 'block');
+        
+        // Clear old list items from popup
+        clearItems('list-items');
         
         // Bind Focus listener to next-item
         $('#next-item').on('focus', changeFocus);
@@ -143,6 +149,8 @@ re.controller = (function() {
         });
     }
     
+    /* Switches the onfocus method from the previous next-item input field to a new one
+     */
     function changeFocus() {
         $('#next-item').off('focus');
         $('#next-item').attr('id', 'list-item');
@@ -152,6 +160,15 @@ re.controller = (function() {
         
         // Bind Focus listener to next-item
         $('#next-item').on('focus', changeFocus);
+    }
+    
+    /* Clears the list elements from a popup
+     * @param containerId The id of the text container in the popup to be emptied
+     */
+    function clearItems(containerId) {
+        $('#' + containerId).empty().html(
+            '<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
+        );
     }
     
 	return {
