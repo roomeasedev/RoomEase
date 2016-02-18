@@ -55,7 +55,22 @@ re.controller = (function() {
                 listItems.push($(this).val());
             });
             var newlist = createList(listName, listItems);
-            addListToDatabase(newlist);
+            // TO DO: refactor out the callback function
+            re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
+                if (is_success) {
+                    console.log("successfully added list");
+                    re.render.renderListView();
+                    // TODO: scroll to where the new list is
+                } else {
+                    console.log(error);
+                    // let user know an error occurred and prompt them to try again
+                    $('.error-popup').css('display', 'block');
+                    $('#exit-error').click(function() {
+                        $('.error-popup').css('display', 'none');
+                        $('.new-list-popup').css('display', 'block');
+                    });
+                }
+            });
         });
 
         // clears the fields in popup & closes it
@@ -86,9 +101,28 @@ re.controller = (function() {
         $('#done').click(function() {
             $('#new-list-btn').css('display', 'block');
             $('.new-list-popup').css('display', 'none');
-            
-            // TODO: put in some form of reloading
-            //       location.reload() doesn't work; lists won't ever be displayed even if in database
+            var listName = $('#name').val();
+            var listItems = [];
+            var inputs = $('#list-items :input');
+            inputs.each(function() {
+                listItems.push($(this).val());
+            });
+            var editedList = createList(listName, listItems);
+            re.requestHandler.updateItem(editedList, function(is_success, revised_item, error) { 
+                if (is_success) {
+                    console.log("successfully added list");
+                    re.render.renderListView();
+                    // TODO: scroll to where the new list is
+                } else {
+                    console.log(error);
+                    // let user know an error occurred and prompt them to try again
+                    $('.error-popup').css('display', 'block');
+                    $('#exit-error').click(function() {
+                        $('.error-popup').css('display', 'none');
+                        $('.new-list-popup').css('display', 'block');
+                    });
+                }
+            });
         });
 
         //TODO: Have this clear fields
@@ -121,21 +155,9 @@ re.controller = (function() {
      * items: string of items to put into list
      */
     function addListToDatabase(newlist) {    
-        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
-            if (is_success) {
-                console.log("successfully added list");
-                // TODO: reload
-                re.render.renderListView();
-            } else {
-                console.log(error);
-                // let user know an error occurred and prompt them to try again
-                $('.error-popup').css('display', 'block');
-                $('#exit-error').click(function() {
-                    $('.error-popup').css('display', 'none');
-                    $('.new-list-popup').css('display', 'block');
-                });
-            }
-        });
+    }
+    
+    function updateList(editedList) {
     }
     
     /* Creates a JSON list object with listName, & items
@@ -153,6 +175,22 @@ re.controller = (function() {
             "modifiable_users":
                 ["12344444", //Hardcoded
                 "1124444444"]
+        }
+    }
+        
+    function reqHandCallback(is_success, revised_item, error) { 
+        if (is_success) {
+            console.log("successfully added list");
+            re.render.renderListView();
+            // TODO: scroll to where the new list is
+        } else {
+            console.log(error);
+            // let user know an error occurred and prompt them to try again
+            $('.error-popup').css('display', 'block');
+            $('#exit-error').click(function() {
+                $('.error-popup').css('display', 'none');
+                $('.new-list-popup').css('display', 'block');
+            });
         }
     }
     
@@ -178,6 +216,7 @@ re.controller = (function() {
 		'init': init,
         'makeNewList': makeNewList,
         'editList': editList,
-        'changeFocus': changeFocus
+        'changeFocus': changeFocus,
+        'list_items': list_items
 	}
 })();
