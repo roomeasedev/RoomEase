@@ -2,7 +2,8 @@
 
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate, scheduleTemplate, facebookLoginTemplate, groupLoginTemplate;
+    var feedTemplate, listTemplate, fridgeTemplate,scheduleTemplate,
+        facebookLoginTemplate, groupLoginTemplate, choreTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -166,6 +167,10 @@ re.render = (function() {
         $('.page').html(groupLoginTemplate());
     }
     
+    function renderChoreView() {
+        $('.page').html(choreTemplate());
+    }
+    
     /**
     * Renders the correct view for the injectable area of the viewport.
     * Uses the current hash of the URL to determine which view should be
@@ -187,6 +192,8 @@ re.render = (function() {
             renderGroupLoginView();
         } else if (hash == "#scheduler") {
             renderSchedulerView();
+        } else if (hash == "#chore") {
+            renderChoreView();
         }
     }
     
@@ -195,11 +202,13 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
-        re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin", "GroupLogin"]).done(function () {
+        re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
+                           "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
             scheduleTemplate = re.templates.get("Reservations");
+            choreTemplate = re.templates.get("Chores");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupLoginTemplate = re.templates.get("GroupLogin");
             // Attach an event listener to route to the proper view
