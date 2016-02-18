@@ -3,9 +3,20 @@ re.fbHandler = (function() {
     function moveToGroupLogin(userInfo) {
         window.localStorage['user_id'] = userInfo['id'];
         alert(window.localStorage['user_id']);
+        re.loginHandler.registerNewUser(userInfo['id'], userInfo['name'],
+            function(success, repeat, error) {
+                if (success) {
+                    console.log("successfully registered new RoomEase user");
+                } else if (repeat) {
+                    console.log("attempted to re-register an existing RoomEase user");
+                } else {
+                    console.log("Error when registering user: " + error);
+                }
+        });
         window.location.hash = "#gl";
     }
-    	/**
+    
+    /**
     * attempts to log the user into their Facebook account
     * @param {function({String, String}, function)} the callback function
     *     with parameters ({user_name, user_id}, errorHandler)
@@ -29,6 +40,7 @@ re.fbHandler = (function() {
 	            * }
 	            */
                 // get the user's info if connection was successful
+                alert(response.status);
                 if(response.status == "connected"){
                     getInfo(callback);
                 } else { // callback with the error message if connection failed
