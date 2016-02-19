@@ -1,36 +1,39 @@
 "use strict";
-
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate,scheduleTemplate,
-        facebookLoginTemplate, groupLoginTemplate, choreTemplate;
+    var feedTemplate;
+    var listTemplate; 
+    var fridgeTemplate;
+    var scheduleTemplate;
+    var facebookLoginTemplate;
+    var groupLoginTemplate;
+    var choreTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
     */
     function renderListView() {
         /* Gets all lists from database and renders the list view with these
-        *  lists embedded. 
+        *  lists embedded.
         */
         re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
             if(allLists == null) {
                 console.log(error);
             } else {
-                re.controller.list_items = allLists;
-            }
-            
-            $('.page-title').html('List');
-            $('.page').html(listTemplate(re.controller.list_items));
-            
-            for (let list of re.controller.list_items) {
-                $('#' + list._id).longpress(function() {
-                    re.controller.editList(list._id);
-                });
+                $('.page-title').html('List');
+                $('.page').html(listTemplate(allLists));
+                for (var i in allLists) {
+                    var list = allLists[i];
+                    re.controller.list_items[list._id] = list; 
+                    $('#' + list._id).longpress(function() {
+                        re.controller.editList(list._id);
+                    });
+                }
             }
         });
     }
 
-    function renderSchedulerView(){
+    function renderSchedulerView() {
         
         //TODO: Factor this out
         (function() {
@@ -48,14 +51,14 @@ re.render = (function() {
         
         var reservations;
         console.log("Rendering schedule view");
-         re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
+        re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
             if(allReservations == null) {
                 console.log(error);
             } else {
                 reservations = allReservations;
             }
             
-             
+        
             //Convert the date-time reservations int0 a more readable format
             var date_time_reservations = [];
             for(var i = 0; i < reservations.length; i++){
@@ -131,7 +134,7 @@ re.render = (function() {
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
             
-            for (let reservation of reservations) {
+            for (reservation in reservations) {
                 $('#' + reservation._id).longpress(function() {
                     re.controller.editReservationItem(reservation._id);
                     console.log("Long press on reservation!");
@@ -181,10 +184,10 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        if (false && hash == "#fb") {
+        if (!hash || hash == "#fb") {
             renderFacebookLoginView();
         } else if (hash == "#list") {      
-            renderFacebookLoginView();
+            renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
         } else if (hash == "#feed") {
@@ -203,6 +206,7 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
+        console.log("init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
                            "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");
