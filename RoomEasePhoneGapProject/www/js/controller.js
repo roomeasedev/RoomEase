@@ -201,6 +201,7 @@ re.controller = (function() {
         // TODO: populates popup with current items in list
         //       --> currently can't grab an item with just the id, either in database or in local copy
         thisList = list_items[listId];
+        console.log(JSON.stringify(thisList));
         $('#name').val(listId.name);
         for (var i in thisList.items) {
 //            $('#next-item')
@@ -220,10 +221,12 @@ re.controller = (function() {
             re.requestHandler.updateItem(editedList, rhAddCallback);
         });
         
-        // TODO: doesn't really function atm but shouldn't be a big change
-        // ALSO: we should probably be able to delete without having to go into editing mode first
         $('#delete').click(function() {
             re.requestHandler.deleteItem(listId, "list", errorHandler);
+        });
+        
+        $('#cancel').click(function() {
+            
         });
     }
     
