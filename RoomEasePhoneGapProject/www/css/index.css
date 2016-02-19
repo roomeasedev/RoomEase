@@ -97,6 +97,7 @@ input:focus, {
     top:30%;
     width: 100%;
     background-color: #80cbc4; 
+    color: white;
 }
 
 .all-reservation-items {
