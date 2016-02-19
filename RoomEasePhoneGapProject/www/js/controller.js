@@ -102,7 +102,7 @@ re.controller = (function() {
      */
     function makeNewList() {
         $('#new-list-btn').css('display', 'none');
-        $('.new-list-popup').css('display', 'block');
+        $('.popupBackground').css('display', 'block');
         
         // Clear old list items from popup
         clearItems('list-items');
@@ -132,7 +132,7 @@ re.controller = (function() {
 
     function makeNewReservation(){
         $('#new-reservation-btn').css('display', 'none');
-        $('.new-reservation-popup').css('display', 'block');
+        $('.popupBackground').css('display', 'block');
         
         // Hide Delete button and resize Cancel and Done buttons
         $('#delete').css('display', 'none');
@@ -142,7 +142,7 @@ re.controller = (function() {
         // Adds the new reservation to the database when the done button is pressed
         $('#done').click(function() {
             $('#new-reservation-btn').css('display', 'block');
-            $('.new-reservation-popup').css('display', 'none');
+            $('.popupBackground').css('display', 'none');
             resetButtons();
             var reserveName = $('#name').val();
             var start_time = $('#start-time').val();
@@ -152,13 +152,6 @@ re.controller = (function() {
             newReserve = createReservation(reserveName, start_time, end_time, start_date, end_date);
             re.requestHandler.addItem(newReserve, rhAddCallback);
         });
-
-        // clears the fields in popup & closes it
-        $('#cancel').click(function() {
-            $('#new-reservation-btn').css('display', 'block');
-            $('.new-reservation-popup').css('display', 'none');
-            resetButtons();            
-        });
     }
     
     /* Edits an existing list
@@ -166,7 +159,7 @@ re.controller = (function() {
      */
     function editList(listId) {
         $('#new-list-btn').css('display', 'none');
-        $('.new-list-popup').css('display', 'block');
+        $('.popupBackground').css('display', 'block');
         
         // Clear old list items from popup
         clearItems('list-items');
@@ -219,7 +212,7 @@ re.controller = (function() {
     function hidePopup() {
         // clears the fields in popup & closes it
         $('#new-list-btn').css('display', 'block');
-        $('.new-list-popup').css('display', 'none');
+        $('.popupBackground').css('display', 'none');
         resetButtons();
     }
     
