@@ -1,8 +1,27 @@
+/**
+* re.fbHandler is a module which interfaces with the facebook SDK and openfb
+* library to allow facebook authentication for our application.  This module
+* is used to log in to facebook and retrieve basic information about the user,
+* especially their facebook ID number, which we use as their unique user ID
+* throughout the application.
+* @return {Object} An object representing re.fbHandler, which has a 'moveToGroupLogin',
+*     'login', and 'getInfo' function. Login attempts the login to FB and uses getInfo
+*     as a callback. moveToGroupLogin handles the logic of storing the user ID locally
+*     and then routing the user to the group login.
+*/
 re.fbHandler = (function() {
     
+    /**
+     * Locally and permanently stores the user's Facebook ID # into window.localStorage
+     * as "user_id", then registers the new user/name combination with RoomEase. Finally,
+     * routes the user to the group login page.
+     * @param userInfo {Object} Facebook user information with an 'id' and a 'name' field,
+     *     we store the id as the user's ID for the application, and map the name to the ID
+     *     in our database so we can access the name later if necessary.
+     */
     function moveToGroupLogin(userInfo) {
         window.localStorage.setItem('user_id', userInfo['id']);
-        alert(window.localStorage.getItem('user_id'));
+        //alert(window.localStorage.getItem('user_id'));
         re.loginHandler.registerNewUser(userInfo['id'], userInfo['name'],
             function(success, repeat, error) {
                 if (success) {
@@ -12,12 +31,12 @@ re.fbHandler = (function() {
                 } else {
                     console.log("Error when registering user: " + error);
                 }
+            window.location.hash = "#gl";
         });
-        window.location.hash = "#gl";
     }
     
     /**
-    * attempts to log the user into their Facebook account
+    * Attempts to log the user into their Facebook account
     * @param {function({String, String}, function)} the callback function
     *     with parameters ({user_name, user_id}, errorHandler)
     * @postcondition:  user have been logged into their facebook
@@ -86,6 +105,8 @@ re.fbHandler = (function() {
                 });
     }
     
+    // Return the public API of this module by choosing which
+    // funcitons we make visible here.
     return {
         'moveToGroupLogin': moveToGroupLogin,
         'login': login,

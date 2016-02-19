@@ -1,3 +1,7 @@
+<!--Template for the FacebookLogin view that will be injected into Index.html at runtime.
+    This will be the default page for users who don't have a user_id stored in the application.
+    It will allow the user to sign in via facebook and proceed to the group login page.  -->
+
 <script>
     document.getElementById("navbar").style.display = "none";
 </script>
@@ -7,11 +11,6 @@
           Welcome to RoomEase
         </div>
         <p>To begin, login to your Facebook account</p>
-
-        <!-- 
-          You have to explicitly mention cordova.js in your html file
-              for openFB.js to behave correctly. 
-        --> 
         <div class="social-login" >
           <a onclick="re.fbHandler.login(re.fbHandler.moveToGroupLogin)" style="font-family: Roboto">
             <i class="fa fa-facebook fa-3x"></i>
