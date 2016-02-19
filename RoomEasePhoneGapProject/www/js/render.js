@@ -17,6 +17,7 @@ re.render = (function() {
     var facebookLoginTemplate;
     var groupLoginTemplate;
     var choreTemplate;
+    var settingsTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -78,12 +79,8 @@ re.render = (function() {
                 var hours = parseInt(reservations[i].hours);
                 var minutes = parseInt(reservations[i].minutes);
                 var start_time_nums = reservations[i].start_time.split(":");
+    
                 
-                console.log()
-                console.log(start_date_nums);
-                console.log(hours);
-                console.log(minutes);
-                console.log(start_time_nums);
                 var start_date_obj = new Date(
                                             parseInt(start_date_nums[0]), 
                                             parseInt(start_date_nums[1]) - 1,
@@ -181,6 +178,7 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered feed view.
     */
     function renderFeedView() {
+        $('.page-title').html('Feed');
         $('.page').html(feedTemplate());
     }
     
@@ -188,6 +186,8 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered fridge view.
     */
     function renderFridgeView() {
+        $('.page-title').html('Fridge');
+
         $('.page').html(fridgeTemplate());
         
         // Initialize tabs
@@ -200,7 +200,16 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered chores view.
     */
     function renderChoreView() {
+        $('.page-title').html('Chores');
         $('.page').html(choreTemplate());
+    }
+    
+        /**
+    * Sets the HTML value of the injectable page area to the rendered chores view.
+    */
+    function renderSettingsView() {
+        $('.page-title').html('Settings');
+        $('.page').html(settingsTemplate());
     }
     
     /**
@@ -249,8 +258,10 @@ re.render = (function() {
             renderFridgeView();
         } else if (hash == "#scheduler") {
             renderSchedulerView();
-        } else if (hash == "#chore") {
+        } else if (hash == "#chores") {
             renderChoreView();
+        } else if(hash == "#settings"){
+            renderSettingsView();
         } else {
             alert("routing to unknown location");
         }
@@ -264,7 +275,7 @@ re.render = (function() {
     function init() {
         console.log("called render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
-                           "FacebookLogin", "GroupLogin"]).done(function () {
+                           "FacebookLogin", "GroupLogin", "Settings"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
@@ -272,6 +283,7 @@ re.render = (function() {
             choreTemplate = re.templates.get("Chores");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupLoginTemplate = re.templates.get("GroupLogin");
+            settingsTemplate = re.templates.get("Settings");
             // Attach an event listener to route to the proper view
             // when the hash of the URL is changed.
             window.onhashchange = route;
