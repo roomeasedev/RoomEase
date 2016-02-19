@@ -140,7 +140,9 @@ var openFB = (function () {
             console.log('exit and remove listeners');
             // Handle the situation where the user closes the login window manually before completing the login process
             if (loginCallback && !loginProcessed) loginCallback({status: 'user_cancelled'});
-            loginWindow.removeEventListener('loadstop', loginWindow_loadStopHandler);
+            // This line refers to an eventListener that isn't attached in this file, and was causing an error
+            // when the user backed out of the facebook login without attempting to log in.
+            //loginWindow.removeEventListener('loadstop', loginWindow_loadStopHandler);
             loginWindow.removeEventListener('exit', loginWindow_exitHandler);
             loginWindow = null;
             console.log('done removing listeners');

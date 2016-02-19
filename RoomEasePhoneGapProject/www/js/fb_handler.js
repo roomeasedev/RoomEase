@@ -19,20 +19,23 @@ re.fbHandler = (function() {
      *     we store the id as the user's ID for the application, and map the name to the ID
      *     in our database so we can access the name later if necessary.
      */
-    function moveToGroupLogin(userInfo) {
-        window.localStorage.setItem('user_id', userInfo['id']);
-        //alert(window.localStorage.getItem('user_id'));
-        re.loginHandler.registerNewUser(userInfo['id'], userInfo['name'],
-            function(success, repeat, error) {
-                if (success) {
-                    console.log("successfully registered new RoomEase user");
-                } else if (repeat) {
-                    console.log("attempted to re-register an existing RoomEase user");
-                } else {
-                    console.log("Error when registering user: " + error);
-                }
-            window.location.hash = "#gl";
-        });
+    function moveToGroupLogin(userInfo, error) {
+        if (userInfo) {
+            window.localStorage.setItem('user_name', userInfo['name']);
+            window.localStorage.setItem('user_id', userInfo['id']);
+            //alert(window.localStorage.getItem('user_id'));
+            re.loginHandler.registerNewUser(userInfo['id'], userInfo['name'],
+                function(success, repeat, error) {
+                    if (success) {
+                        console.log("successfully registered new RoomEase user");
+                    } else if (repeat) {
+                        console.log("attempted to re-register an existing RoomEase user");
+                    } else {
+                        console.log("Error when registering user: " + error);
+                    }
+                window.location.hash = "#gl";
+            });
+        }
     }
     
     /**

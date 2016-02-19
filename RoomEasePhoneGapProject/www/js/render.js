@@ -212,13 +212,16 @@ re.render = (function() {
         var g_id = window.localStorage.getItem('group_id');
         console.log("routing, hash= " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
-        if ((!hash && !u_id) || hash == "#fb") {
+        console.log(!null);
+        console.log(!u_id);
+        console.log(typeof u_id);
+        if (!u_id || hash == "#fb") {
             renderFacebookLoginView();
         } else if ((!g_id) || hash == "#gl") {
             renderGroupLoginView();
-        } else if (!hash || hash == "#feed") {
+        } else if (hash == "#feed") {
             renderFeedView();
-        } else if (hash == "#list") {      
+        } else if (!hash || hash == "#list") {      
             renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();

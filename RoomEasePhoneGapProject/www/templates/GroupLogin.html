@@ -34,14 +34,19 @@
             <div class="bar"></div>
           </div>
           <div class="button-container">
-            <button onclick="alert('FUCKing please work')"><span>Join</span></button>
+            <button onclick="re.loginHandler.attemptGroupJoin($('#Username').val(), $('#Password').val())"><span>Join</span></button>
           </div>
       </div>
       <div class="card alt">
         <div class="toggle"><i class="fa fa-plus" id="addgroup"></i></div>
-        <h1 class="title">Create a group</h1>
           <div class="button-container">
-            <button><span>Create a group!</span></button>
+            <button onclick="re.loginHandler.createGroupAndDisplayInfo()"><span>Create a group!</span></button>
+            <div class="input-container">
+              <h4>Your Group Name:</h4>
+              <h5 id="groupName"></h5>
+              <h4>Your Group Password:</h4>
+              <h5 id="groupPwd"></h5>
+            </div>
           </div>
       </div>
     </div>

@@ -23,18 +23,20 @@ re.controller = (function() {
 	function init() {
         //Initialize login handler and request_handler
         re.loginHandler.init("http://40.114.43.49:5984/");
-
-		if (window.localStorage.getItem("user_id") == null){
-			//Facebook Login
-		} else if (window.localStorage.getItem("group_id") == null){
-			//Add group window
+        var userId = window.localStorage.getItem('user_id');
+        var groupId = window.localStorage.getItem("group_id");
+		if (!userId){
+			console.log("we couldn't find a UID! need to do FB Login");
+		} else if (!groupId){
+			console.log("we couldn't find a groupID! Need to do Group login!");
 		} else {
-			//Splash screen
+			console.log("we found both a uid and a group id");
+            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);
+            
 		}
         // Example group and user ID are chosen from DB. These values are hard coded so request
         // handler cooperates.
-        re.requestHandler.init("http://40.114.43.49:5984/",
-                        "893308038", "089d6e77903ccfb44b5bcad1f7157b47");
+
 		console.log("re.controller init finished!");
 	}
     

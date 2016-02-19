@@ -15,6 +15,9 @@ var re = {};
 * modules to start the page on the correct viewport.
 */
 $(document).ready(function() {
+    //window.localStorage.setItem("user_id", "");
+    //window.localStorage.setItem("user_name", "");
+    window.localStorage.setItem("group_id", "");
     re.controller.init();
     re.render.init();
 });
