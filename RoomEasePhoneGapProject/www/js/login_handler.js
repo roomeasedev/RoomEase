@@ -207,7 +207,7 @@ re.loginHandler = (function() {
 	*	error: String describing if an error occured, null if no error occured.
 	**/
 	function getGroupNumber(group_name, group_password, callback) {
-        alert("getting group num");
+        console.log("getting group num");
 		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
 		databases["group_login"].query('group_login/get_group_obj_by_name', {
 			key: group_name,
@@ -216,18 +216,18 @@ re.loginHandler = (function() {
 
 		})
         .then(function(result){
-            alert("groupNum then branch");
+            console.log("groupNum then branch");
 			if (result.rows[0].doc.group_password === group_password) {
 				callback(true, false, result.rows[0].doc.group_id, null);
 			} else {
 				callback(false, true, null, "Error: Incorrect password");
 			}
 		}).catch(function(err){
-            alert("groupNum error branch");
+            console.log("groupNum error branch");
 			callback(false, false, null, err);
 
 		});
-        alert("finished groupNum call");
+        console.log("finished groupNum call");
 	}
     
     
