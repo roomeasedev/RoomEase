@@ -134,11 +134,14 @@ re.render = (function() {
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
             
-            for (reservation in reservations) {
-                $('#' + reservation._id).longpress(function() {
-                    re.controller.editReservationItem(reservation._id);
-                    console.log("Long press on reservation!");
-                });
+            console.log(reservations);
+            for (var i = 0; i < reservations.length; i++) {
+                    console.log("reservation");
+                    console.log(reservations[i]);
+                  $('#' + reservations[i]._id).longpress(function() {
+                      re.controller.editReservationItem(reservations[i]._id);
+                      console.log("Long press on reservation!");
+                    });
             }
         });
     }
@@ -184,7 +187,7 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        if (!hash || hash == "#fb") {
+        if ( hash == "#fb") {
             renderFacebookLoginView();
         } else if (hash == "#list") {      
             renderListView();

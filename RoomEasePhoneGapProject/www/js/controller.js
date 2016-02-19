@@ -153,7 +153,7 @@ re.controller = (function() {
             console.log("Hours: " + hours);
             console.log("Minutes: " + minutes);
             
-            re.controller.addReservationToDatabase(listName, start_time, start_date, hours, minutes, function(is_success, error){
+            addReservationToDatabase(reserveName, start_time, start_date, hours, minutes, function(is_success, error){
                 re.render.renderSchedulerView();
             });
 
@@ -299,7 +299,7 @@ re.controller = (function() {
         });
     }
     function editReservationItem(reservationId){
-        $('#new-reservation-btn').css('display', 'none');
+        $('#delete-reservation-btn').css('display', 'none');
         $('.delete-reservation-popup').css('display', 'block');
         //$('#' + reservationId).css('display', 'block');
                 
@@ -352,6 +352,8 @@ re.controller = (function() {
         'makeNewReservation': makeNewReservation,
         'editList': editList,
         'changeFocus': changeFocus,
-        'hidePopup': hidePopup
+        'hidePopup': hidePopup,
+        'editReservationItem':  editReservationItem,
+        'editList': editList
 	}
 })();
