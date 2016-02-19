@@ -1,0 +1,24 @@
+<script>
+    document.getElementById("navbar").style.display = "none";
+</script>
+<div id="facebook-login">
+    <div class="login-box">
+        <div class="lb-header">
+          Welcome to RoomEase
+        </div>
+        <p>To begin, login to your Facebook account</p>
+
+        <!-- 
+          You have to explicitly mention cordova.js in your html file
+              for openFB.js to behave correctly. 
+        --> 
+        <div class="social-login" >
+          <a onclick="re.fbHandler.login(re.fbHandler.moveToGroupLogin)" style="font-family: Roboto">
+            <i class="fa fa-facebook fa-3x"></i>
+            Login with facebook
+          </a>
+        </div>
+        
+    </div>  
+    
+</div>
