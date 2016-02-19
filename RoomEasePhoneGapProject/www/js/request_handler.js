@@ -25,6 +25,7 @@ re.requestHandler = (function(){
 	*group_id: The group id of the client
 	**/
 	function init(db_location, u_id, grp_id) {
+        console.log("initializing RH with u_id: " + u_id + " and grp_id: " + grp_id);
 		database_location = db_location;
 		user_id = u_id;
 		group_id = grp_id;
