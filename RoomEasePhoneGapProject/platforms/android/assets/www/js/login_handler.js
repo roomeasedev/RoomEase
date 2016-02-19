@@ -96,7 +96,7 @@ re.loginHandler = (function() {
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
-
+        alert("adding user to group");
 		var already_in_grp = false;
 		var name_of_map_reduce_function = 'get_by_uids/uids';
 
@@ -195,6 +195,7 @@ re.loginHandler = (function() {
 	*	error: String describing if an error occured, null if no error occured.
 	**/
 	function getGroupNumber(group_name, group_password, callback) {
+        alert("getting group num");
 		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
 		databases["group_login"].query('group_login/get_group_obj_by_name', {
 			key: group_name,
@@ -212,7 +213,41 @@ re.loginHandler = (function() {
 			callback(false, false, null, err);
 
 		});
+        alert("finished groupNum call");
 	}
+    
+    function attemptGroupJoin(name, password) {
+        alert("group name:" + name);
+        alert("group password: " + password);
+        getGroupNumber(name, password, function(isSuccess, incorrectPwd, groupNum, error) {
+            alert("function call in groupNumber");
+            if (!isSuccess) {
+                alert("group name/password combination not found.");
+            } else if (incorrectPwd) {
+                alert("password incorrect!");
+            } else if (error) {
+                alert("An error occurred: " + error);
+            } else {
+                alert("other branch");
+                addUserToGroup(window.localStorage.getItem("user_id"), groupNum,
+                            function(success, alreadyIn, error) {
+                    if (success) {
+                        // Store the group ID locally and permanently, then route to
+                        // the landing page, they are now in their group!
+                        alert("success");
+                        window.localStorage.setItem("group_id", groupNum);
+                        window.location.hash = "";
+                    }else if (alreadyIn) {
+                        alert("you're already in that group!");
+                    } else {
+                        alert("there was an error: " + error);
+                    }
+                });
+            }
+        });
+        alert("got to end");
+    }
+    
 	/**
 	*Returns true if a list contains the given id, false otherwise
 	*	list: The list the potentially contains id
@@ -236,7 +271,8 @@ re.loginHandler = (function() {
 		'registerNewUser': registerNewUser,
 		'addUserToGroup': addUserToGroup,
 		'generateGroupLoginInfo': generateGroupLoginInfo,
-		'getGroupNumber': getGroupNumber
+		'getGroupNumber': getGroupNumber,
+        'attemptGroupJoin': attemptGroupJoin
 	}
 })();
 

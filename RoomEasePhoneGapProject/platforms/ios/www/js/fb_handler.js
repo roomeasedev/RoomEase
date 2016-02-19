@@ -1,8 +1,8 @@
 re.fbHandler = (function() {
     
     function moveToGroupLogin(userInfo) {
-        window.localStorage['user_id'] = userInfo['id'];
-        alert(window.localStorage['user_id']);
+        window.localStorage.setItem('user_id', userInfo['id']);
+        alert(window.localStorage.getItem('user_id'));
         re.loginHandler.registerNewUser(userInfo['id'], userInfo['name'],
             function(success, repeat, error) {
                 if (success) {
