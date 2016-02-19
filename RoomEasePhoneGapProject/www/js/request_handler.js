@@ -179,7 +179,7 @@ re.requestHandler = (function(){
 	*	callback(is_sucess, error)
 	*		is_success: True if item was deleted successfully. String describing error if error occured.
 	**/
-	function deleteItem(item, callback) {
+	function deleteItem(item_id, item_type, callback) {
 		
 		if (user_id == null || group_id == null) {
 			callback(null, "Error: no valid user_id and/or group_id assigned to user object");
@@ -189,23 +189,23 @@ re.requestHandler = (function(){
 		databases["groups"].get(group_id)
 		.then(function (result){
 
-			if (result[item.type] == null) {
+			if (result[item_type] == null) {
 				throw "Error";
 			}
 			
-			if (!contains_id(result[item.type], item._id)){
+			if (!contains_id(result[item_type], item_id)){
 				callback(true, null);//In the case where an intem has already been deleted, just say it succeeded
 				return;
 			}
-			var index = result[item.type].indexOf(item._id);
-			var removed_item_id = result[item.type].splice(index, 1);
+			var index = result[item_type].indexOf(item_id);
+			var removed_item_id = result[item_type].splice(index, 1);
 			databases["groups"].post(result);
 		
 		}).then(function(result){
 
-			databases[type_to_table[item.type]].get(item._id)
+			databases[type_to_table[item_type]].get(item_id)
 			.then(function(get_result){
-				databases[type_to_table[item.type]].remove(get_result);
+				databases[type_to_table[item_type]].remove(get_result);
 				callback(true, null);
 			});
 
