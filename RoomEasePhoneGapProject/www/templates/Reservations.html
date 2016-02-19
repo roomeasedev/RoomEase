@@ -12,7 +12,7 @@
 <!-- This section should dynamically insert all of the reservations into the page-->
 {{#each this}}
 <div class="all-reservation-items" id="{{this._id}}">
-    <div class="reservation-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
+    <div class="reservation-item {{this.color_class}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
         <ul>
             <li class="white-text" style="font-size: 1.4em">  {{this.start}}</li>  
             <li class="white-text" style="font-size: 1.4em">{{ this.end}}</li>  
@@ -33,32 +33,32 @@
 <div class="popupBackground">
     <div class="popup">  
         <form>
-            <input type="text" placeholder="Resrvation Item" id="name" class="reservation-form-field"><br>
+            <input type="text" placeholder="What do you want to reserve?" id="name" class="reservation-form-field" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.0em;"><br>
         </form>
-        <div  class="white-text left-align reservation-entry" style="margin-bottom: 0; font-size: 2.0em; line-height: 1.25em;">
-            <form>
-                Start date:
-                <input type="date" id="start-date" class="reservation-form-field"/>
+        <div  class="white-text left-align reservation-entry" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;">
+            <form style="float:left; width: 49% ">
+                Start Date:
+                <input type="date" id="start-date" class="reservation-form-field" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;"/>
             </form>
-            <form>
+            <form style="float:right; width: 49% ">
                 Start Time:
-                <input type="time" id="start-time" onfocus="" class="reservation-form-field"><br>
+                <input type="time" id="start-time" onfocus="" class="reservation-form-field" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;"><br>
             </form>
             <form style="float:left; width: 49%">
                 Hours:
-                <input class="reservation-form-field" type="number" id="reservation-hours" min="0" max="11" step="1">
+                <input class="reservation-form-field" type="number" id="reservation-hours" min="0" max="11" step="1" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;">
             </form>
             <form style="float:right; width: 49%">
                 Minutes:
-                <input type="number" id="reservation-minutes" min="0" max="55" step="5" class="reservation-form-field">
+                <input type="number" id="reservation-minutes" min="0" max="55" step="5" class="reservation-form-field" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;">
             </form>
         </div>
         <div id="buttons">
             <button class="btn waves-effect waves-light popup-button" 
-                type="submit" onclick="re.controller.hidePopup()"style="float:left" name="action" id="create-cancel">Cancel</button>
+                type="submit" onclick="re.controller.hidePopup()"style="float:left; width: 48%" name="action" id="create-cancel">Cancel</button>
             
             <button class="btn waves-effect waves-light popup-button" 
-                type="submit" style="float:right" name="action" id="create-done">Done</button>
+                type="submit" style="float:right; width: 48%" name="action" id="create-done">RESERVE!</button>
         </div>
     </div>
 </div>

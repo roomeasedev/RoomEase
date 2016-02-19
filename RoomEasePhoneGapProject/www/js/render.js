@@ -48,9 +48,9 @@ re.render = (function() {
     function renderSchedulerView() {
         //TODO: Factor out the date calculations and database calls
         (function() {
-            var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            var days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
 
-            var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            var months = ['Jan.','Feb.','Mar.','Apr.','May','June','July','Aug.','Sep.','Oct.','Nov.','Dec.'];
 
             Date.prototype.getMonthName = function() {
                 return months[ this.getMonth() ];
@@ -115,6 +115,18 @@ re.render = (function() {
                                     + " at " + end_date_obj.getHours()
                                     + ":" + appendZero(end_date_obj.getMinutes());
                 
+                var currentDate = new Date();
+                
+                
+                if(currentDate.getTime() > start_date_obj.getTime() && currentDate.getTime() < end_date_obj){
+                    //Event currently happening
+                    start_end_date_obj["color_class"] = "reservation_happening_color"; 
+                } else if(currentDate.getTime() > end_date_obj.getTime()) {
+                    start_end_date_obj["color_class"] = "reservation_happened_color"; 
+                } else {
+                    start_end_date_obj["color_class"] = "reservation_not_happened_color"; 
+                }
+                
                 start_end_date_obj["start"] = start_date_str;
                 start_end_date_obj["end"] = end_date_str;
                 start_end_date_obj["title"] = reservations[i].name_of_item;
@@ -129,6 +141,7 @@ re.render = (function() {
                     date_time_reservations.push(start_end_date_obj);              
                 } else {
                     //TODO: Delete that reservation from the DB
+                    date_time_reservations.push(start_end_date_obj);              
                 }
             }
              
@@ -146,7 +159,7 @@ re.render = (function() {
             for (var i in reservations) {
                 console.log("reservation");
                 console.log("#" + reservations[i]._id);
-                $("#" + reservations[i]._id).click(function() {
+                $("#" + reservations[i]._id).longpress(function() {
                     re.controller.editReservationItem(reservations[i]._id);
                     console.log("Long press on reservation!");
                 });
