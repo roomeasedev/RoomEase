@@ -23,8 +23,10 @@ re.controller = (function() {
 	function init() {
         //Initialize login handler and request_handler
         re.loginHandler.init("http://40.114.43.49:5984/");
-        var userId = window.localStorage.getItem('user_id');
-        var groupId = window.localStorage.getItem("group_id");
+        var userId = 8080;
+            //window.localStorage.getItem('user_id');
+        var groupId = "089d6e77903ccfb44b5bcad1f7331849";
+            window.localStorage.getItem("group_id");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
 		} else if (!groupId){
@@ -47,6 +49,7 @@ re.controller = (function() {
      */
     function rhAddCallback(is_success, revised_item, error) {
         errorHandler(is_success, error);
+        console.log(error);
     }
     
     /* Callback function for database.updateItem
@@ -105,14 +108,14 @@ re.controller = (function() {
         }
     }
     
-    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
+    function createReservation(name_of_res, start_time, start_date, hours, minutes){
         return test_reservations_item = {
             "type": "reservation",
             "name_of_item" : name_of_res,
             "start_time" : start_time,
-            "end_time" : end_time,
             "start_date" : start_date,
-            "end_date" : end_date,
+            "hours" : hours,
+            "minutes" : minutes
         }
     }
     
@@ -203,7 +206,7 @@ re.controller = (function() {
             console.log("Hours: " + hours);
             console.log("Minutes: " + minutes);
             
-            var newresv = createReservation(reservation_name, start_time, start_date, hours, minutes);  
+            var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);  
             console.log("New res:");
             console.log(newresv);
             re.requestHandler.addItem(newresv, rhAddCallback);

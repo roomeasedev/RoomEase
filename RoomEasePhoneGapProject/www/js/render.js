@@ -79,12 +79,18 @@ re.render = (function() {
                 var minutes = parseInt(reservations[i].minutes);
                 var start_time_nums = reservations[i].start_time.split(":");
                 
+                console.log(start_date_nums);
+                console.log(hours);
+                console.log(minutes);
+                console.log(start_time_nums);
                 var start_date_obj = new Date(
                                             parseInt(start_date_nums[0]), 
                                             parseInt(start_date_nums[1]) - 1,
                                             parseInt(start_date_nums[2]),
                                             parseInt(start_time_nums[0]),
                                             parseInt(start_time_nums[1]));
+
+                console.log(start_date_obj);
                 
                 var end_date_obj = new Date(
                                             parseInt(start_date_nums[0]),
@@ -92,6 +98,8 @@ re.render = (function() {
                                             parseInt(start_date_nums[2]),
                                             parseInt(start_time_nums[0]) + hours,
                                             parseInt(start_time_nums[1]) + minutes);
+                
+                
                                 
                 var appendZero = function(number){
                     if(number < 10) {
@@ -221,8 +229,10 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        var u_id = window.localStorage.getItem('user_id');
-        var g_id = window.localStorage.getItem('group_id');
+        var u_id = 8080; 
+            //window.localStorage.getItem('user_id');
+        var g_id =  "089d6e77903ccfb44b5bcad1f7331849";
+            //window.localStorage.getItem('group_id');
         console.log("routing, hash= " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
         console.log(!null);
