@@ -183,7 +183,7 @@ re.render = (function() {
         if (hash == "#fb") {
             renderFacebookLoginView();
         } else if (!hash || hash == "#list") {      
-            renderListView();
+            renderFacebookLoginView();
         } else if (hash == "#fridge") {
             renderFridgeView();
         } else if (hash == "#feed") {
