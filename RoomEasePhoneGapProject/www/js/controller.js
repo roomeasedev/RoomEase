@@ -1,6 +1,6 @@
 re.controller = (function() {
 
-	var list_items = [];
+	var list_items = {};
 	var fridge_items = [];
 	var reservation_items = [];
 	var chores_items = [];

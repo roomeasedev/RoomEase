@@ -16,7 +16,10 @@ re.render = (function() {
             if(allLists == null) {
                 console.log(error);
             } else {
-                re.controller.list_items = allLists;
+                for (let list of allLists) {
+                    re.controller.list_items[list._id] = list;
+                }
+//                re.controller.list_items = allLists;
             }
             
             $('.page-title').html('List');
@@ -183,7 +186,7 @@ re.render = (function() {
         if (hash == "#fb") {
             renderFacebookLoginView();
         } else if (!hash || hash == "#list") {      
-            renderFacebookLoginView();
+            renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
         } else if (hash == "#feed") {
