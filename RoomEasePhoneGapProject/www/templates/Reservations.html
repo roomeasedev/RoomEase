@@ -1,9 +1,7 @@
 <!--    Template for the Reservations view that will be injected into Index.html at runtime when the user navigates
         to the Reservations page. It will include the list of reservation items (shower, tv, laundry, etc.) that
-        the user currently has selected and these reservations will be dynamically loaded from local storage.  -->
+        the user currently has selected and these reservations will be dynamically loaded when the page is rendered.  -->
 
-        <!--    Template for the Scheduler view that will be injected into Index.html at runtime when
-        the user navigates to the Scheduler page. -->
 <script>
     document.getElementById("navbar").style.display = "";
     $(".button-collapse").sideNav({
@@ -12,16 +10,17 @@
     });
 </script>
 <!-- This section should dynamically insert all of the reservations into the page-->
-<div class="all-reservation-items">
 {{#each this}}
-    <div class="reservation-item" id="{{this._id}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
+<div class="all-reservation-items" id="{{this._id}}">
+    <div class="reservation-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
         <ul>
             <li class="white-text" style="font-size: 1.4em">  {{this.start}}</li>  
             <li class="white-text" style="font-size: 1.4em">{{ this.end}}</li>  
         </ul>
 </div>
-{{/each}}
 </div>
+{{/each}}
+
 
 
 <!-- Button to add new chore-->
@@ -34,24 +33,24 @@
 <div class="popupBackground">
     <div class="popup">  
         <form>
-            <input type="text" placeholder="Reservation Item" id="name"><br>
+            <input type="text" placeholder="Resrvation Item" id="name" class="reservation-form-field"><br>
         </form>
-        <div class="reservation-entry">
-            <form>
-                Start Time:
-                <input type="time" id="start-time" onfocus=""><br>
-            </form>
-            <form>
-                End Time:
-                <input type="time" id="end-time" onfocus=""><br>
-            </form>
+        <div  class="white-text left-align reservation-entry" style="margin-bottom: 0; font-size: 2.0em; line-height: 1.25em;">
             <form>
                 Start date:
-                <input type="date" id="start-date"/>
+                <input type="date" id="start-date" class="reservation-form-field"/>
             </form>
             <form>
-                End date:
-            <input type="date" id="end-date"/>
+                Start Time:
+                <input type="time" id="start-time" onfocus="" class="reservation-form-field"><br>
+            </form>
+            <form style="float:left; width: 49%">
+                Hours:
+                <input class="reservation-form-field" type="number" id="reservation-hours" min="0" max="11" step="1">
+            </form>
+            <form style="float:right; width: 49%">
+                Minutes:
+                <input type="number" id="reservation-minutes" min="0" max="55" step="5" class="reservation-form-field">
             </form>
         </div>
         <div id="buttons">

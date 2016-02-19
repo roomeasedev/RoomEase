@@ -1,38 +1,43 @@
 "use strict";
-
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
-    var feedTemplate, listTemplate, fridgeTemplate,scheduleTemplate,
-        facebookLoginTemplate, groupLoginTemplate, choreTemplate;
+    var feedTemplate;
+    var listTemplate; 
+    var fridgeTemplate;
+    var scheduleTemplate;
+    var facebookLoginTemplate;
+    var groupLoginTemplate;
+    var choreTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
     */
     function renderListView() {
         /* Gets all lists from database and renders the list view with these
-        *  lists embedded. 
+        *  lists embedded.
         */
         re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
             if(allLists == null) {
                 console.log(error);
             } else {
-                re.controller.list_items = allLists;
-            }
-            
-            $('.page-title').html('List');
-            $('.page').html(listTemplate(re.controller.list_items));
-            
-            for (let list of re.controller.list_items) {
-                $('#' + list._id).longpress(function() {
-                    re.controller.editList(list._id);
-                });
+                $('.page-title').html('List');
+                $('.page').html(listTemplate(allLists));
+                for (var i in allLists) {
+                    var list = allLists[i];
+                    re.controller.list_items[list._id] = list; 
+                    $('#' + list._id).longpress(function() {
+                        re.controller.editList(list._id);
+                    });
+                }
             }
         });
     }
 
-    function renderSchedulerView(){
-        
-        //TODO: Factor this out
+    /**
+    * Sets the HTML value of the injectable page area to the rendered scheduler view.
+    */
+    function renderSchedulerView() {
+        //TODO: Factor out the date calculations and database calls
         (function() {
             var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -48,36 +53,37 @@ re.render = (function() {
         
         var reservations;
         console.log("Rendering schedule view");
-         re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
+        re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
             if(allReservations == null) {
                 console.log(error);
             } else {
                 reservations = allReservations;
             }
             
-             
+        
             //Convert the date-time reservations int0 a more readable format
             var date_time_reservations = [];
             for(var i = 0; i < reservations.length; i++){
                 var start_end_date_obj = {};
                 var start_date_nums = reservations[i].start_date.split("-");
-                var end_date_nums = reservations[i].end_date.split("-");
+                var hours = parseInt(reservations[i].hours);
+                var minutes = parseInt(reservations[i].minutes);
                 var start_time_nums = reservations[i].start_time.split(":");
-                var end_time_nums = reservations[i].end_time.split(":");
+                
                 var start_date_obj = new Date(
-                                            start_date_nums[0], 
-                                            start_date_nums[1],
-                                            start_date_nums[2],
-                                            start_time_nums[0],
-                                            start_date_nums[1]);
+                                            parseInt(start_date_nums[0]), 
+                                            parseInt(start_date_nums[1]) - 1,
+                                            parseInt(start_date_nums[2]),
+                                            parseInt(start_time_nums[0]),
+                                            parseInt(start_time_nums[1]));
                 
                 var end_date_obj = new Date(
-                                            end_date_nums[0],
-                                            end_date_nums[1],
-                                            end_date_nums[2],
-                                            end_time_nums[0],
-                                            end_time_nums[1]);
-                
+                                            parseInt(start_date_nums[0]),
+                                            parseInt(start_date_nums[1]) - 1,
+                                            parseInt(start_date_nums[2]),
+                                            parseInt(start_time_nums[0]) + hours,
+                                            parseInt(start_time_nums[1]) + minutes);
+                                
                 var appendZero = function(number){
                     if(number < 10) {
                         return "0" + number;
@@ -130,11 +136,14 @@ re.render = (function() {
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
             
-            for (let reservation of reservations) {
-                $('#' + reservation._id).longpress(function() {
-                    re.controller.editReservationItem(reservation._id);
-                    console.log("Long press on reservation!");
-                });
+            console.log(reservations);
+            for (var i in reservations) {
+                    console.log("reservation");
+                    console.log("#" + reservations[i]._id);
+                    $("#" + reservations[i]._id).click(function() {
+                      re.controller.editReservationItem(reservations[i]._id);
+                      console.log("Long press on reservation!");
+                    });
             }
         });
     }
@@ -159,41 +168,59 @@ re.render = (function() {
         });
     }
     
-    function renderFacebookLoginView() {
-        $('.page').html(facebookLoginTemplate());
-    }
-    
-    function renderGroupLoginView() {
-        $('.page').html(groupLoginTemplate());
-    }
-    
+    /**
+    * Sets the HTML value of the injectable page area to the rendered chores view.
+    */
     function renderChoreView() {
         $('.page').html(choreTemplate());
     }
     
     /**
+    * Sets the HTML value of the injectable page area to the rendered facebook login view.
+    * This view should only be shown to users for whom we do not yet have a user (FB) id number.
+    */
+    function renderFacebookLoginView() {
+        $('.page').html(facebookLoginTemplate());
+    }
+    
+    /**
+    * Sets the HTML value of the injectable page area to the rendered group joining/creation view.
+    * This view should only be shown to users for whom we do not yet have a group id number.
+    */
+    function renderGroupLoginView() {
+        $('.page').html(groupLoginTemplate());
+    }
+    
+    /**
     * Renders the correct view for the injectable area of the viewport.
     * Uses the current hash of the URL to determine which view should be
-    * rendered, then calls the appropriate rendering function. If the hash
-    * is not set (on first load), the feed view is rendered.
+    * rendered, then calls the appropriate rendering function. The default
+    * view to be rendered is dependent on whether or not we have a user
+    * and group ID for the current user (will either default to FB login page,
+    * group login page, or feed view depending on which IDs we need for the user).
     */
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        if (hash == "#fb") {
+        var u_id = window.localStorage.getItem('user_id');
+        var g_id = window.localStorage.getItem('group_id');
+        alert("routing, hash= " + hash + ", user id: " + u_id + ", group id: " + g_id);
+        if ((!hash && !u_id) || hash == "#fb") {
             renderFacebookLoginView();
-        } else if (!hash || hash == "#list") {      
-            renderFacebookLoginView();
+        } else if ((!g_id) hash == "#gl") {
+            renderGroupLoginView();
+        } else if (!hash || hash == "#feed") {
+            renderFeedView();
+        } else if (hash == "#list") {      
+            renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
-        } else if (hash == "#feed") {
-            renderFeedView();
-        } else if (hash == "#gl") {
-            renderGroupLoginView();
         } else if (hash == "#scheduler") {
             renderSchedulerView();
         } else if (hash == "#chore") {
             renderChoreView();
+        } else {
+            alert("routing to unknown location");
         }
     }
     
@@ -202,6 +229,8 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
+        alert("called render.init");
+        console.log("render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
                            "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");

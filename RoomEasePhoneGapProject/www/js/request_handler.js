@@ -216,10 +216,10 @@ re.requestHandler = (function(){
 	}
 
 	/**
-	*Returns true if a list contains the given id, false otherwise
-	*	list: The list the potentially contains id
-	*	id: The l
-	*/	
+	 * Returns true if a list contains the given id, false otherwise
+	 * @param list {Array} The list the potentially contains id
+	 * @param id {String} The id we are searching for in the given list.
+	 */	
 	function contains_id(list, id) {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i] === id) {
@@ -229,6 +229,8 @@ re.requestHandler = (function(){
 		return false;
 	}
 
+    // Return the public API of this module, only making
+    // the following functions visible to other modules.
 	return {
 		'addItem': addItem,
 		'updateItem': updateItem,

@@ -1,4 +1,7 @@
-
+/** 
+ * This file is purely to demonstrate the expected structure of the various JSON
+ * objects we are storing in our database for each of the modules.
+ */
 
 
 ///The users_item and the groups_item will mostly be used by ////////////////

@@ -1,8 +1,8 @@
 re.fbHandler = (function() {
     
     function moveToGroupLogin(userInfo) {
-        window.localStorage['user_id'] = userInfo['id'];
-        alert(window.localStorage['user_id']);
+        window.localStorage.setItem('user_id', userInfo['id']);
+        alert(window.localStorage.getItem('user_id'));
         re.loginHandler.registerNewUser(userInfo['id'], userInfo['name'],
             function(success, repeat, error) {
                 if (success) {
@@ -25,7 +25,6 @@ re.fbHandler = (function() {
     *     the right parameters
     */
     function login(callback) {
-        alert("what is love!");
         // initialize openFB library with your app's ID
         // TODO: this id is a testAppID, change to appropriate ID
         openFB.init({appId: '935583189852299'});

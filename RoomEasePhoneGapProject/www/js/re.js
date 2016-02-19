@@ -11,12 +11,12 @@
 var re = {};
 
 /**
-* Function to be called when the page has loaded.  Defines the various
-* rendering functions, implements the logic to listen for changes to the
-* URL hash and render the correct view accordingly. Loads (compiles) all
-* of the templates for the various views so they are ready to be displayed.
+* Function to be called when the page has loaded.  Initializes the necessary
+* modules to start the page on the correct viewport.
 */
-$(document).ready(function () {  
+$(document).ready(function() {
     re.controller.init();
     re.render.init();
 });
+
+

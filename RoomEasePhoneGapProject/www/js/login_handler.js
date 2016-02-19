@@ -1,8 +1,20 @@
+/**
+ * re.loginHandler is a module which handles the login logic and functionality for
+ * RoomEase users and RoomEase groups (not facebook login).
+ * @return {Object} an Object representing re.loginHandler, which contains functions
+ *     for registering new users, registering new groups, adding users to those groups,
+ *     and so on.
+ */
 re.loginHandler = (function() {
 
 	var tables = ["groups", "users", "group_login"];
 	var databases = {};
 
+    /**
+     * Initiliazes the loginHandler module so that its other functions
+     * can be called properly. 
+     * @param {String} the URL to the database that is storing the login info for this app
+     */
 	function init(database_location) {
 		for (var i = 0; i < tables.length; i++) {
 			databases[tables[i]] = 
@@ -96,7 +108,7 @@ re.loginHandler = (function() {
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
-
+        console.log("adding user to group");
 		var already_in_grp = false;
 		var name_of_map_reduce_function = 'get_by_uids/uids';
 
@@ -114,7 +126,7 @@ re.loginHandler = (function() {
 		 		 include_docs : true
 				})
 				.then(function (result) {
-					if(result.rows.length != 1){
+					if(result.rows.ngth != 1){
 						throw "Error: Multiple entries for the same user ID"
 					} else {
 					 	result.rows[0].doc.group_num = group_id;
@@ -195,29 +207,72 @@ re.loginHandler = (function() {
 	*	error: String describing if an error occured, null if no error occured.
 	**/
 	function getGroupNumber(group_name, group_password, callback) {
+        alert("getting group num");
 		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
 		databases["group_login"].query('group_login/get_group_obj_by_name', {
 			key: group_name,
 			include_docs: true,
  			attachments: true
 
-		})
-		.then(function(result){
+		}).then(function(result){
+            alert("groupNum then branch");
 			if (result.rows[0].doc.group_password === group_password) {
 				callback(true, false, result.rows[0].doc.group_id, null);
 			} else {
 				callback(false, true, null, "Error: Incorrect password");
 			}
 		}).catch(function(err){
+            alert("groupNum error branch");
 			callback(false, false, null, err);
 
 		});
+        alert("finished groupNum call");
 	}
+    
+    /**
+     * Given a name and password for a RoomEase group, attempts to add the current
+     * user to that group.
+     * @precondition window.localStorage['user_id'] holds the current user's FB ID
+     * @param name {String} the name of the RoomEase group that is being joined
+     * @param password {String} the password for the RoomEase group that is being joined
+     */
+    function attemptGroupJoin(name, password) {
+        console.log("group name:" + name);
+        console.log("group password: " + password);
+        getGroupNumber(name, password, function(isSuccess, incorrectPwd, groupNum, error) {
+            console.log("function call in groupNumber");
+            if (!isSuccess) {
+                alert("group name/password combination not found.");
+            } else if (incorrectPwd) {
+                alert("password incorrect!");
+            } else if (error) {
+                alert("An error occurred: " + error);
+            } else {
+                console.log("successful group lookup, attempting to join");
+                addUserToGroup(window.localStorage.getItem("user_id"), groupNum,
+                            function(success, alreadyIn, error) {
+                    if (success) {
+                        // Store the group ID locally and permanently, then route to
+                        // the landing page, they are now in their group!
+                        console.log("successfully joined group");
+                        window.localStorage.setItem("group_id", groupNum);
+                        window.location.hash = "";
+                    }else if (alreadyIn) {
+                        alert("you're already in that group!");
+                    } else {
+                        alert("there was an error: " + error);
+                    }
+                });
+            }
+        });
+        console.log("got to end of attemptGroupJoin");
+    }
+    
 	/**
-	*Returns true if a list contains the given id, false otherwise
-	*	list: The list the potentially contains id
-	*	id: The l
-	*/	
+	 * Returns true if a list contains the given id, false otherwise
+	 * @param list {Array} The list the potentially contains id
+	 * @param id {String} The id we are searching for in the given list.
+	 */	
 	function contains_id(list, id) {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i] === id) {
@@ -225,18 +280,18 @@ re.loginHandler = (function() {
 			} 
 		}
 		return false;
-
-		// wouldn't this be faster?
-		//return list.indexOf(id) >= 0;
 	}
 
+    // Return the public API of the login handler, only making
+    // the following functions visible to other modules.
 	return {
 		'init': init,
 		'createNewGroup': createNewGroup,
 		'registerNewUser': registerNewUser,
 		'addUserToGroup': addUserToGroup,
 		'generateGroupLoginInfo': generateGroupLoginInfo,
-		'getGroupNumber': getGroupNumber
+		'getGroupNumber': getGroupNumber,
+        'attemptGroupJoin': attemptGroupJoin
 	}
 })();
 
