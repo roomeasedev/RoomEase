@@ -168,12 +168,10 @@ re.controller = (function() {
             console.log("Hours: " + hours);
             console.log("Minutes: " + minutes);
             
-            addReservationToDatabase(reserveName, start_time, start_date, hours, minutes, function(is_success, error){
-                re.render.renderSchedulerView();
-            });
-
-            // TODO: put in some form of reloading
-            //       location.reload() doesn't work; lists won't ever be displayed even if in database
+            var newresv = createReservation(reservation_name, start_time, start_date, hours, minutes);  
+            console.log("New res:");
+            console.log(newresv);
+            re.requestHandler.addItem(newresv, rhAddCallback);
         });
 
         // clears the fields in popup & closes it
@@ -185,90 +183,6 @@ re.controller = (function() {
             $('#name').val('');
             $('#items').val('');
         });
-    }
-
-    /* Resets the sizes of the Cancel and Done buttons and makes the
-     * delete button visible again.
-     */
-    function resetButtons() {
-        $('#delete').css('display', 'block');
-        $('#cancel').css('width', '30%');
-        $('#done').css('width', '30%');
-    }
-    
-    /* Creates a JSON list object to add to database & handles any resulting errors
-     * name: the name of the list
-     * items: string of items to put into list
-     */
-    function addListToDatabase(listName, items, text) {
-        var newlist = re.controller.createList(listName, items, text);        
-        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
-            if (is_success) {
-                console.log("successfully added list");
-                // TODO: reload
-                re.renderListView();
-            } else {
-                console.log(error);
-                // let user know an error occurred and prompt them to try again
-                $('.error-popup').css('display', 'block');
-                $('#exit-error').click(function() {
-                    $('.error-popup').css('display', 'none');
-                    $('.popupBackground').css('display', 'block');
-                });
-            }
-        });
-    }
-
-    //callback(is_success, error)
-    function addReservationToDatabase(reservation_name, start_time,start_date, hours, minutes, callback){
-        var newlist = createReservation(reservation_name, start_time, start_date, hours, minutes);  
-        console.log("New res:");
-        console.log(newlist);
-        re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
-            if (is_success) {
-                console.log("successfully added schedule item");
-                callback(true, null);
-            } else {
-                console.log(error);
-                callback(false, error);
-                // let user know an error occurred and prompt them to try again
-                $('.error-popup').css('display', 'block');
-                $('#exit-error').click(function() {
-                    $('.error-popup').css('display', 'none');
-                    $('.popupBackground').css('display', 'block');
-                });
-            }
-        });
-    }
-    
-    /* Creates a JSON list object with listName, items, & text
-     *
-     */
-    function createList(listName, items, text) {
-        return list = {
-            "type": "list",
-            "name_of_list": listName,
-            "text": text,
-            // TODO: not sure what to split on -- all whitespace may be incorrect
-            "items": items.split(" "),
-            "visible_users":
-                ["12345567878", //Hardcoding in IDs for now
-                    "124444433333"], 
-            "modifiable_users":
-                ["12344444", //Hardcoded
-                "1124444444"]
-        }
-    }
-    
-    function createReservation(name_of_res, start_time, start_date, hours, minutes){
-        return test_reservations_item = {
-            "type": "reservation",
-            "name_of_item" : name_of_res,
-            "start_time" : start_time,
-            "start_date" : start_date,
-            "hours" : hours,
-            'minutes': minutes
-        }
     }
     
     /* Edits an existing list
@@ -286,12 +200,11 @@ re.controller = (function() {
         
         // TODO: populates popup with current items in list
         //       --> currently can't grab an item with just the id, either in database or in local copy
-        /*   thisList = list_items[listId]
-             $('#name').val(listId.name);
-             for (let item of thisList.items) {
-                $('#next-item')
-             }
-        */
+        thisList = list_items[listId];
+        $('#name').val(listId.name);
+        for (var i in thisList.items) {
+//            $('#next-item')
+        }
         
         // TODO: Have this update the list item in the database
         // Adds the new list to the database when the done button is pressed
@@ -310,9 +223,10 @@ re.controller = (function() {
         // TODO: doesn't really function atm but shouldn't be a big change
         // ALSO: we should probably be able to delete without having to go into editing mode first
         $('#delete').click(function() {
-            re.requestHandler.deleteItem(list_items[listId], errorHandler);
+            re.requestHandler.deleteItem(listId, "list", errorHandler);
         });
     }
+    
     function editReservationItem(reservationId){
         console.log("Here!");
         
