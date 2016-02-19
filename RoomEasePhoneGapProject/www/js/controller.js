@@ -23,10 +23,8 @@ re.controller = (function() {
 	function init() {
         //Initialize login handler and request_handler
         re.loginHandler.init("http://40.114.43.49:5984/");
-        var userId = 8080;
-            //window.localStorage.getItem('user_id');
-        var groupId = "089d6e77903ccfb44b5bcad1f7331849";
-            window.localStorage.getItem("group_id");
+        var userId = window.localStorage.getItem('user_id');
+        var groupId = window.localStorage.getItem("group_id");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
 		} else if (!groupId){

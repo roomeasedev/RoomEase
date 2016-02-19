@@ -79,6 +79,7 @@ re.render = (function() {
                 var minutes = parseInt(reservations[i].minutes);
                 var start_time_nums = reservations[i].start_time.split(":");
                 
+                console.log()
                 console.log(start_date_nums);
                 console.log(hours);
                 console.log(minutes);
@@ -229,10 +230,8 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        var u_id = 8080; 
-            //window.localStorage.getItem('user_id');
-        var g_id =  "089d6e77903ccfb44b5bcad1f7331849";
-            //window.localStorage.getItem('group_id');
+        var u_id = window.localStorage.getItem('user_id');
+        var g_id = window.localStorage.getItem('group_id');
         console.log("routing, hash= " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
         console.log(!null);
