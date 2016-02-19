@@ -1,4 +1,13 @@
 "use strict";
+/**
+ * re.render is a module which contains the rendering and page-routing logic for the
+ * RoomEase application.  This rendering module contains functions to render each of
+ * the views, to compile/load the rendered templates from the template loader, and to
+ * route the page to the correct view when the hash of the URL is changed.
+ * @return {Object} an Object representing re.render. The 'init' function should be called
+ *     on document ready, before other functions of re.render are called.
+ */
+//TODO: refactor this file to remove the request handler calls from this module
 re.render = (function() {
     // Define various templates, which hold the compiled templates for each of the views.
     var feedTemplate;
@@ -119,17 +128,14 @@ re.render = (function() {
                 if((new Date()).getTime() < end_date_obj){
                     date_time_reservations.push(start_end_date_obj);              
                 } else {
-                    //Delete that reservation from the DB
+                    //TODO: Delete that reservation from the DB
                 }
-                
             }
              
             date_time_reservations.sort(function(a, b){
                return a.unix_start - b.unix_start; 
             });
              
-             
-                    
             $('.page-title').html('Reservations');
             
              //TODO: Make it so we use reservation_dictionary to aggregate all of the 
@@ -138,12 +144,12 @@ re.render = (function() {
             
             console.log(reservations);
             for (var i in reservations) {
-                    console.log("reservation");
-                    console.log("#" + reservations[i]._id);
-                    $("#" + reservations[i]._id).click(function() {
-                      re.controller.editReservationItem(reservations[i]._id);
-                      console.log("Long press on reservation!");
-                    });
+                console.log("reservation");
+                console.log("#" + reservations[i]._id);
+                $("#" + reservations[i]._id).click(function() {
+                    re.controller.editReservationItem(reservations[i]._id);
+                    console.log("Long press on reservation!");
+                });
             }
         });
     }
@@ -204,7 +210,8 @@ re.render = (function() {
         console.log(hash);
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
-        alert("routing, hash= " + hash + ", user id: " + u_id + ", group id: " + g_id);
+        console.log("routing, hash= " + hash + ", user id: " + u_id +
+                    ", group id: " + g_id);
         if ((!hash && !u_id) || hash == "#fb") {
             renderFacebookLoginView();
         } else if ((!g_id) || hash == "#gl") {
@@ -224,13 +231,13 @@ re.render = (function() {
         }
     }
     
-    // Call the load function of re.templates, compiling the HTML templates
-    // for all existing views.  When load finishes, set the values of the
-    // template variables to store the appropriate compiled templates. Finally,
-    // route the viewport to the correct view based on the current hash.
+    /** Call the load function of re.templates, compiling the HTML templates
+     * for all existing views.  When load finishes, set the values of the
+     * template variables to store the appropriate compiled templates. Finally,
+     * route the viewport to the correct view based on the current hash.
+     */
     function init() {
-        alert("called render.init");
-        console.log("render.init");
+        console.log("called render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
                            "FacebookLogin", "GroupLogin"]).done(function () {
             feedTemplate = re.templates.get("Feed");
@@ -246,8 +253,10 @@ re.render = (function() {
             route();
         });   
     }
-   
     
+    // Return the public API of re.render, only making the
+    // following functions from this file visible to the other
+    // modules.
     return {
         'init': init,
         'route': route,
