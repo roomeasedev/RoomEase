@@ -127,6 +127,9 @@ re.controller = (function() {
             });
             var newlist = createList(listName, listItems);
             re.requestHandler.addItem(newlist, rhAddCallback);
+
+
+            
         });
     }
 
