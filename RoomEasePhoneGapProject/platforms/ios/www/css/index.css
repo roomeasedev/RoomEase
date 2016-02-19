@@ -148,6 +148,12 @@ input:focus, {
   top: 0px;
   left: 0px;
 }
+
+.reservation-form-field {
+    margin-bottom: 0; 
+    font-size: 2.0em; 
+    line-height: 1.25em;
+}
     
     #facebook-login p {
         text-align: center;

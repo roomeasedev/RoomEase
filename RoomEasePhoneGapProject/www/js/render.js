@@ -205,9 +205,9 @@ re.render = (function() {
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
         alert("routing, hash= " + hash + ", user id: " + u_id + ", group id: " + g_id);
-        if (hash == "#fb") {
+        if ((!hash && !u_id) || hash == "#fb") {
             renderFacebookLoginView();
-        } else if (hash == "#gl") {
+        } else if ((!g_id) || hash == "#gl") {
             renderGroupLoginView();
         } else if (!hash || hash == "#feed") {
             renderFeedView();

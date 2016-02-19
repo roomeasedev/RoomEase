@@ -96,7 +96,7 @@ re.loginHandler = (function() {
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
-        alert("adding user to group");
+        console.log("adding user to group");
 		var already_in_grp = false;
 		var name_of_map_reduce_function = 'get_by_uids/uids';
 
@@ -114,7 +114,7 @@ re.loginHandler = (function() {
 		 		 include_docs : true
 				})
 				.then(function (result) {
-					if(result.rows.length != 1){
+					if(result.rows.ngth != 1){
 						throw "Error: Multiple entries for the same user ID"
 					} else {
 					 	result.rows[0].doc.group_num = group_id;
@@ -202,15 +202,16 @@ re.loginHandler = (function() {
 			include_docs: true,
  			attachments: true
 
-		})
-		.then(function(result){
+		}).then(function(result){
+            alert("groupNum then branch");
 			if (result.rows[0].doc.group_password === group_password) {
-				callback(true, false, result.rows[0].doc.group_id, null);
+				return callback(true, false, result.rows[0].doc.group_id, null);
 			} else {
-				callback(false, true, null, "Error: Incorrect password");
+				return callback(false, true, null, "Error: Incorrect password");
 			}
 		}).catch(function(err){
-			callback(false, false, null, err);
+            alert("groupNum error branch");
+			return callback(false, false, null, err);
 
 		});
         alert("finished groupNum call");
