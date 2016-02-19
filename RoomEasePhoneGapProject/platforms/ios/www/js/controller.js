@@ -1,6 +1,6 @@
 re.controller = (function() {
 
-	var list_items = [];
+	var list_items = {};
 	var fridge_items = [];
 	var reservation_items = [];
 	var chores_items = [];
@@ -23,6 +23,80 @@ re.controller = (function() {
 		console.log("re.controller init finished!");
 	}
     
+    
+/********************* "PRIVATE" FUNCTIONS **************************/
+    
+    /* Callback function for database
+     */
+    function rhAddCallback(is_success, revised_item, error) { 
+        errorHandler(is_success, error);
+    }
+    
+    function errorHandler(is_success, error) {
+        if (is_success) {
+            console.log("successfully added list");
+            re.render.route();
+            // TODO: scroll to where the new list is
+        } else {
+            console.log(error);
+            // let user know an error occurred and prompt them to try again
+            $('.error-popup').css('display', 'block');
+            $('#exit-error').click(function() {
+                $('.error-popup').css('display', 'none');
+            });
+        }        
+    }
+        
+    /* Creates a JSON list object with listName, & items
+     *
+     */
+    function createList(listName, items) {
+        return list = {
+            "type": "list",
+            "name_of_list": listName,
+            "text": "",
+            "items": items,
+            "visible_users":
+                ["12345567878", //Hardcoding in IDs for now
+                    "124444433333"], 
+            "modifiable_users":
+                ["12344444", //Hardcoded
+                "1124444444"]
+        }
+    }
+    
+    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
+        return test_reservations_item = {
+            "type": "reservation",
+            "name_of_item" : name_of_res,
+            "start_time" : start_time,
+            "end_time" : end_time,
+            "start_date" : start_date,
+            "end_date" : end_date,
+        }
+    }
+    
+    /* Clears the list elements from a popup
+     * @param containerId The id of the text container in the popup to be emptied
+     */
+    function clearItems(containerId) {
+        $('#' + containerId).empty().html(
+            '<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
+        );
+    }
+    
+    /* Resets the sizes of the Cancel and Done buttons and makes the
+     * delete button visible again.
+     */
+    function resetButtons() {
+        $('#delete').css('display', 'block');
+        $('#cancel').css('width', '30%');
+        $('#done').css('width', '30%');
+    }
+    
+    
+/********************* PUBLIC FUNCTIONS ************************/    
+    
     /* Onclick function for new list button
      *
      */
@@ -44,9 +118,7 @@ re.controller = (function() {
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            $('#new-list-btn').css('display', 'block');
-            $('.popupBackground').css('display', 'none');
-            resetButtons();
+            hidePopup();
             var listName = $('#name').val();
             var listItems = [];
             var inputs = $('#list-items :input');
@@ -54,65 +126,44 @@ re.controller = (function() {
                 listItems.push($(this).val());
             });
             var newlist = createList(listName, listItems);
-            // TO DO: refactor out the callback function
-            re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
-                if (is_success) {
-                    console.log("successfully added list");
-                    re.render.renderListView();
-                    // TODO: scroll to where the new list is
-                } else {
-                    console.log(error);
-                    // let user know an error occurred and prompt them to try again
-                    $('.error-popup').css('display', 'block');
-                    $('#exit-error').click(function() {
-                        $('.error-popup').css('display', 'none');
-                        $('.popupBackground').css('display', 'block');
-                    });
-                }
-            });
-        });
-
-        // clears the fields in popup & closes it
-        $('#cancel').click(function() {
-            $('#new-list-btn').css('display', 'block');
-            $('.popupBackground').css('display', 'none');
-            resetButtons();
-            $('#name').val('');
-            $('#items').val('');
+            re.requestHandler.addItem(newlist, rhAddCallback);
         });
     }
 
-    function makeNewReservation( ){
+    function makeNewReservation(){
         $('#new-reservation-btn').css('display', 'none');
         $('.popupBackground').css('display', 'block');
         
-        // Hide Delete button and resize Cancel and Done buttons
-        $('#create-cancel').css('width', '49%');
-        $('#create-done').css('width', '49%');
+//        // Hide Delete button and resize Cancel and Done buttons
+//        $('#delete').css('display', 'none');
+//        $('#cancel').css('width', '49%');
+//        $('#done').css('width', '49%');
         
-        // Adds the new list to the database when the done button is pressed
+        // Adds the new reservation to the database when the done button is pressed
         $('#create-done').click(function() {
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
+            console.log("hi trying to fix things");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
             resetButtons();
-            var listName = $('#name').val();
+            var reserveName = $('#name').val();
             var start_time = $('#start-time').val();
-            var end_time = $("#end-time").val();
+            var minutes = $("#reservation-minutes").val();
+            var hours = $("#reservation-hours").val();
             var start_date = $("#start-date").val();
-            var end_date = $("#end-date").val();
+            console.log("Hours: " + hours);
+            console.log("Minutes: " + minutes);
             
-            re.controller.addReservationToDatabase(listName, start_time, end_time, start_date, end_date, function(is_success, error){
+            addReservationToDatabase(reserveName, start_time, start_date, hours, minutes, function(is_success, error){
                 re.render.renderSchedulerView();
             });
-            //re.controller.addListToDatabase(listName, items, text);
+
             // TODO: put in some form of reloading
             //       location.reload() doesn't work; lists won't ever be displayed even if in database
         });
 
         // clears the fields in popup & closes it
         $('#create-cancel').click(function() {
-            console.log("Pressed cancel delete!");
+            console.log("Pressed cancel!");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
             resetButtons();
@@ -154,8 +205,10 @@ re.controller = (function() {
     }
 
     //callback(is_success, error)
-    function addReservationToDatabase(reservation_name, start_time, end_time, start_date, end_date, callback){
-        var newlist = createReservation(reservation_name, start_time, end_time, start_date, end_date);        
+    function addReservationToDatabase(reservation_name, start_time,start_date, hours, minutes, callback){
+        var newlist = createReservation(reservation_name, start_time, start_date, hours, minutes);  
+        console.log("New res:");
+        console.log(newlist);
         re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
             if (is_success) {
                 console.log("successfully added schedule item");
@@ -192,14 +245,14 @@ re.controller = (function() {
         }
     }
     
-    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
+    function createReservation(name_of_res, start_time, start_date, hours, minutes){
         return test_reservations_item = {
             "type": "reservation",
             "name_of_item" : name_of_res,
             "start_time" : start_time,
-            "end_time" : end_time,
             "start_date" : start_date,
-            "end_date" : end_date,
+            "hours" : hours,
+            'minutes': minutes
         }
     }
     
@@ -216,47 +269,39 @@ re.controller = (function() {
         // Bind Focus listener to next-item
         $('#next-item').on('focus', changeFocus);
         
-        //TODO: Have this update the list item in the database
+        // TODO: populates popup with current items in list
+        //       --> currently can't grab an item with just the id, either in database or in local copy
+        /*   thisList = list_items[listId]
+             $('#name').val(listId.name);
+             for (let item of thisList.items) {
+                $('#next-item')
+             }
+        */
+        
+        // TODO: Have this update the list item in the database
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
-            $('#new-list-btn').css('display', 'block');
-            $('.popupBackground').css('display', 'none');
+            hidePopup();
             var listName = $('#name').val();
-            var listItems = [];
+            var editedItems = [];
             var inputs = $('#list-items :input');
             inputs.each(function() {
-                listItems.push($(this).val());
+                editedItems.push($(this).val());
             });
             var editedList = createList(listName, listItems);
-            re.requestHandler.updateItem(editedList, function(is_success, revised_item, error) { 
-                if (is_success) {
-                    console.log("successfully edited list");
-                    re.render.renderListView();
-                    // TODO: scroll to where the new list is
-                } else {
-                    console.log(error);
-                    // let user know an error occurred and prompt them to try again
-                    $('.error-popup').css('display', 'block');
-                    $('#exit-error').click(function() {
-                        $('.error-popup').css('display', 'none');
-                        $('.popupBackground').css('display', 'block');
-                    });
-                }
-            });
+            re.requestHandler.updateItem(editedList, rhAddCallback);
         });
-
-        //TODO: Have this clear fields
-        // clears the fields in popup & closes it
-        $('#cancel').click(function() {
-            $('#new-list-btn').css('display', 'block');
-            $('.popupBackground').css('display', 'none');
-            $('#name').val('');
-            $('#items').val('');
+        
+        // TODO: doesn't really function atm but shouldn't be a big change
+        // ALSO: we should probably be able to delete without having to go into editing mode first
+        $('#delete').click(function() {
+            re.requestHandler.deleteItem(list_items[listId], errorHandler);
         });
     }
-
     function editReservationItem(reservationId){
-        $('#new-reservation-btn').css('display', 'none');
+        console.log("Here!");
+        
+        $('#delete-reservation-btn').css('display', 'none');
         $('.delete-reservation-popup').css('display', 'block');
         //$('#' + reservationId).css('display', 'block');
                 
@@ -265,7 +310,9 @@ re.controller = (function() {
         $('#delete-delete').click(function() {
             $('#new-reservation-btn').css('display', 'block');
             $('.delete-reservation-popup').css('display', 'none');
-            $("#" + reservationId).css('display', 'none'); //Lazy delete
+            re.requestHandler.deleteItem(reservationId, "reservation", function(is_success, was_deleted, err){
+                re.render.renderSchedulerView();   
+            });
             // TODO: put in some form of reloading
             //       location.reload() doesn't work; lists won't ever be displayed even if in database
         });
@@ -275,9 +322,8 @@ re.controller = (function() {
         $('#delete-cancel').click(function() {
             $('#new-reservation-btn').css('display', 'block');
             $('.delete-reservation-popup').css('display', 'none');
-        });    
+        });            
     }
-
     
     /* Switches the onfocus method from the previous next-item input field to a new one
      */
@@ -290,82 +336,26 @@ re.controller = (function() {
         
         // Bind Focus listener to next-item
         $('#next-item').on('focus', changeFocus);
-    }
+    } 
     
-/********************* "PRIVATE" METHODS **************************/
-    
-    /* Creates a JSON list object to add to database & handles any resulting errors
-     * name: the name of the list
-     * items: string of items to put into list
-     */
-    function addListToDatabase(newlist) {    
-    }
-    
-    function updateList(editedList) {
-    }
-    
-    /* Creates a JSON list object with listName, & items
-     *
-     */
-    function createList(listName, items) {
-        return list = {
-            "type": "list",
-            "name_of_list": listName,
-            "text": "",
-            "items": items,
-            "visible_users":
-                ["12345567878", //Hardcoding in IDs for now
-                    "124444433333"], 
-            "modifiable_users":
-                ["12344444", //Hardcoded
-                "1124444444"]
-        }
-    }
-        
-    function reqHandCallback(is_success, revised_item, error) { 
-        if (is_success) {
-            console.log("successfully added list");
-            re.render.renderListView();
-            // TODO: scroll to where the new list is
-        } else {
-            console.log(error);
-            // let user know an error occurred and prompt them to try again
-            $('.error-popup').css('display', 'block');
-            $('#exit-error').click(function() {
-                $('.error-popup').css('display', 'none');
-                $('.popupBackground').css('display', 'block');
-            });
-        }
-    }
-    
-    /* Clears the list elements from a popup
-     * @param containerId The id of the text container in the popup to be emptied
-     */
-    function clearItems(containerId) {
-        $('#' + containerId).empty().html(
-            '<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
-        );
-    }
-    
-    /* Resets the sizes of the Cancel and Done buttons and makes the
-     * delete button visible again.
-     */
-    function resetButtons() {
-        $('#delete').css('display', 'block');
-        $('#cancel').css('width', '30%');
-        $('#done').css('width', '30%');
+    // TODO: make this function general --> be able to pass in id of popup to change
+    function hidePopup() {
+        // clears the fields in popup & closes it
+        $('#new-list-btn').css('display', 'block');
+        $('#new-reservation-btn').css('display', 'block');
+        $('.popupBackground').css('display', 'none');
+        resetButtons();
     }
     
 	return {
 		'init': init,
+        'list_items': list_items,
         'makeNewList': makeNewList,
         'makeNewReservation': makeNewReservation,
-        'addListToDatabase': addListToDatabase,
-        'addReservationToDatabase': addReservationToDatabase, 
-        'createList': createList,
         'editList': editList,
-        'editReservationItem': editReservationItem,
         'changeFocus': changeFocus,
-        'list_items': list_items
+        'hidePopup': hidePopup,
+        'editReservationItem':  editReservationItem,
+        'editList': editList
 	}
 })();

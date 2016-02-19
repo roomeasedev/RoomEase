@@ -16,7 +16,17 @@ var re = {};
 * URL hash and render the correct view accordingly. Loads (compiles) all
 * of the templates for the various views so they are ready to be displayed.
 */
-$(document).ready(function () {  
-    re.controller.init();
-    re.render.init();
+console.log("foo");
+re.initialized = false;
+$(document).on('ready', (function() {
+    if (!re.initialized) {
+        re.initialized = true;
+        console.log(re.initialized));
+            // do everything here.
+        alert("I SHOULD ONLY HAPPEN ONCEA")
+        re.controller.init();
+        re.render.init();
+    }
 });
+
+

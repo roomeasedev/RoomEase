@@ -96,7 +96,7 @@ re.loginHandler = (function() {
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
-
+        console.log("adding user to group");
 		var already_in_grp = false;
 		var name_of_map_reduce_function = 'get_by_uids/uids';
 
@@ -114,7 +114,7 @@ re.loginHandler = (function() {
 		 		 include_docs : true
 				})
 				.then(function (result) {
-					if(result.rows.length != 1){
+					if(result.rows.ngth != 1){
 						throw "Error: Multiple entries for the same user ID"
 					} else {
 					 	result.rows[0].doc.group_num = group_id;
@@ -195,24 +195,60 @@ re.loginHandler = (function() {
 	*	error: String describing if an error occured, null if no error occured.
 	**/
 	function getGroupNumber(group_name, group_password, callback) {
+        alert("getting group num");
 		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
 		databases["group_login"].query('group_login/get_group_obj_by_name', {
 			key: group_name,
 			include_docs: true,
  			attachments: true
 
-		})
-		.then(function(result){
+		}).then(function(result){
+            alert("groupNum then branch");
 			if (result.rows[0].doc.group_password === group_password) {
-				callback(true, false, result.rows[0].doc.group_id, null);
+				return callback(true, false, result.rows[0].doc.group_id, null);
 			} else {
-				callback(false, true, null, "Error: Incorrect password");
+				return callback(false, true, null, "Error: Incorrect password");
 			}
 		}).catch(function(err){
-			callback(false, false, null, err);
+            alert("groupNum error branch");
+			return callback(false, false, null, err);
 
 		});
+        alert("finished groupNum call");
 	}
+    
+    function attemptGroupJoin(name, password) {
+        alert("group name:" + name);
+        alert("group password: " + password);
+        getGroupNumber(name, password, function(isSuccess, incorrectPwd, groupNum, error) {
+            alert("function call in groupNumber");
+            if (!isSuccess) {
+                alert("group name/password combination not found.");
+            } else if (incorrectPwd) {
+                alert("password incorrect!");
+            } else if (error) {
+                alert("An error occurred: " + error);
+            } else {
+                alert("other branch");
+                addUserToGroup(window.localStorage.getItem("user_id"), groupNum,
+                            function(success, alreadyIn, error) {
+                    if (success) {
+                        // Store the group ID locally and permanently, then route to
+                        // the landing page, they are now in their group!
+                        alert("success");
+                        window.localStorage.setItem("group_id", groupNum);
+                        window.location.hash = "";
+                    }else if (alreadyIn) {
+                        alert("you're already in that group!");
+                    } else {
+                        alert("there was an error: " + error);
+                    }
+                });
+            }
+        });
+        alert("got to end");
+    }
+    
 	/**
 	*Returns true if a list contains the given id, false otherwise
 	*	list: The list the potentially contains id
@@ -236,7 +272,8 @@ re.loginHandler = (function() {
 		'registerNewUser': registerNewUser,
 		'addUserToGroup': addUserToGroup,
 		'generateGroupLoginInfo': generateGroupLoginInfo,
-		'getGroupNumber': getGroupNumber
+		'getGroupNumber': getGroupNumber,
+        'attemptGroupJoin': attemptGroupJoin
 	}
 })();
 

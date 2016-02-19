@@ -223,7 +223,7 @@ describe("Request Handler suite", function() {
 			expect(revised_item._id).not.toBeNull();
 			expect(revised_item._rev).not.toBeNull();
 			
-			re.requestHandler.deleteItem(revised_item, on_delete);	
+			re.requestHandler.deleteItem(revised_item._id, revised_item.type, on_delete);	
 		}
 
 		var on_delete = function(is_success, error){
@@ -343,7 +343,7 @@ describe("Request Handler suite", function() {
 			expect(revised_item).not.toBeNull();
 			expect(error).toBeNull();
 			revised_item_ref = revised_item;
-			re.requestHandler.deleteItem(revised_item, on_delete);
+			re.requestHandler.deleteItem(revised_item._id, revised_item.type, on_delete);
 		}
 
 		var on_delete = function(is_success, error) {

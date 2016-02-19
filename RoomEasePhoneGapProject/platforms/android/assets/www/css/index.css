@@ -120,7 +120,7 @@ input:focus, {
     margin: 2% 0 0 0;
 }
 
-/** the following are components of .new-list-popup **/
+/** the following are components of .popupBackground **/
 #name, #descrip-text {
     width: 100%;
     background-color: transparent;
@@ -148,6 +148,12 @@ input:focus, {
   top: 0px;
   left: 0px;
 }
+
+.reservation-form-field {
+    margin-bottom: 0; 
+    font-size: 2.0em; 
+    line-height: 1.25em;
+}
     
     #facebook-login p {
         text-align: center;
@@ -159,7 +165,7 @@ input:focus, {
         position:relative;
         margin: 10px auto;
         width: 90%;
-        height: 60%;
+        height: 80%;
         background-color: #fff;
         padding: 10px;
         border-radius: 3px;
