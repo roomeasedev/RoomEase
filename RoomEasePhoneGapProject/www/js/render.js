@@ -61,23 +61,24 @@ re.render = (function() {
             for(var i = 0; i < reservations.length; i++){
                 var start_end_date_obj = {};
                 var start_date_nums = reservations[i].start_date.split("-");
-                var end_date_nums = reservations[i].end_date.split("-");
+                var hours = parseInt(reservations[i].hours);
+                var minutes = parseInt(reservations[i].minutes);
                 var start_time_nums = reservations[i].start_time.split(":");
-                var end_time_nums = reservations[i].end_time.split(":");
+                
                 var start_date_obj = new Date(
-                                            start_date_nums[0], 
-                                            start_date_nums[1],
-                                            start_date_nums[2],
-                                            start_time_nums[0],
-                                            start_date_nums[1]);
+                                            parseInt(start_date_nums[0]), 
+                                            parseInt(start_date_nums[1]) - 1,
+                                            parseInt(start_date_nums[2]),
+                                            parseInt(start_time_nums[0]),
+                                            parseInt(start_time_nums[1]));
                 
                 var end_date_obj = new Date(
-                                            end_date_nums[0],
-                                            end_date_nums[1],
-                                            end_date_nums[2],
-                                            end_time_nums[0],
-                                            end_time_nums[1]);
-                
+                                            parseInt(start_date_nums[0]),
+                                            parseInt(start_date_nums[1]) - 1,
+                                            parseInt(start_date_nums[2]),
+                                            parseInt(start_time_nums[0]) + hours,
+                                            parseInt(start_time_nums[1]) + minutes);
+                                
                 var appendZero = function(number){
                     if(number < 10) {
                         return "0" + number;
@@ -180,9 +181,9 @@ re.render = (function() {
     function route() {
         var hash = window.location.hash;
         console.log(hash);
-        if (hash == "#fb") {
+        if (false && hash == "#fb") {
             renderFacebookLoginView();
-        } else if (!hash || hash == "#list") {      
+        } else if (hash == "#list") {      
             renderFacebookLoginView();
         } else if (hash == "#fridge") {
             renderFridgeView();
@@ -190,7 +191,7 @@ re.render = (function() {
             renderFeedView();
         } else if (hash == "#gl") {
             renderGroupLoginView();
-        } else if (hash == "#scheduler") {
+        } else if (true || hash == "#scheduler") {
             renderSchedulerView();
         } else if (hash == "#chore") {
             renderChoreView();

@@ -98,21 +98,23 @@ re.controller = (function() {
             resetButtons();
             var listName = $('#name').val();
             var start_time = $('#start-time').val();
-            var end_time = $("#end-time").val();
+            var minutes = $("#reservation-minutes").val();
+            var hours = $("#reservation-hours").val();
             var start_date = $("#start-date").val();
-            var end_date = $("#end-date").val();
+            console.log("Hours: " + hours);
+            console.log("Minutes: " + minutes);
             
-            re.controller.addReservationToDatabase(listName, start_time, end_time, start_date, end_date, function(is_success, error){
+            re.controller.addReservationToDatabase(listName, start_time, start_date, hours, minutes, function(is_success, error){
                 re.render.renderSchedulerView();
             });
-            //re.controller.addListToDatabase(listName, items, text);
+
             // TODO: put in some form of reloading
             //       location.reload() doesn't work; lists won't ever be displayed even if in database
         });
 
         // clears the fields in popup & closes it
         $('#create-cancel').click(function() {
-            console.log("Pressed cancel delete!");
+            console.log("Pressed cancel!");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
             resetButtons();
@@ -154,8 +156,10 @@ re.controller = (function() {
     }
 
     //callback(is_success, error)
-    function addReservationToDatabase(reservation_name, start_time, end_time, start_date, end_date, callback){
-        var newlist = createReservation(reservation_name, start_time, end_time, start_date, end_date);        
+    function addReservationToDatabase(reservation_name, start_time,start_date, hours, minutes, callback){
+        var newlist = createReservation(reservation_name, start_time, start_date, hours, minutes);  
+        console.log("New res:");
+        console.log(newlist);
         re.requestHandler.addItem(newlist, function(is_success, revised_item, error) { 
             if (is_success) {
                 console.log("successfully added schedule item");
@@ -192,14 +196,14 @@ re.controller = (function() {
         }
     }
     
-    function createReservation(name_of_res, start_time, end_time, start_date, end_date){
+    function createReservation(name_of_res, start_time, start_date, hours, minutes){
         return test_reservations_item = {
             "type": "reservation",
             "name_of_item" : name_of_res,
             "start_time" : start_time,
-            "end_time" : end_time,
             "start_date" : start_date,
-            "end_date" : end_date,
+            "hours" : hours,
+            'minutes': minutes
         }
     }
     
@@ -265,7 +269,9 @@ re.controller = (function() {
         $('#delete-delete').click(function() {
             $('#new-reservation-btn').css('display', 'block');
             $('.delete-reservation-popup').css('display', 'none');
-            $("#" + reservationId).css('display', 'none'); //Lazy delete
+            re.requestHandler.deleteItem(reservationId, "reservation", function(is_success, was_deleted, err){
+                re.render.renderSchedulerView();   
+            });
             // TODO: put in some form of reloading
             //       location.reload() doesn't work; lists won't ever be displayed even if in database
         });
