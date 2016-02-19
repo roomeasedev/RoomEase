@@ -134,13 +134,14 @@ re.controller = (function() {
         $('#new-reservation-btn').css('display', 'none');
         $('.popupBackground').css('display', 'block');
         
-        // Hide Delete button and resize Cancel and Done buttons
-        $('#delete').css('display', 'none');
-        $('#cancel').css('width', '49%');
-        $('#done').css('width', '49%');
+//        // Hide Delete button and resize Cancel and Done buttons
+//        $('#delete').css('display', 'none');
+//        $('#cancel').css('width', '49%');
+//        $('#done').css('width', '49%');
         
         // Adds the new reservation to the database when the done button is pressed
-        $('#done').click(function() {
+        $('#create-done').click(function() {
+            console.log("hi trying to fix things");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
             resetButtons();
@@ -212,6 +213,7 @@ re.controller = (function() {
     function hidePopup() {
         // clears the fields in popup & closes it
         $('#new-list-btn').css('display', 'block');
+        $('#new-reservation-btn').css('display', 'block');
         $('.popupBackground').css('display', 'none');
         resetButtons();
     }
