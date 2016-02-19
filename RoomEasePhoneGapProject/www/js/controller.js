@@ -29,6 +29,10 @@ re.controller = (function() {
     /* Callback function for database
      */
     function rhAddCallback(is_success, revised_item, error) { 
+        errorHandler(is_success, error);
+    }
+    
+    function errorHandler(is_success, error) {
         if (is_success) {
             console.log("successfully added list");
             re.render.route();
@@ -40,11 +44,7 @@ re.controller = (function() {
             $('#exit-error').click(function() {
                 $('.error-popup').css('display', 'none');
             });
-        }
-    }
-    
-    function rhDelCallback(is_success, error) {
-        rhAddCallback(is_success, null, error);
+        }        
     }
         
     /* Creates a JSON list object with listName, & items
@@ -193,7 +193,13 @@ re.controller = (function() {
         
         // TODO: doesn't really function atm but shouldn't be a big change
         // ALSO: we should probably be able to delete without having to go into editing mode first
-        $('#delete').click(re.requestHandler.deleteItem(list_items[listId], rhDelCallback));
+        $('#delete').click(function() {
+            re.requestHandler.deleteItem(list_items[listId], errorHandler);
+        });
+    }
+    
+    function deleteItem(type, itemId) {
+        
     }
     
     /* Switches the onfocus method from the previous next-item input field to a new one

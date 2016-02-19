@@ -20,16 +20,15 @@ re.render = (function() {
             if(allLists == null) {
                 console.log(error);
             } else {
-                re.controller.list_items = allLists;
-            }
-            
-            $('.page-title').html('List');
-            $('.page').html(listTemplate(re.controller.list_items));
-            
-            for (list in re.controller.list_items) {
-                $('#' + list._id).longpress(function() {
-                    re.controller.editList(list._id);
-                });
+                $('.page-title').html('List');
+                $('.page').html(listTemplate(allLists));
+                for (var i in allLists) {
+                    var list = allLists[i];
+                    re.controller.list_items[list._id] = list; 
+                    $('#' + list._id).longpress(function() {
+                        re.controller.editList(list._id);
+                    });
+                }
             }
         });
     }
@@ -206,7 +205,6 @@ re.render = (function() {
     // template variables to store the appropriate compiled templates. Finally,
     // route the viewport to the correct view based on the current hash.
     function init() {
-        alert("called init");
         console.log("init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
                            "FacebookLogin", "GroupLogin"]).done(function () {
