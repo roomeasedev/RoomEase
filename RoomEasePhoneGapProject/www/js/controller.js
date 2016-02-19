@@ -34,9 +34,6 @@ re.controller = (function() {
             re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);
             
 		}
-        // Example group and user ID are chosen from DB. These values are hard coded so request
-        // handler cooperates.
-
 		console.log("re.controller init finished!");
 	}
     
@@ -106,6 +103,9 @@ re.controller = (function() {
         }
     }
     
+    /**
+     *
+     */
     function createReservation(name_of_res, start_time, start_date, hours, minutes){
         return test_reservations_item = {
             "type": "reservation",
@@ -115,6 +115,14 @@ re.controller = (function() {
             "hours" : hours,
             "minutes" : minutes
         }
+    }
+    
+    function createChore(name_of_chore, recurring, date, assigned) {
+        // TODO: implement this function
+    }
+    
+    function createFridgeItem(name, expiration, shared) {
+        // TODO: implement this function
     }
     
     /* Clears the list elements from a popup
@@ -220,6 +228,17 @@ re.controller = (function() {
         });
     }
     
+    function makeNewFridgeItem() {
+        // TODO: implement this method, which will bring up the popup to add an item,
+        // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
+    }
+    
+        
+    function makeNewChore() {
+        // TODO: implement this method, which will bring up the popup to add a chore,
+        // call createNewChore to create the JSON, and then make the necessary requesthandler call
+    }
+    
     /* Brings up a popup that lets user edit an existing list with id listId. 
      * User can delete the list, or edit the name & items of the list
      */
@@ -303,11 +322,15 @@ re.controller = (function() {
         resetButtons();
     }
     
+    // Return the public API of the controller module,
+    // making the following functions public to other modules.
 	return {
 		'init': init,
         'list_items': list_items,
         'makeNewList': makeNewList,
         'makeNewReservation': makeNewReservation,
+        'makeNewFridgeItem': makeNewFridgeItem,
+        'makeNewChore': makeNewChore,
         'editList': editList,
         'changeFocus': changeFocus,
         'hidePopup': hidePopup,
