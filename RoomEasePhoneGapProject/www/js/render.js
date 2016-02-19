@@ -20,16 +20,15 @@ re.render = (function() {
             if(allLists == null) {
                 console.log(error);
             } else {
-                re.controller.list_items = allLists;
-            }
-            
-            $('.page-title').html('List');
-            $('.page').html(listTemplate(re.controller.list_items));
-            
-            for (list in re.controller.list_items) {
-                $('#' + list._id).longpress(function() {
-                    re.controller.editList(list._id);
-                });
+                $('.page-title').html('List');
+                $('.page').html(listTemplate(allLists));
+                for (var i in allLists) {
+                    var list = allLists[i];
+                    re.controller.list_items[list._id] = list; 
+                    $('#' + list._id).longpress(function() {
+                        re.controller.editList(list._id);
+                    });
+                }
             }
         });
     }
@@ -67,23 +66,24 @@ re.render = (function() {
             for(var i = 0; i < reservations.length; i++){
                 var start_end_date_obj = {};
                 var start_date_nums = reservations[i].start_date.split("-");
-                var end_date_nums = reservations[i].end_date.split("-");
+                var hours = parseInt(reservations[i].hours);
+                var minutes = parseInt(reservations[i].minutes);
                 var start_time_nums = reservations[i].start_time.split(":");
-                var end_time_nums = reservations[i].end_time.split(":");
+                
                 var start_date_obj = new Date(
-                                            start_date_nums[0], 
-                                            start_date_nums[1],
-                                            start_date_nums[2],
-                                            start_time_nums[0],
-                                            start_date_nums[1]);
+                                            parseInt(start_date_nums[0]), 
+                                            parseInt(start_date_nums[1]) - 1,
+                                            parseInt(start_date_nums[2]),
+                                            parseInt(start_time_nums[0]),
+                                            parseInt(start_time_nums[1]));
                 
                 var end_date_obj = new Date(
-                                            end_date_nums[0],
-                                            end_date_nums[1],
-                                            end_date_nums[2],
-                                            end_time_nums[0],
-                                            end_time_nums[1]);
-                
+                                            parseInt(start_date_nums[0]),
+                                            parseInt(start_date_nums[1]) - 1,
+                                            parseInt(start_date_nums[2]),
+                                            parseInt(start_time_nums[0]) + hours,
+                                            parseInt(start_time_nums[1]) + minutes);
+                                
                 var appendZero = function(number){
                     if(number < 10) {
                         return "0" + number;
@@ -136,11 +136,14 @@ re.render = (function() {
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
             
-            for (reservation in reservations) {
-                $('#' + reservation._id).longpress(function() {
-                    re.controller.editReservationItem(reservation._id);
-                    console.log("Long press on reservation!");
-                });
+            console.log(reservations);
+            for (var i in reservations) {
+                    console.log("reservation");
+                    console.log("#" + reservations[i]._id);
+                    $("#" + reservations[i]._id).click(function() {
+                      re.controller.editReservationItem(reservations[i]._id);
+                      console.log("Long press on reservation!");
+                    });
             }
         });
     }
