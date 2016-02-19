@@ -12,16 +12,17 @@
     });
 </script>
 <!-- This section should dynamically insert all of the reservations into the page-->
-<div class="all-reservation-items">
 {{#each this}}
-    <div class="reservation-item" id="{{this._id}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
+<div class="all-reservation-items" id="{{this._id}}">
+    <div class="reservation-item"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
         <ul>
             <li class="white-text" style="font-size: 1.4em">  {{this.start}}</li>  
             <li class="white-text" style="font-size: 1.4em">{{ this.end}}</li>  
         </ul>
 </div>
-{{/each}}
 </div>
+{{/each}}
+
 
 
 <!-- Button to add new chore-->

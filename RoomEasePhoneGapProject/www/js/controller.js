@@ -299,6 +299,8 @@ re.controller = (function() {
         });
     }
     function editReservationItem(reservationId){
+        console.log("Here!");
+        
         $('#delete-reservation-btn').css('display', 'none');
         $('.delete-reservation-popup').css('display', 'block');
         //$('#' + reservationId).css('display', 'block');

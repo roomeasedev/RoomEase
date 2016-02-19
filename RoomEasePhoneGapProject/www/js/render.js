@@ -135,10 +135,10 @@ re.render = (function() {
             $('.page').html(scheduleTemplate(date_time_reservations));
             
             console.log(reservations);
-            for (var i = 0; i < reservations.length; i++) {
+            for (var i in reservations) {
                     console.log("reservation");
-                    console.log(reservations[i]);
-                  $('#' + reservations[i]._id).longpress(function() {
+                    console.log("#" + reservations[i]._id);
+                    $("#" + reservations[i]._id).click(function() {
                       re.controller.editReservationItem(reservations[i]._id);
                       console.log("Long press on reservation!");
                     });
