@@ -1,0 +1,49 @@
+<script>
+    document.getElementById("navbar").style.display = "none";
+    $('.toggle').on('click', function() {
+        document.getElementById("addgroup").className = "";;
+        $('.container').stop().addClass('active');    
+    });
+
+    $('.close').on('click', function() {
+      document.getElementById("addgroup").className = "fa fa-plus";
+      $('.container').stop().removeClass('active');
+    });
+</script>
+<div id="group-login">
+    <div class="pen-title">
+      <h1 style="font-weight: bold" id="grouptitle">RoomEase</h1>
+    </div>
+    <div class="container">
+      <div class="card"></div>
+      <div class="card">
+        <h1 class="title" style="font-size: 2em">Join a group or...</h1>
+        <form>
+          <div class="input-container">
+            <input type="text" id="Username" required="required"/>
+            <label for="Username">Group Name</label>
+            <div class="bar"></div>
+          </div>
+          <div class="input-container">
+            <input type="password" id="Password" required="required"/>
+            <label for="Password">Group Password</label>
+            <div class="bar"></div>
+          </div>
+          <div class="button-container">
+            <button><span>Go</span></button>
+          </div>
+        </form>
+      </div>
+      <div class="card alt">
+        <div class="toggle"><i class="fa fa-plus" id="addgroup"></i></div>
+        <h1 class="title">Create a group
+          <div class="close"></div>
+        </h1>
+        <form>
+          <div class="button-container">
+            <button><span>Create a group!</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>

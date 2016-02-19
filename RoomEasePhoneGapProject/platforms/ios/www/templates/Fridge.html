@@ -1,0 +1,30 @@
+<!--    Template for the Fridge view that will be injected into Index.html at runtime when the user
+        navigates to the Fridge page. It will include the list of food items with their sharing
+        preference and expiration dates that will be dynamically loaded from local storage.  -->
+<script>
+    document.getElementById("navbar").style.display = "";
+    $(".button-collapse").sideNav({
+        menuWidth: 200,
+        closeOnClick: true
+    });
+</script>
+<div class="divider teal lighten-4"></div>
+<div class="row">
+    <div class="nav-wrapper">
+      <ul class="tabs">
+        <li class="tab col s3 teal lighten-1"><a class="white-text" href="#fridge">Mine</a></li>
+        <li class="tab col s3 teal lighten-1"><a class="active white-text" href="#fridge">Shared</a></li>
+      </ul>
+    </div>
+  </div>
+
+<h1>Fridge Manager</h1>
+<form>
+    <input type="text" placeholder="Text" id="text"><br>
+    <input type="text" placeholder="Owner" id="owner"><br>
+    <input type="date" id="date"><br>
+</form>
+<button id="store" onclick="re.storage.store('fridge')">Store</button>
+<button id="show" onclick="re.storage.show('fridge')">Show</button>
+<button id="clear" onclick="re.storage.clear('fridge')">Clear</button><br>
+<textarea rows="20" columns="40" id="area"></textarea>
