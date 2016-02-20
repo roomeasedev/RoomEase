@@ -41,6 +41,9 @@ re.controller = (function() {
 /****************************** "PRIVATE" ****************************************/
     
     /* Callback function for database.addItem
+    *is_success: True if the callback was successful, false otherwise
+    *revised_item: The revised item returned by the database. Null if failed.
+    *error: Describes error if error occured
      */
     function rhAddCallback(is_success, revised_item, error) {
         errorHandler(is_success, error);
@@ -104,7 +107,12 @@ re.controller = (function() {
     }
     
     /**
-     *
+     *Creates a reservation JSON object that will be added to the database.
+    *name_of_res: The name of the reservation item
+    *start_time: the statinf time of the reservation
+    *start_date: the date that the reservation starts
+    *hours: The number of hours in the reservation
+    *minutes: The number of minutes in the reservation
      */
     function createReservation(name_of_res, start_time, start_date, hours, minutes){
         return test_reservations_item = {
@@ -115,14 +123,6 @@ re.controller = (function() {
             "hours" : hours,
             "minutes" : minutes
         }
-    }
-    
-    function createChore(name_of_chore, recurring, date, assigned) {
-        // TODO: implement this function
-    }
-    
-    function createFridgeItem(name, expiration, shared) {
-        // TODO: implement this function
     }
     
     /* Clears the list elements from a popup
@@ -194,6 +194,10 @@ re.controller = (function() {
         });
     }
 
+    /**
+    *Function called make all of the resources visible to add a new reservation in the Reservation tremplate
+    **/
+
     function makeNewReservation(){
         $('#new-reservation-btn').css('display', 'none');
         $('.popupBackground').css('display', 'block');
@@ -228,12 +232,18 @@ re.controller = (function() {
         });
     }
     
+    /**
+    *Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
+    **/
     function makeNewFridgeItem() {
         // TODO: implement this method, which will bring up the popup to add an item,
         // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
     }
     
-        
+    
+    /**
+    *Function called make all of the resources visible to add a new chore item in the Chores tremplate
+    **/
     function makeNewChore() {
         // TODO: implement this method, which will bring up the popup to add a chore,
         // call createNewChore to create the JSON, and then make the necessary requesthandler call
@@ -277,6 +287,7 @@ re.controller = (function() {
         });
     }
     
+    //Function called when a reservation item should be edited or deleted in the Reservation template
     function editReservationItem(reservationId){
         console.log("Here!");
         
