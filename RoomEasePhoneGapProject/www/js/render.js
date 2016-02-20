@@ -257,7 +257,8 @@ re.render = (function() {
             renderGroupLoginView();
         } else */if (hash == "#feed") {
             renderFeedView();
-        } else if (!hash || hash == "#list") {      
+        } else if (!hash || hash == "#list") { 
+            console.log("Here!");
             renderListView();
         } else if (hash == "#fridge") {
             renderFridgeView();
