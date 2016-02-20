@@ -168,11 +168,12 @@ re.render = (function() {
             for (var i in reservations) {
                 console.log("reservation");
                 console.log("#" + reservations[i]._id);
-                $("#" + reservations[i]._id).longpress(function() {
-                    var current = reservations[i];
-                    re.controller.editReservationItem(current._id);
-                    console.log("Long press on reservation!");
-                });
+                (function(current) {
+                    $("#" + current._id).longpress(function() {
+                        re.controller.editReservationItem(current._id);
+                        console.log("Long press on reservation!");
+                    });
+                })(reservations[i]);
             }
         });
     }
