@@ -250,12 +250,12 @@ re.render = (function() {
                     ", group id: " + g_id);
         console.log(!null);
         console.log(!u_id);
-        console.log(typeof u_id);
+        console.log(typeof u_id);/*
         if (!u_id || hash == "#fb") {
             renderFacebookLoginView();
         } else if ((!g_id) || hash == "#gl") {
             renderGroupLoginView();
-        } else if (hash == "#feed") {
+        } else */if (hash == "#feed") {
             renderFeedView();
         } else if (!hash || hash == "#list") {      
             renderListView();

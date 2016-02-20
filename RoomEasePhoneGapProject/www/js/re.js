@@ -23,8 +23,8 @@ $(document).ready(function() {
     //window.localStorage.setItem("user_id", "");
     //window.localStorage.setItem("group_id", "");
     //SET TO TEST VALUES TO GO TO DEFAULT TEST GROUP
-    //window.localStorage.setItem("user_id", "893308038");
-    //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7157b47");
+    window.localStorage.setItem("user_id", "893308038");
+    window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7157b47");
     re.controller.init();
     
     // load templates and render first viewport

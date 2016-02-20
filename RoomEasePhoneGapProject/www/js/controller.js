@@ -257,7 +257,6 @@ re.controller = (function() {
         
         $('#done').click(function() {
             hidePopup();
-            var listName = $('#name').val();
             var updatedItems = [];
             $('#list-items :input').each(function() {
                 if ($(this).val() != '') {
@@ -266,6 +265,7 @@ re.controller = (function() {
             });
             var editedList = thisList;
             editedList.items = updatedItems;
+            editedList.name_of_list = $('#name').val();
             console.log("edited list: " + JSON.stringify(editedList));
             re.requestHandler.updateItem(editedList, rhUpdateCallback);
         });
