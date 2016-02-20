@@ -32,13 +32,15 @@ re.render = (function() {
             } else {
                 $('.page-title').html('List');
                 $('.page').html(listTemplate(allLists));
-                var onLongPressFn = function(list) {
-                    re.controller.editList(list._id);
-                };
+
                 for (var i in allLists) {
                     var list = allLists[i];
                     re.controller.list_items[list._id] = list; 
-                    $('#' + list._id).longpress(onLongPressFn(list));
+                    (function (current) {
+                        $('#' + current._id).longpress(function() {
+                            re.controller.editList(current._id);
+                        })
+                    })(list);
                 }
             }
         });
@@ -167,7 +169,8 @@ re.render = (function() {
                 console.log("reservation");
                 console.log("#" + reservations[i]._id);
                 $("#" + reservations[i]._id).longpress(function() {
-                    re.controller.editReservationItem(reservations[i]._id);
+                    var current = reservations[i];
+                    re.controller.editReservationItem(current._id);
                     console.log("Long press on reservation!");
                 });
             }
