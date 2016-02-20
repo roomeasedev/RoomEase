@@ -5,15 +5,6 @@
 
 <script>
     document.getElementById("navbar").style.display = "none";
-    $('.toggle').on('click', function() {
-        document.getElementById("addgroup").className = "";
-        $('.container').stop().addClass('active');    
-    });
-
-    $('.close').on('click', function() {
-      document.getElementById("addgroup").className = "fa fa-plus";
-      $('.container').stop().removeClass('active');
-    });
 </script>
 <div id="group-login">
     <div class="pen-title">
@@ -51,3 +42,14 @@
       </div>
     </div>
 </div>
+<script>
+    $('.toggle').on('click', function() {
+        document.getElementById("addgroup").className = "";
+        $('.container').stop().addClass('active');    
+    });
+
+    $('.close').on('click', function() {
+      document.getElementById("addgroup").className = "fa fa-plus";
+      $('.container').stop().removeClass('active');
+    });
+</script>
