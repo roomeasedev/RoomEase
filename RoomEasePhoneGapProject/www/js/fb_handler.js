@@ -62,7 +62,6 @@ re.fbHandler = (function() {
 	            * }
 	            */
                 // get the user's info if connection was successful
-                alert(response.status);
                 if(response.status == "connected"){
                     getInfo(callback);
                 } else { // callback with the error message if connection failed
@@ -81,7 +80,6 @@ re.fbHandler = (function() {
     *     the right parameters
     */
     function getInfo(callback) {
-        alert("getInfo called");
         // send a GET request to Facebook to retreave the user's ID
         openFB.api({
             // HTTP method defaulted to GET
