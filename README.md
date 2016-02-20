@@ -100,7 +100,7 @@ http://40.114.43.49:5984/_utils/fauxton/#/_all_dbs
 
 ## Directory Structure:
 
-**config.xml:** Main configuration file. Used by phonegap for global settings.
+**www/config.xml:** Main configuration file. Used by phonegap for global settings.
 
 **platforms:** contains platform-specific files such as AndroidManifest.xml.
 
