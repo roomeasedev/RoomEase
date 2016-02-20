@@ -200,13 +200,22 @@ In developing RoomEase we used the following design patterns and principles:
 
 **Template Method Behavioral Pattern:** We integrated the template method by creating a template main html view that we inject all other views and behavior into it. The main view template can be found in `www/index.html` while all the injected components are in `www/templates`. The JaveScript code responsible for injecting components from `www/templates` into `www/index.html` is `www/js/render.js`. 
 
-**Null Object Behavioral Pattern:** When a user is logged in into RoomEase, their user_id is stored locally. The user is later prompted to either join or create a group, which generates and stores a group_id locally as well. In case of the absence of either of these ID's, the code treats it transparently and recovers. The snip of code that does this can be found in `www/js/controller.js` starting line 12: 
+**Null Object Behavioral Pattern:** Before any attempt to add or edit items that are stored locally, the storage unit attempts to retrieve previously stored lists of items. In case of the absence of either of these lists, the code treats it transparently and recovers. The snip of code that does this can be found in `www/js/localStorage.js` starting line 14: 
 ```
-    if (window.localStorage.getItem("user_id") == null){
-      //Facebook Login
-    } else if (window.localStorage.getItem("group_id") == null){
-      //Add group window
+    var fridgeItems = window.localStorage.getItem("fridge");
+    var listItems = window.localStorage.getItem("list");
+
+    if(fridgeItems != null) { //parse the items list if it exists
+        fridgeItems = JSON.parse(fridgeItems);
+    } else { // create and store the fridge items list if it does not exist
+        fridgeItems = [];
+        window.localStorage.setItem("fridge", JSON.stringify(fridgeItems))
+    }
+    
+    if (listItems != null) {
+        listItems = JSON.parse(listItems);
     } else {
-      //Splash screen
+        listItems = [];
+        window.localStorage.setItem("list", JSON.stringify(listItems));
     }
 ```

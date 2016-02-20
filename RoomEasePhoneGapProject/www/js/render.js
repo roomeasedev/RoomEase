@@ -32,12 +32,13 @@ re.render = (function() {
             } else {
                 $('.page-title').html('List');
                 $('.page').html(listTemplate(allLists));
+                var onLongPressFn = function(list) {
+                    re.controller.editList(list._id);
+                };
                 for (var i in allLists) {
                     var list = allLists[i];
                     re.controller.list_items[list._id] = list; 
-                    $('#' + list._id).longpress(function() {
-                        re.controller.editList(list._id);
-                    });
+                    $('#' + list._id).longpress(onLongPressFn(list));
                 }
             }
         });
