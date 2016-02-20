@@ -37,10 +37,6 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
-    <gap:plugin name="com.phonegap.plugins.facebookconnect" version="0.12.0">
-        <param name="APP_ID" value="1530835750579447" />
-        <param name="APP_NAME" value="RoomEase" />
-    </gap:plugin>
     <icon src="icon.png" />
     <icon gap:platform="android" gap:qualifier="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
