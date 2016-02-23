@@ -45,8 +45,10 @@
     <div class="list-item" id="{{ this._id }}">
         <!-- Figure out logic to only display items owned by the user -->
         <h5>{{ this.item }} {{ this.expiration}}</h5>
-        <!-- If sharable display shared, otherwise nothing
-        <h5>{{ this.sharable }}</h5>-->
+        
+        {{#ifCond this.sharable '==' "yes"}}
+            <h5>Shared</h5>
+        {{/ifCond}}
     </div>
 {{/each}}
 
