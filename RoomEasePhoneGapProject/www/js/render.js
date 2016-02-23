@@ -141,9 +141,12 @@ re.render = (function() {
                 start_end_date_obj["end"] = end_date_str;
                 start_end_date_obj["title"] = reservations[i].name_of_item;
                 start_end_date_obj["_id"] = reservations[i]._id;
+                start_end_date_obj['start_obj'] = start_date_obj;
+                start_end_date_obj['end_obj'] = end_date_obj;
                 
                 start_end_date_obj["unix_start"] = start_date_obj.getTime();
                 start_end_date_obj["unix_end"] = end_date_obj.getTime();
+                start_end_date_obj["type"] = "reservation";
                 
                 //Make sure that the reservation hasn't already passed
                 //TODO: Update this so that the reservation is automatically deleted
@@ -158,7 +161,36 @@ re.render = (function() {
             date_time_reservations.sort(function(a, b){
                return a.unix_start - b.unix_start; 
             });
-             
+            
+            //Inject the headers that go above each reservation
+            var existing_header_labels = [];
+            for(var i = 0; i < date_time_reservations.length; i++) {
+                var time_header_obj = {};
+                time_header_obj['type'] = 'time';
+
+                var now_obj = new Date();
+                if(date_time_reservations[i]["start_obj"].getTime() < now_obj.getTime()
+                         && date_time_reservations[i]["end_obj"].getTime() > now_obj.getTime()){
+                    time_header_obj['label'] = "Currently Active";
+                } else if(date_time_reservations[i]["end_obj"].getTime() < now_obj.getTime()) {
+                    time_header_obj['label'] = "Already Complete";
+                } else if (date_time_reservations[i]['start_obj'].getTime() > now_obj.getTime()) {
+                    time_header_obj['label'] = date_time_reservations[i]['start_obj'].getMonthName() + " \ " 
+                                                + date_time_reservations[i]['start_obj'].getDate();
+                    
+                    //Append year if not this year
+                    if(date_time_reservations[i]['end_obj'].getYear() > now_obj.getYear()) {
+                         time_header_obj['label'] += ", " + date_time_reservations[i]['end_obj'].getFullYear();
+                    }
+                }
+                
+                if (existing_header_labels.indexOf(time_header_obj.label) == -1){
+                    date_time_reservations.splice(i, 0, time_header_obj);
+                    existing_header_labels.push(time_header_obj.label);
+                    i++;
+                }
+            }
+         
             $('.page-title').html('Reservations');
             
              //TODO: Make it so we use reservation_dictionary to aggregate all of the 

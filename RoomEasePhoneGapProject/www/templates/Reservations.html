@@ -8,14 +8,23 @@
 <!-- This section should dynamically insert all of the reservations into the page-->
 {{#each this}}
 <div class="all-reservation-items" id="{{this._id}}">
-    <div class="reservation-item {{this.color_class}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">  {{this.title}} </header>
-        <ul>
+    <div class="reservation-item {{this.color_class}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">{{this.title}}  </header>
+       
+        
+    {{#ifCond this.type '==' 'reservation'}}
+      <ul>
             <li class="white-text" style="font-size: 1.4em">  {{this.start}}</li>  
             <li class="white-text" style="font-size: 1.4em">{{ this.end}}</li>  
-        </ul>
+        </ul>    
+    {{/ifCond}}
+        
+    {{#ifCond this.type '==' 'time'}}
+            <header color="blue" style="font-size: 1.4em">  {{this.label}}</header>      
+    {{/ifCond}}
 </div>
 </div>
 {{/each}}
+
 
 
 
@@ -23,6 +32,7 @@
 <div class="fixed-action-btn" onclick="re.controller.makeNewReservation()" id="new-reservation-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
+
 
 
 <!-- Small popup menu to add new schedule item, hidden by default -->
