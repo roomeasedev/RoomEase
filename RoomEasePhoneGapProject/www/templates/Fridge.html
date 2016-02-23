@@ -40,3 +40,44 @@
 <div>
     <h3 class="left-align pink-text text-lighten-4" style="padding-left: 10px">Fridge (coming soon!)</h3>
 </div>
+
+{{#each this}}
+    <div class="list-item" id="{{ this._id }}">
+        <!-- Figure out logic to only display items owned by the user -->
+        <h5>{{ this.item }} {{ this.expiration}}</h5>
+        <!-- If sharable display shared, otherwise nothing
+        <h5>{{ this.sharable }}</h5>-->
+    </div>
+{{/each}}
+
+<!-- Small popup menu to add new list, hidden by default -->
+<div class="popupBackground">
+    <div class="popup">
+        
+        <h3 class="white-text">Add Item</h3>
+        <div class="divider teal lighten-4"></div>
+        
+        <div id="namediv">
+            <h4 style="float left">Name</h4>
+            <form>
+                <input type="text" placeholder="" id="name"><br>
+            </form>
+        </div>
+        
+        <div id="expirationdiv">
+            <h4 style="float left">Expires on</h4>
+            <input type="text" placeholder="" id="expiration"><br>
+        </div>
+        
+        <div id="buttons">
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" onclick="re.controller.hidePopup()" style="float:left" name="action" id="cancel">Cancel</button>
+            
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float:right" name="action" id="done">Done</button>
+            
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="position: absolute; left: 35%" name="action" id="next-item">Next Item</button>
+        </div>
+    </div>
+</div>
