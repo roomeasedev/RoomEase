@@ -12,6 +12,7 @@ describe("Request Handler suite", function() {
 	//Note: For this test suite to work, LoginHandlerSpec has to pass all of its tests,
 	//For we want to check adding database entries to freshly made groups
 
+    
 	it("Group and user added properly", function( ){
 	
 		var new_grp_finished = false;
@@ -53,6 +54,24 @@ describe("Request Handler suite", function() {
 			return add_usr_finished;
 		}, "Failed to add test user to group", 10000);
 	});
+    
+    it("Get name of user in a group", function(){
+        var response_gotten = false;
+        
+        var on_response = function(isSuccess, nameResponse, error){
+            expect(isSuccess).toBeTruthy();
+            expect(nameResponse).toEqual(name);
+            expect(error).toBeNull();
+            response_gotten = true;
+        }
+        
+        re.requestHandler.uidToName(facebook_id, on_response);
+        
+        waitsFor(function(){
+			return response_gotten;
+		}, "Failed to update item", 10000);
+        
+    });
 
 	it("Initialize request handler", function(){
 		var is_success = re.requestHandler.init(db_location, facebook_id, group_num);
@@ -367,6 +386,7 @@ describe("Request Handler suite", function() {
 		}, "Failed to update item", 10000);
 
 	});
+
 
 	function contains_id(list, id) {
 		for (var i = 0; i < list.length; i++) {

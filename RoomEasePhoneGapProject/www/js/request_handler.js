@@ -127,7 +127,30 @@ re.requestHandler = (function(){
 			callback(null, err);
 		});
 	}
-
+    
+    
+    /*
+    *Gets the name that correlates to the user ID
+    *
+    *callback(is_success, name, error)
+    *   is_success: true if the request was successful, false otherwise
+    *   name: null if unsuccesssful. Name that correlates to the user ID
+    *   error: null is fuccessful. Description of error if error has occured.
+    */
+    function uidToName(uid, callback){
+        databases["users"].query('get_by_uids/uids_to_name', {
+            key: uid,
+            include_docs: true,
+            attachments: true
+        })
+		.then(function(response){
+            callback(true, response.rows[0].doc.name, null);
+        })
+        .catch(function(err){
+            callback(false, null, err);
+        });
+    }
+    
 	/**
 	*Updates the item in the database to the new version of the item. Calls callack on success or on error.
 	*	item: The item to be updated 
@@ -239,6 +262,7 @@ re.requestHandler = (function(){
 		'deleteItem': deleteItem,
 		'init': init,
 		'u_id': user_id,
-		'grp_id': group_id
+		'grp_id': group_id,
+        'uidToName': uidToName
 	}
 })();
