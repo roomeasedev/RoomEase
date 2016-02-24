@@ -246,10 +246,18 @@ re.render = (function() {
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
     */
-    function renderFridgeView() {
+    function renderFridgeView(shared) {
         $('.page-title').html('Fridge');
-
-        $('.page').html(fridgeTemplate());
+        
+        // TODO: Process fridge items according to whether or not shared or mine
+        // is being navigated to and render the page accordingly, passing in the
+        // list of fridge items to the template as a parameter
+        if(shared) {
+            $('.page').html(fridgeTemplate());
+        } else {
+            $('.page').html(fridgeTemplate());
+        }
+        
         
         // Initialize tabs
         $(document).ready(function(){
@@ -316,8 +324,10 @@ re.render = (function() {
         } else if (!hash || hash == "#list") { 
             console.log("Here!");
             renderListView();
-        } else if (hash == "#fridge") {
-            renderFridgeView();
+        } else if (hash == "#fridge-mine") {
+            renderFridgeView(false);
+        } else if (hash == "#fridge-shared") {
+            renderFridgeView(true);
         } else if (hash == "#scheduler") {
             renderSchedulerView();
         } else if (hash == "#chores") {

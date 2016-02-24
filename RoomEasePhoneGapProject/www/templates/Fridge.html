@@ -1,25 +1,9 @@
 <!--
     Template for the Fridge view that will be injected into Index.html at runtime when the user
         navigates to the Fridge page. It will include the list of food items with their sharing
-        preference and expiration dates that will be dynamically loaded from local storage.  
-<script>
-    document.getElementById("navbar").style.display = "";
-    $(".button-collapse").sideNav({
-        menuWidth: 200,
-        closeOnClick: true
-    });
-</script>
-<div class="divider teal lighten-4"></div>
-<div class="row">
-    <div class="nav-wrapper">
-      <ul class="tabs">
-        <li class="tab col s3 teal lighten-1"><a class="white-text" href="#fridge">Mine</a></li>
-        <li class="tab col s3 teal lighten-1"><a class="active white-text" href="#fridge">Shared</a></li>
-      </ul>
-    </div>
-  </div>
+        preference and expiration dates that will be dynamically loaded from local storage.  -->
 
-<h1>Fridge Manager</h1>
+<!-- Omar's initial fridge mockup, currently for reference, to be deleted at some point
 <form>
     <input type="text" placeholder="Text" id="text"><br>
     <input type="text" placeholder="Owner" id="owner"><br>
@@ -30,21 +14,22 @@
 <button id="clear" onclick="re.storage.clear('fridge')">Clear</button><br>
 <textarea rows="20" columns="40" id="area"></textarea>-->
 
-
-<!--    Template for the Feed view that will be injected into Index.html at runtime initially
-        and whenever the user navigates to the Feed page. It will include the list of important
-        upcoming items that will be dynamically loaded from local storage.  -->
 <script>
     document.getElementById("navbar").style.display = "";
 </script>
-<div>
-    <h3 class="left-align pink-text text-lighten-4" style="padding-left: 10px">Fridge (coming soon!)</h3>
+
+<div class="divider teal lighten-4"></div>
+<div class="row">
+    <div class="nav-wrapper">
+      <ul class="tabs">
+        <li class="tab col s3 teal lighten-1"><a class="white-text" href="#fridge-mine">Mine</a></li>
+        <li class="tab col s3 teal lighten-1"><a class="active white-text" href="#fridge-shared">Shared</a></li>
+      </ul>
+    </div>
 </div>
 
 {{#each this}}
     <div class="list-item" id="{{ this._id }}">
-        <!-- Figure out logic to only display items owned by the user
-        {{#ifCond }}-->
         <h5>{{ this.item }} expires in {{ this.expiration }} days</h5>
         
         {{#ifCond this.sharable '==' "yes"}}
