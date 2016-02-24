@@ -45,7 +45,7 @@
     <div class="list-item" id="{{ this._id }}">
         <!-- Figure out logic to only display items owned by the user
         {{#ifCond }}-->
-        <h5>{{ this.item }} {{ this.expiration}}</h5>
+        <h5>{{ this.item }} expires in {{ this.expiration }} days</h5>
         
         {{#ifCond this.sharable '==' "yes"}}
             <h5>Shared</h5>
