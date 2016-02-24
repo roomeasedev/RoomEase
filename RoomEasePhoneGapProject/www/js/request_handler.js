@@ -151,6 +151,36 @@ re.requestHandler = (function(){
         });
     }
     
+    
+    function getUidToNameMap(group_id, callback){
+        var uidsToNameMap = {};
+        var uids;
+        var numOfTenativeUids;
+        databases["groups"].get(group_id)
+		.then(function(response){
+            numOfTenativeUids = response.uid.length;
+            uids = response.uid;
+            for(var i = 0; i < uids.length; i++){
+                
+                var uidCallback = 
+
+                (function(uid) {
+                    uidToName(uid, function(is_success, name, error){
+                        numOfTenativeUids--;
+                        if(!is_success){
+                            callback(false, null, error);
+                        }
+                        uidsToNameMap[uid] = name;
+                        if(numOfTenativeUids == 0){
+                            callback(true, uidsToNameMap, null);
+                        }
+                    });
+                })(uids[i]);
+            }
+        });
+        //TODO:Catch
+    }
+    
 	/**
 	*Updates the item in the database to the new version of the item. Calls callack on success or on error.
 	*	item: The item to be updated 
@@ -263,6 +293,7 @@ re.requestHandler = (function(){
 		'init': init,
 		'u_id': user_id,
 		'grp_id': group_id,
-        'uidToName': uidToName
+        'uidToName': uidToName,
+        'getUidToNameMap': getUidToNameMap
 	}
 })();

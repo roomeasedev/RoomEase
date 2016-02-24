@@ -8,13 +8,12 @@
 <!-- This section should dynamically insert all of the reservations into the page-->
 {{#each this}}
 <div class="all-reservation-items" id="{{this._id}}">
-    <div class="reservation-item {{this.color_class}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">{{this.title}}  </header>
+    <div class="reservation-item {{this.color_class}}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">{{this.title}} reserved by {{this.user}} </header>
        
         
     {{#ifCond this.type '==' 'reservation'}}
       <ul>
-            <li class="white-text" style="font-size: 1.4em">  {{this.start}}</li>  
-            <li class="white-text" style="font-size: 1.4em">{{ this.end}}</li>  
+            <li class="white-text" style="font-size: 1.4em">  {{this.time}}</li>  
         </ul>    
     {{/ifCond}}
         
