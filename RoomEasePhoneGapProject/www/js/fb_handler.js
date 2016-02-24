@@ -49,6 +49,7 @@ re.fbHandler = (function() {
     function login(callback) {
         // initialize openFB library with your app's ID
         // TODO: this id is a testAppID, change to appropriate ID
+        //       the testAppID is 935583189852299
         openFB.init({appId: '935583189852299'});
         // logs into Facebook with only "email" as a scope
         openFB.login(
@@ -105,12 +106,36 @@ re.fbHandler = (function() {
                     }
                 });
     }
+
+    /**
+    * attempts to log the user out of their Facebook account
+    * @param {function()} the callback function
+    * @postcondition:  user have been logged out of their facebook
+    *     account, callback function have been invoked, and localStorage 
+    *     does not store user_if anymore
+    */
+    function logout(callback) {
+        var user_id = window.localStorage.getItem("user_id");
+
+        // attempt to logout only if user_id exists, meaning that the user
+        // have previously logged in.
+        if(user_id){
+            // remove user_id from localStorage
+            window.localStorage.removeItem("user_id");
+            // logout, openFB will invoke the callback function
+            openFB.logout(callback);
+        } else {
+            console.log("Could not find userID. User might not have been logged in.");
+        }
+        
+    }
     
     // Return the public API of this module by choosing which
     // funcitons we make visible here.
     return {
         'moveToGroupLogin': moveToGroupLogin,
         'login': login,
-        'getInfo': getInfo
+        'getInfo': getInfo,
+        'logout': logout
     };
 })();
