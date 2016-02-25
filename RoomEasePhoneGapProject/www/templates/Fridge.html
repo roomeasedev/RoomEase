@@ -38,6 +38,11 @@
     </div>
 {{/each}}
 
+<!-- Button to add new fridge items -->
+<div class="fixed-action-btn" onclick="re.controller.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
+</div>
+
 <!-- Small popup menu to add new list, hidden by default -->
 <div class="popupBackground">
     <div class="popup">
@@ -46,15 +51,33 @@
         <div class="divider teal lighten-4"></div>
         
         <div id="namediv">
-            <h4 style="float left">Name</h4>
-            <form>
+            <h4 class="white-text" style="float left">Name</h4>
+            <form id="fridge-item">
                 <input type="text" placeholder="" id="name"><br>
             </form>
         </div>
         
         <div id="expirationdiv">
-            <h4 style="float left">Expires on</h4>
+            <h4 class="white-text" style="float left">Expires on</h4>
             <input type="text" placeholder="" id="expiration"><br>
+        </div>
+        
+        <div id="shared">
+            <h4 class="white-text" style="float left">Shared</h4>
+            <form action="#">
+                <p>
+                    <input class="with-gap pink lighten-4" name="group1" type="radio" id="yes" />
+                    <label for="yes-button">Yes</label>
+                </p>
+                <p>
+                    <input class="with-gap pink lighten-4" name="group1" type="radio" id="test2" />
+                    <label for="no-button">No</label>
+                </p>
+                <p>
+                    <input class="with-gap pink lighten-4" name="group1" type="radio" id="ask-button"  />
+                    <label for="ask-button">Ask</label>
+                </p>
+            </form>
         </div>
         
         <div id="buttons">
