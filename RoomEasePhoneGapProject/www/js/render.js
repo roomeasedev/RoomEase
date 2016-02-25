@@ -329,14 +329,13 @@ re.render = (function() {
                     ", group id: " + g_id);
         console.log(!null);
         console.log(!u_id);
-        console.log(typeof u_id);
-        if (!u_id || hash == "#fb") {
+       /* if (!u_id || hash == "#fb") {
             renderFacebookLoginView();
-        } else if ((!g_id) || hash == "#gl") {
+       } else*/ if ((!g_id) || hash == "#gl") {
             renderGroupLoginView();
-        } else if (hash == "#feed") {
+        } else if (!hash || hash == "#feed") {
             renderFeedView();
-        } else if (!hash || hash == "#list") { 
+        } else if (hash == "#list") { 
             console.log("Here!");
             renderListView();
         } else if (hash == "#fridge-mine") {
