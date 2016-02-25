@@ -293,7 +293,7 @@ re.controller = (function() {
                 shared = "ask";
             }
             
-            var newItem = createFridgeItem(itemName, expiration,);
+            var newItem = createFridgeItem(itemName, expiration, shared);
             re.requestHandler.addItem(newItem, rhAddCallback);
         });
         
@@ -312,7 +312,7 @@ re.controller = (function() {
                 shared = "ask";
             }
             
-            var newItem = createFridgeItem(itemName, expiration,);
+            var newItem = createFridgeItem(itemName, expiration, shared);
             re.requestHandler.addItem(newItem, rhAddCallback);
         });
     }
