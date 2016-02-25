@@ -344,10 +344,8 @@ re.render = (function() {
         } else if (hash == "#fridge-shared") {
             alert("W");
             renderFridgeView(true);
-        } else if (hash == "#scheduler") {
+        } else if (hash == "#reservations") {
             renderSchedulerView(re.controller.reservation_items);
-        } else if (hash == "#chores") {
-            renderChoreView();
         } else if(hash == "#account"){
             renderAccountView();
         } else {
