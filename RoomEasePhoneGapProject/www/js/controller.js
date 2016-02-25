@@ -281,7 +281,7 @@ re.controller = (function() {
         // TODO: Clear old info from popup
         
         // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').click() {
+        $('#next-item').click(function() {
             var itemName = $('#name').val();
             var expiration = $('expiration').val();
             var shared;
@@ -295,7 +295,7 @@ re.controller = (function() {
             
             var newItem = createFridgeItem(itemName, expiration,);
             re.requestHandler.addItem(newItem, rhAddCallback);
-        }
+        });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
         $('#done').click(function() {
