@@ -44,11 +44,12 @@ re.requestHandler = (function(){
             } else {
                 console.log(error);
             }
-        }
+        };
         
-        re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
+        re.requestHandler.getUidToNameMap(grp_id, onGetGroupIDs);
 		return true;
 	}
+
 
 	/**
 	*Adds an item of type item to the database. Calls callback on error or on success.
