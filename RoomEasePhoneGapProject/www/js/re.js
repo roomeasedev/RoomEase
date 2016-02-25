@@ -38,6 +38,10 @@ $(document).ready(function() {
     
     // load templates and render first viewport
     re.render.init();
+    
+    $(function() {
+        FastClick.attach(document.body);
+    });
 });
 
 
