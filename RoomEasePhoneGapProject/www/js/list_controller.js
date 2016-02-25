@@ -94,6 +94,8 @@ re.list_controller = (function() {
                 listItems.push($(this).val());
             });
             var newlist = createList(listName, listItems);
+            // note: right now, the following call & calls like this will work during testing only if the callback is
+            //       re.new_controller.rhAddCallback. 
             re.requestHandler.addItem(newlist, re.controller.rhAddCallback);
         });
     }
