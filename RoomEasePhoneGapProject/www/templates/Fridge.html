@@ -47,7 +47,7 @@
 <div class="popupBackground">
     <div class="popup">
         
-        <h3 class="white-text">Add Item</h3>
+        <h4 class="white-text">Add Item</h4>
         <div class="divider teal lighten-4"></div>
         
         <div id="namediv">
@@ -58,25 +58,19 @@
         </div>
         
         <div id="expirationdiv">
-            <h4 class="white-text" style="float left">Expires on</h4>
+            <h5 class="white-text" style="float left">Expires on</h5>
             <input type="text" placeholder="" id="expiration"><br>
         </div>
         
-        <div id="shared">
-            <h4 class="white-text" style="float left">Shared</h4>
+        <div id="shared" style="margin 5em">
+            <h5 class="white-text" style="float left">Shared</h5>
             <form action="#">
-                <p>
-                    <input class="with-gap pink lighten-4" name="group1" type="radio" id="yes" />
-                    <label for="yes-button">Yes</label>
-                </p>
-                <p>
-                    <input class="with-gap pink lighten-4" name="group1" type="radio" id="test2" />
-                    <label for="no-button">No</label>
-                </p>
-                <p>
-                    <input class="with-gap pink lighten-4" name="group1" type="radio" id="ask-button"  />
-                    <label for="ask-button">Ask</label>
-                </p>
+                    <input class="with-gap" name="group1" type="radio" id="yes" checked />
+                    <label class="white-text" for="yes-button">Yes</label>
+                    <input class="with-gap" name="group1" type="radio" id="test2"/>
+                    <label class="white-text" for="no-button">No</label>
+                    <input class="with-gap" name="group1" type="radio" id="ask-button"/>
+                    <label class="white-text" for="ask-button">Ask</label>
             </form>
         </div>
         
