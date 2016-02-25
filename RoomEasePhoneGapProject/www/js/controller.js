@@ -39,7 +39,8 @@ re.controller = (function() {
 		}
         
         
-        var onGetGroupIDs = function(isSucces, map, error){
+        
+        var onGetGroupIDs = function(isSucces, map, error){ 
             if(isSucces) {
                 user_ids_to_names = map;
                 console.log("Map set!");
@@ -50,7 +51,14 @@ re.controller = (function() {
             }
         }
         
+        var onGetInitialReservations = function(isSuccess, error){
+        }
+        
+        //Get intial mapping of uid to names
         re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
+        
+        //Initalize the reservations and rerender reservation, if it is active
+        updateAndRefreshReservationItems(onGetInitialReservations);
         console.log("re.controller init finished!");
 	}
     
@@ -248,14 +256,15 @@ re.controller = (function() {
             var start_time = $('#start-time').val();
             var minutes = $("#reservation-minutes").val();
             var hours = $("#reservation-hours").val();
-            var start_date = $("#start-date").val();
-            console.log("Hours: " + hours);
-            console.log("Minutes: " + minutes);
-            
+            var start_date = $("#start-date").val();            
             var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);  
-            console.log("New res:");
-            console.log(newresv);
-            re.requestHandler.addItem(newresv, rhAddCallback);
+  
+            re.requestHandler.addItem(newresv, function(isSuccessAddItem, revised_item, error){
+                updateReservationItems(function(isSuccessReviseReservations, error){
+                    rhAddCallback(isSuccessReviseReservations,revised_item, error);
+                });
+            });
+            
         });
 
         // clears the fields in popup & closes it
@@ -267,54 +276,54 @@ re.controller = (function() {
             $('#name').val('');
         });
     }
-    
+        
     /**
     *Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
     **/
     function makeNewFridgeItem() {
-        // TODO: implement this method, which will bring up the popup to add an item,
-        // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
-        
-        $('#new-fridge-item-btn').css('display', 'none');
-        $('.popupBackground').css('display', 'block');
-        
-        // TODO: Clear old info from popup
-        
-        // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').click() {
-            var itemName = $('#name').val();
-            var expiration = $('expiration').val();
-            var shared;
-            if($('#yes_button').is(':checked')) {
-                shared = "yes";
-            } else if($('#no_button').is(':checked')) {
-                shared = "no";
-            } else {
-                shared = "ask";
-            }
-            
-            var newItem = createFridgeItem(itemName, expiration,);
-            re.requestHandler.addItem(newItem, rhAddCallback);
-        }
-        
-        // Adds the fridge item to the database when the done button is pressed and hides the popup
-        $('#done').click(function() {
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            hidePopup();
-            var itemName = $('#name').val();
-            var expiration = $('expiration').val();
-            var shared;
-            if($('#yes_button').is(':checked')) {
-                shared = "yes";
-            } else if($('#no_button').is(':checked')) {
-                shared = "no";
-            } else {
-                shared = "ask";
-            }
-            
-            var newItem = createFridgeItem(itemName, expiration,);
-            re.requestHandler.addItem(newItem, rhAddCallback);
-        });
+//        // TODO: implement this method, which will bring up the popup to add an item,
+//        // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
+//        
+//        $('#new-fridge-item-btn').css('display', 'none');
+//        $('.popupBackground').css('display', 'block');
+//        
+//        // TODO: Clear old info from popup
+//        
+//        // Adds the fridge item to the database when the next item button is pressed
+//        $('#next-item').click() {
+//            var itemName = $('#name').val();
+//            var expiration = $('expiration').val();
+//            var shared;
+//            if($('#yes_button').is(':checked')) {
+//                shared = "yes";
+//            } else if($('#no_button').is(':checked')) {
+//                shared = "no";
+//            } else {
+//                shared = "ask";
+//            }
+//            
+//            var newItem = createFridgeItem(itemName, expiration,);
+//            re.requestHandler.addItem(newItem, rhAddCallback);
+//        }
+//        
+//        // Adds the fridge item to the database when the done button is pressed and hides the popup
+//        $('#done').click(function() {
+//            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
+//            hidePopup();
+//            var itemName = $('#name').val();
+//            var expiration = $('expiration').val();
+//            var shared;
+//            if($('#yes_button').is(':checked')) {
+//                shared = "yes";
+//            } else if($('#no_button').is(':checked')) {
+//                shared = "no";
+//            } else {
+//                shared = "ask";
+//            }
+//            
+//            var newItem = createFridgeItem(itemName, expiration,);
+//            re.requestHandler.addItem(newItem, rhAddCallback);
+//        });
     }
     
     
@@ -374,7 +383,9 @@ re.controller = (function() {
             $('.fixed-action-btn').css("display", "block");
 
             re.requestHandler.deleteItem(reservationId, "reservation", function(is_success, was_deleted, err){
-                re.render.renderSchedulerView();   
+                updateReservationItems(function(isSuccess, error){
+                    re.render.renderSchedulerView(re.controller.reservation_items);   
+                });
             });
         });
 
@@ -385,6 +396,51 @@ re.controller = (function() {
         });            
     }
     
+    /**
+    *Attemptes to update the reservation_items list with what is most recent in the database
+    *callback(isSuccess, error)
+    *   isSuccess: True if the list was successfully updated
+    *   error: null if no erro occured. Contains string describing an error that occured
+    **/
+    
+    function updateReservationItems(callback){
+        var reservations;
+        console.log("Rendering schedule view");
+        re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
+            if(allReservations == null) {
+                console.log("Error");
+                callback(false, error);
+            } else {
+                console.log(allReservations);
+                console.log("Success!");
+
+                re.controller.reservation_items = allReservations;
+                console.log("Reservations::::");
+                console.log(allReservations);
+                callback(true, null);
+            }
+        });
+    }
+    
+    
+    /**
+    *Attemptes to update the reservation_items list with what is most recent in the database
+    *ALSO rerenders the page once the list has been updated
+    *callback(isSuccess, error)
+    *   isSuccess: True if the list was successfully updated
+    *   error: null if no erro occured. Contains string describing an error that occured
+    **/
+    
+    function updateAndRefreshReservationItems(callback){
+        updateReservationItems(function(isSuccess, error){
+            re.render.route();
+            callback(isSuccess, error);
+        });
+    }
+    
+    /**
+    *Creates the diolague to filter reservations based on their type
+    **/
     function filterReservations(){
         $('.fixed-action-btn').css("display", "none");
         $('#filter-reservation-popup').css('display', 'block');
@@ -392,9 +448,16 @@ re.controller = (function() {
         $('select').material_select();
 
     
-        // clear contents
         var $selectDropdown = $("#dropdownid");
-        $selectDropdown.innerHTML('');
+        
+        //Clear Contents
+        $selectDropdown.empty();
+        
+         $selectDropdown.append(
+                  $("<option></option>")
+                    .attr("reservationName", "None")
+                    .text("None")
+                );
 
         var seenReservations = [];
         var reservations = re.controller.reservation_items;
@@ -408,18 +471,39 @@ re.controller = (function() {
                 seenReservations.push(reservations[i].name_of_item);
             }
         }
-
-    // trigger event
-        $selectDropdown.trigger('contentChanged');
+        
+        
         $('select').material_select();
 
-      $('select').on('contentChanged', function() {
-        // re-initialize (update)
-        $(this).material_select();
-      });
+
+        $('select').on('contentChanged', function() {
+            // re-initialize (update)
+            $(this).material_select();
+        });
+        
         $('#filter-select-btn').click(function() {
             $('.fixed-action-btn').css('display', 'block');
             $('#filter-reservation-popup').css('display', 'none');
+            
+            var displayedReservations = [];
+            var selectedValue = $selectDropdown.find(":selected").text();
+            console.log("Selected value:" + selectedValue);
+            if(selectedValue == "None"){
+                displayedReservations = re.controller.reservation_items;
+            } else {
+                for(var i = 0; i < reservations.length; i++){
+                    if(reservations[i].name_of_item == selectedValue){
+                        displayedReservations.push(reservations[i]);
+                    }
+                }
+            }
+            
+            console.log("Displayed reservations:");
+            console.log(displayedReservations);
+            console.log("Reservations");
+            console.log(reservations);
+            re.render.renderSchedulerView(displayedReservations);
+
         });
     }
     

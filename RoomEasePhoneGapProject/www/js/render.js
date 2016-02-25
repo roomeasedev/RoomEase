@@ -49,8 +49,10 @@ re.render = (function() {
 
     /**
     * Sets the HTML value of the injectable page area to the rendered scheduler view.
+    * reservations: A list of reservation JSON objects that will be rendered to the page
     */
-    function renderSchedulerView() {
+    function renderSchedulerView(reservations) {
+        console.log("Rendering Schedule View");
         //TODO: Factor out the date calculations and database calls
         (function() {
             var days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
@@ -75,16 +77,6 @@ re.render = (function() {
             var strTime = hours + ':' + minutes + ' ' + ampm;
             return strTime;
         }
-
-        var reservations;
-        console.log("Rendering schedule view");
-        re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
-            if(allReservations == null) {
-                console.log(error);
-            } else {
-                reservations = allReservations;
-                re.controller.reservation_items = reservations;
-            }
             
         
             //Convert the date-time reservations int0 a more readable format
@@ -232,7 +224,6 @@ re.render = (function() {
                     });
                 })(reservations[i]);
             }
-        });
     }
                 
     
@@ -353,7 +344,7 @@ re.render = (function() {
         } else if (hash == "#fridge-shared") {
             renderFridgeView(true);
         } else if (hash == "#scheduler") {
-            renderSchedulerView();
+            renderSchedulerView(re.controller.reservation_items);
         } else if (hash == "#chores") {
             renderChoreView();
         } else if(hash == "#settings"){

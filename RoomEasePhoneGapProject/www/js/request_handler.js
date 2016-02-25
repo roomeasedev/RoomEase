@@ -117,7 +117,9 @@ re.requestHandler = (function(){
 		 			console.log("Result rows");
 		 			console.log(result.rows);
 		 			for (var i = 0; i < result.rows.length; i++){
-		 				response_array.push(result.rows[i].doc);
+                        if(result.rows[i].doc != null){
+		 	                response_array.push(result.rows[i].doc);
+                        }
 		 			}
 		 			callback(response_array, null);
 		 		})
