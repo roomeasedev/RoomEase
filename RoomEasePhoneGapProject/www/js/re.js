@@ -28,7 +28,7 @@ $(document).ready(function() {
     //window.localStorage.setItem("user_id", "893308038"); 
     
     //User 2
-    //window.localStorage.setItem('user_id', "512963585");
+   // window.localStorage.setItem('user_id', "512963585");
 
     //User 3
     //window.localStorage.setItem('user_id', "743566854");

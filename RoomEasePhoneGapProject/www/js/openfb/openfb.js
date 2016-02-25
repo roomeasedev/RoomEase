@@ -207,14 +207,17 @@ var openFB = (function () {
         /* Remove token. Will fail silently if does not exist */
         tokenStore.removeItem('fbtoken');
 
-        if (token) {
+        // this bit redirects to the login screen in Facebook then redirects again to 
+        // the original screen if you were testing on Cordova, so I removed it to log out
+        // and stay in the same page. 
+        /*if (token) {
             logoutWindow = window.open(logoutURL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no,clearcache=yes');
             if (runningInCordova) {
                 setTimeout(function() {
                     logoutWindow.close();
                 }, 700);
             }
-        }
+        }*/
 
         if (callback) {
             callback();

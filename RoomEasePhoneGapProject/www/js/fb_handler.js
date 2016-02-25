@@ -112,7 +112,7 @@ re.fbHandler = (function() {
     * @param {function()} the callback function
     * @postcondition:  user have been logged out of their facebook
     *     account, callback function have been invoked, and localStorage 
-    *     does not store user_if anymore
+    *     does not store user_id anymore
     */
     function logout(callback) {
         var user_id = window.localStorage.getItem("user_id");
@@ -122,6 +122,9 @@ re.fbHandler = (function() {
         if(user_id){
             // remove user_id from localStorage
             window.localStorage.removeItem("user_id");
+            window.localStorage.removeItem("group_id");
+            window.localStorage.removeItem("group_name");
+            window.localStorage.removeItem("group_password");
             // logout, openFB will invoke the callback function
             openFB.logout(callback);
             // redirect the user to the main login page

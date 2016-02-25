@@ -34,6 +34,19 @@ re.requestHandler = (function(){
 			databases[type_to_table[key]] = 
 			new PouchDB(database_location + type_to_table[key]);
 		}
+        
+        var onGetGroupIDs = function(isSucces, map, error) {
+            if(isSucces) {
+                user_ids_to_names = map;
+                console.log("Map set!");
+                console.log("Map");
+                console.log(map);
+            } else {
+                console.log(error);
+            }
+        }
+        
+        re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
 		return true;
 	}
 
