@@ -25,10 +25,11 @@ $(document).ready(function() {
     //SET TO TEST VALUES TO GO TO DEFAULT TEST GROUP
 
     //User 1
-    //window.localStorage.setItem("user_id", "893308038"); 
+    window.localStorage.setItem("user_id", "893308038"); 
+    window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
     
     //User 2
-   // window.localStorage.setItem('user_id', "512963585");
+   //window.localStorage.setItem('user_id', "512963585");
 
     //User 3
     //window.localStorage.setItem('user_id', "743566854");

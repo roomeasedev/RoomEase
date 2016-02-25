@@ -55,10 +55,11 @@ re.controller = (function() {
         }
         
         //Get intial mapping of uid to names
-        re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
+        //re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
         
-        //Initalize the reservations and rerender reservation, if it is active
-        updateAndRefreshReservationItems(onGetInitialReservations);
+        // Initalize the reservations and rerender reservation, if it is active
+        // TODO: This can't go here, we don't know at init time that request handler exists
+        //updateAndRefreshReservationItems(onGetInitialReservations);
         console.log("re.controller init finished!");
 	}
     
