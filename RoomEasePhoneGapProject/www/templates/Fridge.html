@@ -92,3 +92,20 @@
         </div>
     </div>
 </div>
+
+<!-- popup displayed in case trying to delete a fridge item marked "ask", hidden by default -->
+<div id="cannot-delete-fridge-item-popup">
+    <div class='popup'>
+        <header class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; text-align: center">You don't have permission to delete this food item. Please consult the owner.</header>
+        
+        <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="margin-left: auto; margin-right: auto; height: 20%; width: 48%" name="action" id="cannot-delete-got-it">Got It</button>   
+    </div>
+</div>
+
+<!-- Error popup displayed in case adding a fridge item went wrong, hidden by default -->
+<div class="error-popup">
+    <header class="white-text center-align" style="margin: 1.4rem auto;">SORRY! SOMETHING WENT WRONG. PLEASE TRY AGAIN</header>
+    <button class="btn waves-effect waves-light" 
+            style="background-color: #4db6ac; box-shadow: none; text-align: center; width: 100%;" type="submit" name="action" id="exit-error">Try Again</button>
+</div>

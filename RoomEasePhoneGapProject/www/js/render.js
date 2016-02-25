@@ -269,7 +269,9 @@ re.render = (function() {
                 for(var item in currItems) {
                     $('#' + item._id).longpress(function () {
                         //TODO: write re.controller.deleteFridgeItem()
-                        //re.controller.deleteFridgeItem(); 
+                        //re.controller.deleteFridgeItem();
+                        
+                        re.controller.editFridgeItem(item);
                     });
                 }
             }

@@ -513,6 +513,20 @@ re.controller = (function() {
         });
     }
     
+    function editFridgeItem(item) {
+        if (item.owner != window.localStorage.getItem("user_id") && item.sharable == "ask") {
+            $('#cannot-delete-fridge-item-popup').css('display', 'block');
+            $('#new-fridge-item-btn').css('display', 'none');
+            
+            $('#cannot-delete-got-it').click(function() {
+                $('#new-fridge-item-btn').css("display", "block");
+                $('#cannot-delete-fridge-item-popup').css("display", "none");
+            });     
+        } else {
+            //TODO ask if the user wants to delete this item. implement deletions
+        }
+    }
+    
     /* Switches the onfocus method from the previous next-item input field to a new one
      */
     function changeFocus() {

@@ -110,6 +110,22 @@ input:focus, {
     z-index: 998;
 }
 
+#cannot-delete-fridge-item-popup{
+    position: fixed;
+    display: none;
+    width: 70%;
+    height: 20%;
+    left: 15%;
+    top: 40%;
+    background-color: #26a69a;
+    transition: box-shadow .25s;
+    margin .5rem 0 1rem 1rem;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+    z-index: 998;
+}
+
 .popupBackground {
     background-color: white;
     position: fixed;
