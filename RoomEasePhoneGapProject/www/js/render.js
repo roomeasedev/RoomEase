@@ -293,7 +293,7 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered chores view.
     */
     function renderAccountView() {
-        $('.page-title').html('Settings');
+        $('.page-title').html('Account Details');
         $('.page').html(accountTemplate());
     }
     
