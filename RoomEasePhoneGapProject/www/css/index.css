@@ -3,6 +3,12 @@
     src: url("../font/zag/Zag-Bold.otf") format("opentype");
 }
 
+#popupDivider {
+    left: 0;
+    position: absolute;
+    width: 100%;    
+}
+
 ul{
     margin:0 0 0 1.25em;
     padding:0;

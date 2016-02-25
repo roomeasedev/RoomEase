@@ -297,10 +297,13 @@ re.controller = (function() {
             var shared;
             if($('#yes_button').is(':checked')) {
                 shared = "yes";
-            } else if($('#no_button').is(':checked')) {
-                shared = "no";
             } else {
-                shared = "ask";
+                shared = "no";
+            }
+            
+            // TODO: Figure out what expiration is if it's unset
+            if(itemName == "" /* || expiration is unset*/) {
+                return;
             }
             
             var newItem = createFridgeItem(itemName, expiration, shared);
@@ -316,10 +319,13 @@ re.controller = (function() {
             var shared;
             if($('#yes_button').is(':checked')) {
                 shared = "yes";
-            } else if($('#no_button').is(':checked')) {
-                shared = "no";
             } else {
-                shared = "ask";
+                shared = "no";
+            }
+            
+            // TODO: Figure out what expiration is if it's unset
+            if(itemName == "" /* || expiration is unset*/) {
+                return;
             }
             
             var newItem = createFridgeItem(itemName, expiration, shared);

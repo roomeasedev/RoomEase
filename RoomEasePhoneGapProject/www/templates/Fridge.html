@@ -53,13 +53,13 @@
 
 <!-- Small popup menu to add new list, hidden by default -->
 <div class="popupBackground">
-    <div class="popup">
+    <div class="popup" style="padding-top: 0">
         
         <h4 class="white-text">Add Item</h4>
-        <div class="divider teal lighten-4"></div>
+        <div class="divider teal lighten-5" id="popupDivider"></div>
         
-        <div id="namediv">
-            <h4 class="white-text" style="float left">Name</h4>
+        <div id="namediv" style="padding-top: 1em">
+            <h5 class="white-text" style="float left">Name</h5>
             <form id="fridge-item">
                 <input type="text" placeholder="" id="name"><br>
             </form>
@@ -77,8 +77,6 @@
                     <label class="white-text" for="yes-button">Yes</label>
                     <input class="with-gap" name="group1" type="radio" id="test2"/>
                     <label class="white-text" for="no-button">No</label>
-                    <input class="with-gap" name="group1" type="radio" id="ask-button"/>
-                    <label class="white-text" for="ask-button">Ask</label>
             </form>
         </div>
         
