@@ -67,7 +67,7 @@ input:focus, {
     background-color: #26a69a;
     transition: box-shadow .25s;
     margin: .5rem 0 1rem 1rem;
-    padding: 1em;
+    padding: 0 1em 1em 1em;
     border-radius: 4px;
     box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
     z-index: 998;
