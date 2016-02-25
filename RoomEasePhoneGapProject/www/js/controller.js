@@ -29,8 +29,10 @@ re.controller = (function() {
         groupId = window.localStorage.getItem("group_id");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
+            window.location.hash = "#fb";
 		} else if (!groupId){
 			console.log("we couldn't find a groupID! Need to do Group login!");
+            window.location.hash = "#gl";
 		} else {
 			console.log("we found both a uid and a group id");
             re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);  

@@ -124,6 +124,8 @@ re.fbHandler = (function() {
             window.localStorage.removeItem("user_id");
             // logout, openFB will invoke the callback function
             openFB.logout(callback);
+            // redirect the user to the main login page
+            window.location.hash = "#fb";
         } else {
             console.log("Could not find userID. User might not have been logged in.");
         }
