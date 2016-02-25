@@ -35,7 +35,7 @@ re.controller = (function() {
             window.location.hash = "#gl";
 		} else {
 			console.log("we found both a uid and a group id");
-            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);  
+            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId); 
 		}
         
         
@@ -49,9 +49,7 @@ re.controller = (function() {
                 console.log(error);
             }
         }
-        
-        re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
-        console.log("re.controller init finished!");
+                console.log("re.controller init finished!");
 	}
     
     
