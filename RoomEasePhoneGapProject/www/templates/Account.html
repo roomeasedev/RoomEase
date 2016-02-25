@@ -1,0 +1,22 @@
+<!--    Template for the Feed view that will be injected into Index.html at runtime initially
+        and whenever the user navigates to the Feed page. It will include the list of important
+        upcoming items that will be dynamically loaded from local storage.  -->
+<div>
+    <script>
+        $('#gNameContainer').html(window.localStorage.getItem('group_name'));
+        $('#gPwdContainer').html(window.localStorage.getItem('group_password'));
+    </script>
+    <h3 class="left-align pink-text" style="text-align: center">RoomEase Settings</h3>
+    <h4 class="left-align pink-text text-lighten-4" style="padding-left: 10px">Your group username:</h4>
+    <h5 id="gNameContainer" class="center-align pink-text"></h5>
+    <h4 class="left-align pink-text text-lighten-4" style="padding-left: 10px">Your group password:</h4>
+    <h5 id="gPwdContainer" class="center-align pink-text"></h5>
+    <div id="facebook-login">
+        <div class="social-login" >
+              <a onclick="re.fbHandler.logout(function() {})" style="font-family: Roboto">
+                <i class="fa fa-facebook fa-3x"></i>
+                Log out
+              </a>
+        </div>
+    </div>
+</div>

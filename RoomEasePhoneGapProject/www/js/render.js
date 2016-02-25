@@ -17,7 +17,7 @@ re.render = (function() {
     var facebookLoginTemplate;
     var groupLoginTemplate;
     var choreTemplate;
-    var settingsTemplate;
+    var accountTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -300,9 +300,9 @@ re.render = (function() {
         /**
     * Sets the HTML value of the injectable page area to the rendered chores view.
     */
-    function renderSettingsView() {
+    function renderAccountView() {
         $('.page-title').html('Settings');
-        $('.page').html(settingsTemplate());
+        $('.page').html(accountTemplate());
     }
     
     /**
@@ -356,8 +356,8 @@ re.render = (function() {
             renderSchedulerView();
         } else if (hash == "#chores") {
             renderChoreView();
-        } else if(hash == "#settings"){
-            renderSettingsView();
+        } else if(hash == "#account"){
+            renderAccountView();
         } else {
             alert("routing to unknown location");
         }
@@ -371,7 +371,7 @@ re.render = (function() {
     function init() {
         console.log("called render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
-                           "FacebookLogin", "GroupLogin", "Settings"]).done(function () {
+                           "FacebookLogin", "GroupLogin", "Account"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
@@ -379,7 +379,7 @@ re.render = (function() {
             choreTemplate = re.templates.get("Chores");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupLoginTemplate = re.templates.get("GroupLogin");
-            settingsTemplate = re.templates.get("Settings");
+            accountTemplate = re.templates.get("Account");
             // Attach an event listener to route to the proper view
             // when the hash of the URL is changed.
             window.onhashchange = route;
@@ -397,6 +397,7 @@ re.render = (function() {
         'renderFeedView': renderFeedView,
         'renderListView': renderListView,
         'renderFridgeView': renderFridgeView,
-        'renderSchedulerView': renderSchedulerView
+        'renderSchedulerView': renderSchedulerView,
+        'renderAccountView': renderAccountView
     };
 })();
