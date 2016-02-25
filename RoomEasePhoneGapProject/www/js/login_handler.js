@@ -309,7 +309,7 @@ re.loginHandler = (function() {
                         window.location.hash = "";
                         re.render.route();
                     }else if (alreadyIn) {
-                        alert("Welcome back!");
+                        //alert("Welcome back!");
                         window.localStorage.setItem("group_id", groupNum);
                         re.requestHandler.init("http://40.114.43.49:5984/", userId, groupNum);
                         window.location.hash = "";

@@ -15,18 +15,24 @@ var re = {};
 * modules to start the page on the correct viewport.
 */
 $(document).ready(function() {
+    
+        
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    
     //Either set the values to empty string if you want to be directed to a certain page,
     // set them to the default test values if you want to bypass the groups/ids and just
     // go to the default test group, or comment out both and observe the natural flow of
     // the app.
     //SET TO EMPTY TO FORCE NEW LOGIN
-    //window.localStorage.setItem("user_id", "");
-   //window.localStorage.setItem("group_id", "");
+    window.localStorage.setItem("user_id", "");
+    window.localStorage.setItem("group_id", "");
     //SET TO TEST VALUES TO GO TO DEFAULT TEST GROUP
 
     //User 1
-    window.localStorage.setItem("user_id", "893308038"); 
-    window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
+    //window.localStorage.setItem("user_id", "893308038"); 
+    //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
     
     //User 2
    //window.localStorage.setItem('user_id', "512963585");
@@ -38,10 +44,6 @@ $(document).ready(function() {
     
     // load templates and render first viewport
     re.render.init();
-    
-    $(function() {
-        FastClick.attach(document.body);
-    });
 });
 
 

@@ -46,7 +46,11 @@ var openFB = (function () {
     // by the Cordova build process
     document.addEventListener("deviceready", function () {
         runningInCordova = true;
+        oauthRedirectURL = "https://www.facebook.com/connect/login_success.html";
     }, false);
+    
+    runningInCordova = true;
+    oauthRedirectURL = "https://www.facebook.com/connect/login_success.html";
 
     /**
      * Initialize the OpenFB module. You must use this function and initialize the module with an appId before you can
@@ -111,7 +115,6 @@ var openFB = (function () {
      * @returns {*}
      */
     function login(callback, options) {
-
         var loginWindow,
             startTime,
             scope = '',
@@ -142,7 +145,7 @@ var openFB = (function () {
             if (loginCallback && !loginProcessed) loginCallback({status: 'user_cancelled'});
             // This line refers to an eventListener that isn't attached in this file, and was causing an error
             // when the user backed out of the facebook login without attempting to log in.
-            //loginWindow.removeEventListener('loadstop', loginWindow_loadStopHandler);
+            loginWindow.removeEventListener('loadstop', loginWindow_loadStartHandler);
             loginWindow.removeEventListener('exit', loginWindow_exitHandler);
             loginWindow = null;
             console.log('done removing listeners');
@@ -161,7 +164,7 @@ var openFB = (function () {
 
         // If the app is running in Cordova, listen to URL changes in the InAppBrowser until we get a URL with an access_token or an error
         if (runningInCordova) {
-            loginWindow.addEventListener('loadstart', loginWindow_loadStartHandler);
+            loginWindow.addEventListener('loadstop', loginWindow_loadStartHandler);
             loginWindow.addEventListener('exit', loginWindow_exitHandler);
         }
         // Note: if the app is running in the browser the loginWindow dialog will call back by invoking the
@@ -179,7 +182,7 @@ var openFB = (function () {
         // Parse the OAuth data received from Facebook
         var queryString,
             obj;
-
+        runningInCordova = true;
         loginProcessed = true;
         if (url.indexOf("access_token=") > 0) {
             queryString = url.substr(url.indexOf('#') + 1);
@@ -210,14 +213,14 @@ var openFB = (function () {
         // this bit redirects to the login screen in Facebook then redirects again to 
         // the original screen if you were testing on Cordova, so I removed it to log out
         // and stay in the same page. 
-        if (token) {
+        /*if (token) {
             logoutWindow = window.open(logoutURL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no,clearcache=yes');
             if (runningInCordova) {
                 setTimeout(function() {
                     logoutWindow.close();
                 }, 700);
             }
-        }
+        }*/
 
         if (callback) {
             callback();
