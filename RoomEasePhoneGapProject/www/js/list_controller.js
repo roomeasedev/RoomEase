@@ -79,6 +79,10 @@ re.list_controller = (function() {
      */
     function makeNewList() {
         setup('list-items');
+        
+        //Change title of popup
+        $('#popupTitle').html('New List');
+        
         // Hide Delete button and resize Cancel and Done buttons
         $('#delete').css('display', 'none');
         $('#cancel').css('width', '49%');
