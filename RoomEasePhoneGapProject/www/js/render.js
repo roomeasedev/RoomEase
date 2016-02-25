@@ -83,6 +83,7 @@ re.render = (function() {
                 console.log(error);
             } else {
                 reservations = allReservations;
+                re.controller.reservation_items = reservations;
             }
             
         

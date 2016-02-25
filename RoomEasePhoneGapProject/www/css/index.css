@@ -176,7 +176,14 @@ input:focus, {
     font-size: 2.0em; 
     line-height: 1.25em;
 }
-    
+ 
+#filter-reservation-popup{
+    display: none;
+}
+
+#delete-reservation-popup {
+    display: none;
+}
     #facebook-login p {
         text-align: center;
         color: #00415d;
@@ -280,6 +287,11 @@ input:focus, {
 #grouptitle {
     color: #26A69A !important;
 }
+
+.filter-reservations-popup {
+    display: 'none';
+}
+
 
 
 /* Pen Title */

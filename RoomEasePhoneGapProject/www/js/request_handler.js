@@ -151,7 +151,6 @@ re.requestHandler = (function(){
         });
     }
     
-    
     function getUidToNameMap(group_id, callback){
         var uidsToNameMap = {};
         var uids;

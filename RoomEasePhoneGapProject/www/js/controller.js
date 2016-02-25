@@ -16,17 +16,17 @@ re.controller = (function() {
 	var reservation_items = [];
 	var chores_items = [];
     var user_ids_to_names = {};
-    var userId;
-    var groupId;
+    var userId = window.localStorage.getItem('user_id');
+    var groupId = window.localStorage.getItem("group_id");
+    
     /**
      * Initializes the controller module and the other modules that it uses
      * (login handler, request handler).
      */
 	function init() {
+        console.log("Bar!");
         //Initialize login handler and request_handler
         re.loginHandler.init("http://40.114.43.49:5984/");
-        userId = window.localStorage.getItem('user_id');
-        groupId = window.localStorage.getItem("group_id");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
 		} else if (!groupId){
@@ -220,7 +220,7 @@ re.controller = (function() {
     **/
 
     function makeNewReservation(){
-        $('#new-reservation-btn').css('display', 'none');
+        $('.fixed-action-btn').css("display", "none");
         $('.popupBackground').css('display', 'block');
         
         // Adds the new reservation to the database when the done button is pressed
@@ -310,24 +310,61 @@ re.controller = (function() {
     
     //Function called when a reservation item should be edited or deleted in the Reservation template
     function editReservationItem(reservationId){
-        console.log("Here!");
-        
-        $('#delete-reservation-btn').css('display', 'none');
-        $('.delete-reservation-popup').css('display', 'block');
-        //$('#' + reservationId).css('display', 'block');
+        $('.fixed-action-btn').css("display", "none");
+        $('#delete-reservation-popup').css('display', 'block');
                 
         $('#delete-delete').click(function() {
-            $('#new-reservation-btn').css('display', 'block');
-            $('.delete-reservation-popup').css('display', 'none');
+            $('#delete-reservation-popup').css('display', 'none');
+            $('.fixed-action-btn').css("display", "block");
+
             re.requestHandler.deleteItem(reservationId, "reservation", function(is_success, was_deleted, err){
                 re.render.renderSchedulerView();   
             });
         });
 
         $('#delete-cancel').click(function() {
-            $('#new-reservation-btn').css('display', 'block');
-            $('.delete-reservation-popup').css('display', 'none');
+            $('.fixed-action-btn').css("display", "block");
+            $('#delete-reservation-popup').css("display", "none");
+
         });            
+    }
+    
+    function filterReservations(){
+        $('.fixed-action-btn').css("display", "none");
+        $('#filter-reservation-popup').css('display', 'block');
+        
+        $('select').material_select();
+
+    
+        // clear contents
+        var $selectDropdown = $("#dropdownid");
+        $selectDropdown.innerHTML('');
+
+        var seenReservations = [];
+        var reservations = re.controller.reservation_items;
+        for(var i = 0; i < reservations.length; i++){
+            if(seenReservations.indexOf(reservations[i].name_of_item) == -1) {
+                $selectDropdown.append(
+                  $("<option></option>")
+                    .attr("reservationName", reservations[i].name_of_item)
+                    .text(reservations[i].name_of_item)
+                );
+                seenReservations.push(reservations[i].name_of_item);
+            }
+        }
+
+    // trigger event
+        $selectDropdown.trigger('contentChanged');
+        $('select').material_select();
+
+      $('select').on('contentChanged', function() {
+        // re-initialize (update)
+        $(this).material_select();
+      });
+        $('#filter-select-btn').click(function() {
+            $('.fixed-action-btn').css('display', 'block');
+            $('#filter-reservation-popup').css('display', 'none');
+        });
     }
     
     /* Switches the onfocus method from the previous next-item input field to a new one
@@ -348,8 +385,7 @@ re.controller = (function() {
      */
     function hidePopup() {
         // clears the fields in popup & closes it
-        $('#new-list-btn').css('display', 'block');
-        $('#new-reservation-btn').css('display', 'block');
+        $('.fixed-action-btn').css('display', 'block');
         $('.popupBackground').css('display', 'none');
         resetButtons();
     }
@@ -359,6 +395,7 @@ re.controller = (function() {
 	return {
 		'init': init,
         'list_items': list_items,
+        'reservation_items': reservation_items,
         'makeNewList': makeNewList,
         'makeNewReservation': makeNewReservation,
         'makeNewFridgeItem': makeNewFridgeItem,
@@ -368,6 +405,7 @@ re.controller = (function() {
         'hidePopup': hidePopup,
         'editReservationItem':  editReservationItem,
         'editList': editList,
-        'getUIDsMap': getUIDsMap
+        'getUIDsMap': getUIDsMap,
+        'filterReservations': filterReservations
 	}
 })();

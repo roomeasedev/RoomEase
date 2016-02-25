@@ -32,6 +32,11 @@
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
 
+<!-- Button to filter chores-->
+<div class="fixed-action-btn" onclick="re.controller.filterReservations()" id="new-reservation-btn" style="bottom: 45px; right: 100px;">
+    <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">list</i></a>
+</div>
+
 
 
 <!-- Small popup menu to add new schedule item, hidden by default -->
@@ -68,7 +73,7 @@
     </div>
 </div>
 
-<div class="delete-reservation-popup">
+<div id="delete-reservation-popup">
     <div class='popup'>
         <header class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; text-align: center">  Really Delete Reservation? </header>
         <button class="btn waves-effect waves-light popup-button" 
@@ -76,6 +81,20 @@
         <button class="btn waves-effect waves-light popup-button" 
             type="submit" style="float:right; height: 20%; width: 48%" name="action" id="delete-delete">Delete</button>
         
+    </div>
+</div>
+
+<!--Filter popup-->
+<div id="filter-reservation-popup">
+    <div class="popup" >
+        <header class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; text-align: center"> Filter By: </header>
+        
+        <select id="dropdownid" class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; "></select>
+        <button class="btn waves-effect waves-light popup-button" 
+        type="submit"
+            onclick="re.controller.hidePopup()" style="float:left; width: 48%" name="action" id="filter-select-btn">SELECT</button>
+        
+
     </div>
 </div>
 
