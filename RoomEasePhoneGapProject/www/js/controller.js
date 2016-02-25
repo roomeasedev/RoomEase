@@ -29,8 +29,10 @@ re.controller = (function() {
         re.loginHandler.init("http://40.114.43.49:5984/");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
+            window.location.hash = "#fb";
 		} else if (!groupId){
 			console.log("we couldn't find a groupID! Need to do Group login!");
+            window.location.hash = "#gl";
 		} else {
 			console.log("we found both a uid and a group id");
             re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);  
@@ -126,12 +128,28 @@ re.controller = (function() {
     }
     
     /**
-     *Creates a reservation JSON object that will be added to the database.
-    *name_of_res: The name of the reservation item
-    *start_time: the statinf time of the reservation
-    *start_date: the date that the reservation starts
-    *hours: The number of hours in the reservation
-    *minutes: The number of minutes in the reservation
+     * Creates a fridge item JSON object that will be added to the database.
+     * itemName: Name of the fridge item
+     * expiration: Expiration date of item
+     * shared: Shared status of item (yes, no, or ask)
+     */
+    function createFridgeItem(itemName, expiration, shared) {
+        return fridgeItem = {
+            "type": "fridge_item",
+            "item": itemName,
+            "expiration_date": expiration,
+            "sharable": shared,
+            "owner": window.localStorage.getItem("user_id")
+        }
+    }
+    
+    /**
+     * Creates a reservation JSON object that will be added to the database.
+     * name_of_res: The name of the reservation item
+     * start_time: the statinf time of the reservation
+     * start_date: the date that the reservation starts
+     * hours: The number of hours in the reservation
+     * minutes: The number of minutes in the reservation
      */
     function createReservation(name_of_res, start_time, start_date, hours, minutes){
         console.log(window.localStorage.getItem('user_id'));
@@ -209,9 +227,6 @@ re.controller = (function() {
             });
             var newlist = createList(listName, listItems);
             re.requestHandler.addItem(newlist, rhAddCallback);
-
-
-            
         });
     }
 
@@ -259,6 +274,47 @@ re.controller = (function() {
     function makeNewFridgeItem() {
         // TODO: implement this method, which will bring up the popup to add an item,
         // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
+        
+        $('#new-fridge-item-btn').css('display', 'none');
+        $('.popupBackground').css('display', 'block');
+        
+        // TODO: Clear old info from popup
+        
+        // Adds the fridge item to the database when the next item button is pressed
+        $('#next-item').click() {
+            var itemName = $('#name').val();
+            var expiration = $('expiration').val();
+            var shared;
+            if($('#yes_button').is(':checked')) {
+                shared = "yes";
+            } else if($('#no_button').is(':checked')) {
+                shared = "no";
+            } else {
+                shared = "ask";
+            }
+            
+            var newItem = createFridgeItem(itemName, expiration,);
+            re.requestHandler.addItem(newItem, rhAddCallback);
+        }
+        
+        // Adds the fridge item to the database when the done button is pressed and hides the popup
+        $('#done').click(function() {
+            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
+            hidePopup();
+            var itemName = $('#name').val();
+            var expiration = $('expiration').val();
+            var shared;
+            if($('#yes_button').is(':checked')) {
+                shared = "yes";
+            } else if($('#no_button').is(':checked')) {
+                shared = "no";
+            } else {
+                shared = "ask";
+            }
+            
+            var newItem = createFridgeItem(itemName, expiration,);
+            re.requestHandler.addItem(newItem, rhAddCallback);
+        });
     }
     
     
@@ -386,6 +442,9 @@ re.controller = (function() {
     function hidePopup() {
         // clears the fields in popup & closes it
         $('.fixed-action-btn').css('display', 'block');
+        $('#new-list-btn').css('display', 'block');
+        $('#new-reservation-btn').css('display', 'block');
+        $('#new-fridge-item-btn').css('display', 'block');
         $('.popupBackground').css('display', 'none');
         resetButtons();
     }

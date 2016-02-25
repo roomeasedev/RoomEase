@@ -248,17 +248,40 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered fridge view.
     */
     function renderFridgeView(shared) {
-        $('.page-title').html('Fridge');
-        
-        // TODO: Process fridge items according to whether or not shared or mine
-        // is being navigated to and render the page accordingly, passing in the
-        // list of fridge items to the template as a parameter
-        if(shared) {
-            $('.page').html(fridgeTemplate());
-        } else {
-            $('.page').html(fridgeTemplate());
-        }
-        
+        re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
+            if(allItems == null) {
+                console.log(error);
+            } else {
+                $('.page-title').html('Fridge');
+                
+                var currItems = [];
+                
+                // Determine which items will be displayed based on hash
+                for(var item in allItems) {
+                    if(shared) {
+                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes" || item.sharable == "ask") {
+                            currItems.push(item);
+                        }
+                    } else {
+                        if(item.owner == window.localStorage.getItem("user_id")) {
+                            currItems.push(item);
+                        }
+                    }
+                }
+                
+                // Compile page and inject into .page in main html view
+                $('.page').html(fridgeTemplate(currItems));
+                
+                // Add longpress listener to fridge items to ask if the user wants to delete them
+                // or potentially inform them they don't own the item
+                for(var item in currItems) {
+                    $('#' + item._id).longpress(function () {
+                        //TODO: write re.controller.deleteFridgeItem()
+                        //re.controller.deleteFridgeItem(); 
+                    });
+                }
+            }
+        });
         
         // Initialize tabs
         $(document).ready(function(){
