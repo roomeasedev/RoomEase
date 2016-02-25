@@ -258,7 +258,7 @@ re.render = (function() {
                 // Determine which items will be displayed based on hash
                 for(var item in allItems) {
                     if(shared) {
-                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes") {
+                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes" || item.sharable == "ask") {
                             currItems.push(item);
                         }
                     } else {
