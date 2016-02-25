@@ -16,17 +16,25 @@
 
 <script>
     document.getElementById("navbar").style.display = "";
+    $(document).ready(function(){
+        $('ul.tabs').tabs();
+    });
+    
 </script>
 
 <div class="divider teal lighten-4"></div>
 <div class="row">
     <div class="nav-wrapper">
       <ul class="tabs">
-        <li class="tab col s3 teal lighten-1"><a class="white-text" href="#fridge-mine">Mine</a></li>
-        <li class="tab col s3 teal lighten-1"><a class="active white-text" href="#fridge-shared">Shared</a></li>
+        <li class="tab col s3 teal lighten-1"><a id="fm" class="white-text" href="#fridge-mine">Mine</a></li>
+        <li class="tab col s3 teal lighten-1"><a id="fs" class="active white-text" href="#fridge-shared">Shared</a></li>
       </ul>
     </div>
 </div>
+<!-- I need to explain some stuff to you tomorrow jakob-->
+    <div id="fridge-mind" class="col s12">Mine Items</div>
+    <div id="fridge-shared" class="col s12">Shared Items</div>
+
 
 {{#each this}}
     <div class="list-item" id="{{ this._id }}">
@@ -59,7 +67,7 @@
         
         <div id="expirationdiv">
             <h5 class="white-text" style="float left">Expires on</h5>
-            <input type="text" placeholder="" id="expiration"><br>
+            <input type="date" placeholder="" id="expiration"><br>
         </div>
         
         <div id="shared" style="margin 5em">

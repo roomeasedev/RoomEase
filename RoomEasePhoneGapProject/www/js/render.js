@@ -351,6 +351,7 @@ re.render = (function() {
         } else if (hash == "#fridge-mine") {
             renderFridgeView(false);
         } else if (hash == "#fridge-shared") {
+            alert("W");
             renderFridgeView(true);
         } else if (hash == "#scheduler") {
             renderSchedulerView();
