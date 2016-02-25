@@ -3,6 +3,7 @@
  */
 
 re.list_controller = (function() {  
+    var list_items = {};
     
 /****************************** "PRIVATE" ****************************************/
         
@@ -54,7 +55,7 @@ re.list_controller = (function() {
     /**
      * Clears & resets elements within the document to prepare for user's actions
      */
-    function setup() {
+    function setup(containerId) {
         $('#new-list-btn').css('display', 'none');
         $('.popupBackground').css('display', 'block');
         
@@ -77,7 +78,7 @@ re.list_controller = (function() {
      *
      */
     function makeNewList() {
-        setup();
+        setup('list-items');
         // Hide Delete button and resize Cancel and Done buttons
         $('#delete').css('display', 'none');
         $('#cancel').css('width', '49%');

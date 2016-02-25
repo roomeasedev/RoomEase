@@ -7,7 +7,8 @@ re.requestHandler = (function(){
 	var user_id = null;
 	var group_id = null;
 	var databases = {};
-	
+	var user_ids_to_names = {};
+    
 	var type_to_table = {
 		"chore":'chores',
 		"fridge_item": 'fridge_items',

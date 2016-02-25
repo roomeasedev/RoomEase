@@ -11,11 +11,10 @@
 re.controller = (function() {
 
     // TODO: Refactor these into a different module (localstorage)
-	var list_items = {};
+	
 	var fridge_items = [];
 	var reservation_items = [];
 	var chores_items = [];
-    var user_ids_to_names = {};
     var userId = window.localStorage.getItem('user_id');
     var groupId = window.localStorage.getItem("group_id");
     
@@ -544,7 +543,6 @@ re.controller = (function() {
     // making the following functions public to other modules.
 	return {
 		'init': init,
-        'list_items': list_items,
         'reservation_items': reservation_items,
         'makeNewList': makeNewList,
         'makeNewReservation': makeNewReservation,

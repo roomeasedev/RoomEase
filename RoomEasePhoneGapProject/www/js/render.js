@@ -36,7 +36,7 @@ re.render = (function() {
                 //Add listener for longclick
                 for (var i in allLists) {
                     var list = allLists[i];
-                    re.controller.list_items[list._id] = list; 
+                    re.list_controller.list_items[list._id] = list; 
                     (function (current) {
                         $('#' + current._id).longpress(function() {
                             re.list_controller.editList(current._id);
