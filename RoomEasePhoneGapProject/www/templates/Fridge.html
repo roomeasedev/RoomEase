@@ -53,26 +53,26 @@
 
 <!-- Small popup menu to add new list, hidden by default -->
 <div class="popupBackground">
-    <div class="popup" style="padding-top: 0">
+    <div class="popup" style="padding-top: 0; height: auto">
         
         <h4 class="white-text">Add Item</h4>
         <div class="divider teal lighten-5" id="popupDivider"></div>
         
         <div id="namediv" style="padding-top: 1em">
-            <h5 class="white-text" style="float left">Name</h5>
+            <h5 class="white-text" style="float: left; margin: 0">Name</h5>
             <form id="fridge-item">
                 <input type="text" placeholder="" id="name"><br>
             </form>
         </div>
         
         <div id="expirationdiv">
-            <h5 class="white-text" style="float left">Expires on</h5>
+            <h5 class="white-text" style="float: left; margin: 0">Expires on</h5>
             <input type="date" placeholder="" id="expiration"><br>
         </div>
         
         <div id="shared" style="margin 5em">
-            <h5 class="white-text" style="float left">Shared</h5>
-            <form action="#">
+            <h5 class="white-text" style="float: left; margin: 0 ">Shared</h5><br><br>
+            <form action="#" style="margin-bottom: 1em">
                     <input class="with-gap" name="group1" type="radio" id="yes" checked />
                     <label class="white-text" for="yes-button">Yes</label>
                     <input class="with-gap" name="group1" type="radio" id="test2"/>
