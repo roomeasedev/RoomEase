@@ -53,7 +53,7 @@ re.list_controller = (function() {
     function loadListItems(thisList) {
         $('#name').val(thisList.name_of_list);
         for (var i = 0; i < thisList.items.length; i++) {
-            if (i == 0)) {
+            if (i == 0) {
                 $('#first-item').val(thisList.items[i]); 
                 $('#first-item').attr('id', 'prev-item');
             } else {
