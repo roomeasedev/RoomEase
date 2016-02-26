@@ -292,7 +292,7 @@ re.controller = (function() {
         // Adds the fridge item to the database when the next item button is pressed
         $('#next-item').click(function() {
             var itemName = $('#name').val();
-            var expiration = $('expiration').val();
+            var expiration = $('#expiration').val();
             var shared;
             if($('#yes_button').is(':checked')) {
                 shared = "yes";
@@ -312,20 +312,20 @@ re.controller = (function() {
         // Adds the fridge item to the database when the done button is pressed and hides the popup
         $('#done').click(function() {
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            hidePopup();
             var itemName = $('#name').val();
-            var expiration = $('expiration').val();
+            var expiration = $('#expiration').val();
             var shared;
             if($('#yes_button').is(':checked')) {
                 shared = "yes";
             } else {
                 shared = "no";
             }
-            
             // TODO: Figure out what expiration is if it's unset
-            if(itemName == "" /* || expiration is unset*/) {
+            if(itemName == ""  || expiration == "") {
                 return;
             }
+            
+            hidePopup();
             
             var newItem = createFridgeItem(itemName, expiration, shared);
             re.requestHandler.addItem(newItem, rhAddCallback);

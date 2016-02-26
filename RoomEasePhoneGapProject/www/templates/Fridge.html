@@ -26,14 +26,11 @@
 <div class="row">
     <div class="nav-wrapper">
       <ul class="tabs">
-        <li class="tab col s3 teal lighten-1"><a id="fm" class="white-text" href="#fridge-mine">Mine</a></li>
-        <li class="tab col s3 teal lighten-1"><a id="fs" class="active white-text" href="#fridge-shared">Shared</a></li>
+        <li class="tab col s3 teal lighten-1"><a onclick="window.location.hash='#fridge-mine'" id="fm" class="white-text" href="#fridge-mine">Mine</a></li>
+        <li class="tab col s3 teal lighten-1"><a onclick="window.location.hash='#fridge-shared'"id="fs" class="active white-text" href="#fridge-shared">Shared</a></li>
       </ul>
     </div>
 </div>
-<!-- I need to explain some stuff to you tomorrow jakob-->
-    <div id="fridge-mind" class="col s12">Mine Items</div>
-    <div id="fridge-shared" class="col s12">Shared Items</div>
 
 
 {{#each this}}

@@ -249,9 +249,10 @@ re.render = (function() {
                 var currItems = [];
                 
                 // Determine which items will be displayed based on hash
-                for(var item in allItems) {
-                    if(shared) {
-                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes" || item.sharable == "ask") {
+                for(var i = 0; i < allItems.length; i++) {
+                    var item = allItems[i];
+                    if(shared) {                        
+                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes") {
                             currItems.push(item);
                         }
                     } else {
@@ -345,7 +346,6 @@ re.render = (function() {
         } else if (hash == "#fridge-mine") {
             renderFridgeView(false);
         } else if (hash == "#fridge-shared") {
-            alert("W");
             renderFridgeView(true);
         } else if (hash == "#reservations") {
             renderSchedulerView(re.controller.reservation_items);
