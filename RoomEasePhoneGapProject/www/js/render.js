@@ -284,6 +284,22 @@ re.render = (function() {
                         }
                     });
                 }
+                
+                // Add options to datalist field of popup
+                for(var i = 0; i < re.fridge_controller.fridge_names.length; i++) {
+                    var name = re.fridge_controller.fridge_names[i];
+                    $('#names-datalist').append('<option value=' + name + '>');
+                }
+                
+                // Check to see if the user entered a item that was used previously
+                $('#names').on('input', function () {
+                    for(var i = 0; i < re.fridge_controller.fridge_names.length; i++) {
+                        var name = re.fridge_controller.fridge_names[i];
+                        if($('#names').val() == name) {
+                           $('#expiration').html(re.fridge_controller.fridge_names_to_expirations[name]);
+                        }
+                    }
+                });
             }
         });
         

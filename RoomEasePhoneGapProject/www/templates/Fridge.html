@@ -44,7 +44,7 @@
 {{/each}}
 
 <!-- Button to add new fridge items -->
-<div class="fixed-action-btn" onclick="re.controller.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">
+<div class="fixed-action-btn" onclick="re.fridge_controller.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
 
@@ -57,9 +57,12 @@
         
         <div id="namediv" style="padding-top: 1em">
             <h5 class="white-text" style="float: left; margin: 0">Name</h5>
-            <form id="fridge-item">
-                <input type="text" placeholder="" id="name"><br>
-            </form>
+            <div id="fridge-item">
+                <!--<input type="text" placeholder="" id="name"><br>-->
+                <input class="white-text" list="names" name="name" id="names">
+                <datalist id="names-datalist">
+                </datalist>
+            </div>
         </div>
         
         <div id="expirationdiv">
@@ -93,7 +96,7 @@
 <!-- popup displayed in case trying to delete a fridge item, hidden by default -->
 <div class="popupBackground" id="removePopup">
     <div class='popup'  style="top: 20%; height: auto">
-        <h6 class="white-text left-align" style="margin-bottom: 0; font-size: 3em; line-height: 1em; text-align: center" id="removeHeader"></h6>
+        <h6 class="white-text left-align" style="margin-bottom: 0; font-size: 3em; line-height: 1em; text-align: center; margin-bottom: .5em" id="removeHeader"></h6>
         
         <button class="btn waves-effect waves-light popup-button" 
                 type="submit" style="float: left; width: 49%" name="action" id="cancel-remove">Cancel</button>
