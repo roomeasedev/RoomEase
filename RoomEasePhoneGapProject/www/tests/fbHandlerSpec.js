@@ -1,5 +1,7 @@
 
 describe("Facebook Handler suite", function() {
+
+    // test user id, name, and info
     var id = "0123456789";
     var name = "Nachos";
     var info = {
@@ -25,17 +27,6 @@ describe("Facebook Handler suite", function() {
         expect(window.localStorage.getItem('user_name')).toBeNull(name);
     });
 
-    it("throws an error if user info was not well-formatted", function( ){
-
-        re.fbHandler.moveToGroupLogin(null, null);
-
-        waitsFor(function(){
-            return true;
-        }, "group login never finished", 5000);
-
-        expect(window.localStorage.getItem('user_id')).toBeNull(id);
-        expect(window.localStorage.getItem('user_name')).toBeNull(name);
-    });
 
     it("Store the user name and id locally", function( ){
 
@@ -49,7 +40,4 @@ describe("Facebook Handler suite", function() {
         expect(window.localStorage.getItem('user_name')).toEqual(name);
     });
 
-    it("", function( ){
-
-    });
 });
