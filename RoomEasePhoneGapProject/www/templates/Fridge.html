@@ -49,7 +49,7 @@
 </div>
 
 <!-- Small popup menu to add new list, hidden by default -->
-<div class="popupBackground">
+<div class="popupBackground main">
     <div class="popup" style="height: auto">
         
         <h4 class="white-text" style="margin: .5em 0">Add Item</h4>
@@ -90,13 +90,16 @@
     </div>
 </div>
 
-<!-- popup displayed in case trying to delete a fridge item marked "ask", hidden by default -->
-<div id="cannot-delete-fridge-item-popup">
-    <div class='popup'>
-        <header class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; text-align: center">You don't have permission to delete this food item. Please consult the owner.</header>
+<!-- popup displayed in case trying to delete a fridge item, hidden by default -->
+<div class="popupBackground" id="removePopup">
+    <div class='popup'  style="top: 20%; height: auto">
+        <h6 class="white-text left-align" style="margin-bottom: 0; font-size: 3em; line-height: 1em; text-align: center" id="removeHeader"></h6>
         
         <button class="btn waves-effect waves-light popup-button" 
-                type="submit" style="margin-left: auto; margin-right: auto; height: 20%; width: 48%" name="action" id="cannot-delete-got-it">Got It</button>   
+                type="submit" style="float: left; width: 49%" name="action" id="cancel-remove">Cancel</button>
+        
+        <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float: right; width: 49%" name="action" id="remove">Remove</button>
     </div>
 </div>
 

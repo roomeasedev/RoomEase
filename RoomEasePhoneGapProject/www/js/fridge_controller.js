@@ -32,7 +32,7 @@ re.fridge_controller = (function() {
         // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
         
         $('#new-fridge-item-btn').css('display', 'none');
-        $('.popupBackground').css('display', 'block');
+        $('.popupBackground.main').css('display', 'block');
         
         // TODO: Clear old info from popup
         
@@ -73,9 +73,38 @@ re.fridge_controller = (function() {
         });
     }
     
+    /**
+     * Popup that prompts the user if they want to delete an item.
+     * id: The id of the item to be removed
+     * name: The name of the fridge item to be removed
+     */
+    function removeItem(id, name) {
+        
+        $('#new-fridge-item-btn').css('display', 'none');
+        $('#removePopup').css('display', 'block');
+        
+        $('#removeHeader').html('Are you sure you want to remove ' + name + '?');
+        
+        $('#cancel-remove').on('click', function() {
+            $('#cancel-remove').off();
+            $('#remove').off();
+            $('#removePopup').css('display', 'none');
+            $('#new-fridge-item-btn').css('display', 'block');
+        });
+        
+        $('#remove').on('click', function() {
+            $('#cancel-remove').off();
+            $('#remove').off();
+            $('#removePopup').css('display', 'none');
+            $('#new-fridge-item-btn').css('display', 'block');
+            re.requestHandler.deleteItem(id, "fridge_item", re.new_controller.rhDelCallback);
+        });
+    }
+    
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
         'makeNewFridgeItem': makeNewFridgeItem,
+        'removeItem': removeItem,
 	}
 })();
