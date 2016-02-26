@@ -30,26 +30,42 @@ re.list_controller = (function() {
      * Switches the onfocus method from the previous next-item input field to a new one
      */
     function changeFocus() {
-        $('#next-item').off('focus');
-        $('#next-item').attr('id', 'list-item');
-        $('#list-items').append(
-            '<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
-        );
-        
-        // Bind Focus listener to next-item
-        $('#next-item').on('focus', changeFocus);
+        // Bind Focus listener to next-item only if item immediately before has been filled out
+        if ($('#first-item').length || $('#prev-item').val() != '') {
+            if ($('#first-item').length) {
+                $('#first-item').off();
+                $('#first-item').attr('id', 'prev-item');                
+            } else { // previous item becomes just a list item, next becomes previous, and there's a new next
+                $('#prev-item').attr('id', 'list-item');
+                $('#next-item').off();
+                $('#next-item').attr('id', 'prev-item');
+            }
+            $('#list-items').append(
+                '<input type="text" placeholder="Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
+            );
+            $('#next-item').on('focus', changeFocus);            
+        }
     } 
     
     /** 
      * Takes the items in JSON list object thisList & fills in the popup items section with them
-     *
      */
     function loadListItems(thisList) {
         $('#name').val(thisList.name_of_list);
-        for (var i in thisList.items) {
-            $('#next-item').val(thisList.items[i]);    
-            changeFocus();
-        }        
+        for (var i = 0; i < thisList.items.length; i++) {
+            if (i == 0) {
+                $('#first-item').val(thisList.items[i]); 
+                $('#first-item').attr('id', 'prev-item');
+            } else {
+                $('#prev-item').attr('id', 'list-item');
+                $('#next-item').val(thisList.items[i]);
+                $('#next-item').attr('id', 'prev-item');
+            }
+            $('#list-items').append(
+                '<input type="text" placeholder="Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
+            );
+        }
+        $('#next-item').on('focus', changeFocus);  
     }
     
     /**
@@ -61,14 +77,25 @@ re.list_controller = (function() {
         
         // Clear old info from popup
         $('#name').val('');
-        $('#' + containerId).empty().html(
-            '<input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
+        $('#list-items').empty().html(
+            '<input type="text" placeholder="Item" id="first-item" style="margin: 0 0 0 .75em; width: 95%"><br>'
         );
+        
         // clear old listener on done
         $('#done').off();
         
         // Bind Focus listener to next-item
-        $('#next-item').on('focus', changeFocus);
+        $('#first-item').on('focus', changeFocus);
+    }
+    
+    function itemsValid() {
+        var validItem = false;
+        $('#list-items :input').each(function() {
+            if ($(this).val() != '') {
+                validItem = true;
+            }
+        });
+        return validItem;
     }
     
 /****************************** PUBLIC *********************************/    
@@ -90,18 +117,23 @@ re.list_controller = (function() {
         
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            re.controller.hidePopup();
-            var listName = $('#name').val();
-            var listItems = [];
-            var inputs = $('#list-items :input');
-            inputs.each(function() {
-                listItems.push($(this).val());
-            });
-            var newlist = createList(listName, listItems);
-            // note: right now, the following call & calls like this will work during testing only if the callback is
-            //       re.new_controller.rhAddCallback. 
-            re.requestHandler.addItem(newlist, re.controller.rhAddCallback);
+            if (!itemsValid() || !($('#name').val().length)) {
+                Materialize.toast('Please input a name and at least one item for the list', 4000);
+            } else {
+                re.controller.hidePopup();
+                var listName = $('#name').val();
+                var listItems = [];
+                var inputs = $('#list-items :input');
+                inputs.each(function() {
+                    if ($(this).val() != '') {
+                        listItems.push($(this).val());                    
+                    }
+                });
+                var newlist = createList(listName, listItems);
+                // note: right now, the following call & calls like this will work during testing only if the callback is
+                //       re.new_controller.rhAddCallback. 
+                re.requestHandler.addItem(newlist, re.new_controller.rhAddCallback);                
+            }
         });
     }
     
@@ -112,33 +144,41 @@ re.list_controller = (function() {
      */
     function editList(listId) {
         setup();
+        
+        //Change title of popup
+        $('#popupTitle').html('Edit List');
+        
         // Display delete, cancel, and done buttons
         $('#delete').css('display', 'block');
         $('#cancel').css('width', '30%');
         $('#done').css('width', '30%');
         
         // ** change after refactoring into local storage
-        thisList = re.controller.list_items[listId];
+        thisList = list_items[listId];
         loadListItems(thisList);
         
         $('#done').click(function() {
-            re.controller.hidePopup();
-            var updatedItems = [];
-            $('#list-items :input').each(function() {
-                if ($(this).val() != '') {
-                    updatedItems.push($(this).val());
-                }
-            });
-            var editedList = thisList;
-            editedList.items = updatedItems;
-            editedList.name_of_list = $('#name').val();
-            re.requestHandler.updateItem(editedList, re.controller.rhUpdateCallback);
+            if (!itemsValid() || !($('#name').val().length)) {
+                Materialize.toast('Please input a name and at least one item for the list', 4000);                
+            } else {
+                re.controller.hidePopup();
+                var updatedItems = [];
+                $('#list-items :input').each(function() {
+                    if ($(this).val() != '') {
+                        updatedItems.push($(this).val());
+                    }
+                });
+                var editedList = thisList;
+                editedList.items = updatedItems;
+                editedList.name_of_list = $('#name').val();
+                re.requestHandler.updateItem(editedList, re.new_controller.rhUpdateCallback);                
+            }
         });
         
         $('#delete').click(function() {
             re.controller.hidePopup();
             console.log("deleting list");
-            re.requestHandler.deleteItem(listId, "list", re.controller.rhDelCallback);
+            re.requestHandler.deleteItem(listId, "list", re.new_controller.rhDelCallback);
         });
     }
     

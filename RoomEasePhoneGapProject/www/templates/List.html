@@ -6,10 +6,11 @@
 </script>
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <div class="list-item" id="{{ this._id }}"><header class="white-text left-align" style="margin-bottom: 0; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
-        <ul>
+    <div class="list-item" id="{{ this._id }}"><header class="white-text left-align" style="margin-bottom: .1em; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
+        <div class="divider teal lighten-5" id="popupDivider"></div>
+        <ul style="list-style-type: circle !important">
             {{#items}}
-                <li class="white-text" style="font-size: 1.4em">{{ this }}</li>
+                <li class="white-text" style="font-size: 1.4em; list-style-type: circle; margin-top: .2em">{{ this }}</li>
             {{/items}}
         </ul>
     </div>
@@ -24,9 +25,9 @@
 
 <!-- Small popup menu to add new list, hidden by default -->
 <div class="popupBackground">
-    <div class="popup">  
+    <div class="popup" style="padding-top: 0;">
         
-        <h4 class="white-text" id="popupTitle" style="margin: .5rem 0">New List</h4>
+        <h4 class="white-text" id="popupTitle" style="text-align: center; margin: .5rem 0;">New List</h4>
         <div class="divider teal lighten-5" id="popupDivider"></div>
         
         <form>
@@ -34,7 +35,7 @@
         </form>
         <div class="list-entry">
             <form id="list-items">
-                <input type="text" placeholder="Next Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>
+                <input type="text" placeholder="Item" id="next-item" style="margin: 0 0 0 .75em; width: 95%"><br>
             </form>
         </div>
         <div id="buttons">

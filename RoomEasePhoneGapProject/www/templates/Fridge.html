@@ -26,33 +26,30 @@
 <div class="row">
     <div class="nav-wrapper">
       <ul class="tabs">
-        <li class="tab col s3 teal lighten-1"><a id="fm" class="white-text" href="#fridge-mine">Mine</a></li>
-        <li class="tab col s3 teal lighten-1"><a id="fs" class="active white-text" href="#fridge-shared">Shared</a></li>
+        <li class="tab col s3 teal lighten-1"><a onclick="window.location.hash='#fridge-mine'" id="fm" class="white-text" href="#fridge-mine">Mine</a></li>
+        <li class="tab col s3 teal lighten-1"><a onclick="window.location.hash='#fridge-shared'"id="fs" class="active white-text" href="#fridge-shared">Shared</a></li>
       </ul>
     </div>
 </div>
-<!-- I need to explain some stuff to you tomorrow jakob-->
-    <div id="fridge-mind" class="col s12">Mine Items</div>
-    <div id="fridge-shared" class="col s12">Shared Items</div>
 
 
 {{#each this}}
     <div class="list-item" id="{{ this._id }}">
-        <h5>{{ this.item }} expires in {{ this.expiration }} days</h5>
+        <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
         
         {{#ifCond this.sharable '==' "yes"}}
-            <h5>Shared</h5>
+            <h5 class="white-text">Shared</h5>
         {{/ifCond}}
     </div>
 {{/each}}
 
 <!-- Button to add new fridge items -->
-<div class="fixed-action-btn" onclick="re.controller.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">
+<div class="fixed-action-btn" onclick="re.fridge_controller.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
 
 <!-- Small popup menu to add new list, hidden by default -->
-<div class="popupBackground">
+<div class="popupBackground main">
     <div class="popup" style="height: auto">
         
         <h4 class="white-text" style="margin: .5em 0">Add Item</h4>
@@ -60,35 +57,58 @@
         
         <div id="namediv" style="padding-top: 1em">
             <h5 class="white-text" style="float: left; margin: 0">Name</h5>
-            <form id="fridge-item">
-                <input type="text" placeholder="" id="name"><br>
-            </form>
+            <div id="fridge-item">
+                <!--<input type="text" placeholder="" id="name"><br>-->
+                <input class="white-text" list="names" name="name" id="names">
+                <datalist id="names-datalist">
+                </datalist>
+            </div>
         </div>
         
         <div id="expirationdiv">
             <h5 class="white-text" style="float: left; margin: 0">Expires on</h5>
-            <input type="date" placeholder="" id="expiration"><br>
+            <input class="white-text" type="date" placeholder="" id="expiration"><br>
         </div>
         
         <div id="shared" style="margin 5em">
             <h5 class="white-text" style="float: left; margin: 0 ">Shared</h5><br><br>
             <form action="#" style="margin-bottom: 1em">
-                    <input class="with-gap" name="group1" type="radio" id="yes" checked />
+                    <input class="with-gap" name="group1" type="radio" id="yes-button" checked />
                     <label class="white-text" for="yes-button">Yes</label>
-                    <input class="with-gap" name="group1" type="radio" id="test2"/>
+                    <input class="with-gap" name="group1" type="radio" id="no-button"/>
                     <label class="white-text" for="no-button">No</label>
             </form>
         </div>
         
         <div id="buttons">
             <button class="btn waves-effect waves-light popup-button" 
-                type="submit" onclick="re.controller.hidePopup()" style="float:left" name="action" id="cancel">Cancel</button>
+                type="submit" style="float: left" name="action" id="cancel">Cancel</button>
             
             <button class="btn waves-effect waves-light popup-button" 
-                type="submit" style="float:right" name="action" id="done">Done</button>
+                type="submit" style="float: right" name="action" id="done">Done</button>
             
             <button class="btn waves-effect waves-light popup-button" 
                 type="submit" style="position: absolute; left: 35%" name="action" id="next-item">Next Item</button>
         </div>
     </div>
+</div>
+
+<!-- popup displayed in case trying to delete a fridge item, hidden by default -->
+<div class="popupBackground" id="removePopup">
+    <div class='popup'  style="top: 20%; height: auto">
+        <h6 class="white-text left-align" style="margin-bottom: 0; font-size: 3em; line-height: 1em; text-align: center; margin-bottom: .5em" id="removeHeader"></h6>
+        
+        <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float: left; width: 49%" name="action" id="cancel-remove">Cancel</button>
+        
+        <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float: right; width: 49%" name="action" id="remove">Remove</button>
+    </div>
+</div>
+
+<!-- Error popup displayed in case adding a fridge item went wrong, hidden by default -->
+<div class="error-popup">
+    <header class="white-text center-align" style="margin: 1.4rem auto;">SORRY! SOMETHING WENT WRONG. PLEASE TRY AGAIN</header>
+    <button class="btn waves-effect waves-light" 
+            style="background-color: #4db6ac; box-shadow: none; text-align: center; width: 100%;" type="submit" name="action" id="exit-error">Try Again</button>
 </div>

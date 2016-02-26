@@ -6,6 +6,15 @@ re.fridge_controller = (function() {
     
 /****************************** "PRIVATE" ****************************************/
     
+    var fridge_names = window.localStorage.getItem("fridge_names");
+    if(!fridge_names) {
+        fridge_names = [];
+    }
+    var fridge_names_to_expirations = window.localStorage.getItem("fridge_names_to_expirations");
+    if(!fridge_names_to_expirations) {
+        fridge_names_to_expirations = {};
+    }
+    
     /**
      * Creates a fridge item JSON object that will be added to the database.
      * itemName: Name of the fridge item
@@ -22,54 +31,100 @@ re.fridge_controller = (function() {
         }
     }
     
+    function addItem() {
+        var itemName = $('#names').val();
+        var expiration = $('#expiration').val();
+        var shared;
+        if($('#yes-button').is(':checked')) {
+            shared = "yes";
+        } else {
+            shared = "no";
+        }
+
+        // Check to see if input was valid
+        if(itemName == "") {
+            Materialize.toast("Enter an item name", 2000);
+            return false;
+        } else if (expiration == "") {
+             Materialize.toast("Enter a valid expiration", 2000);
+             return false;
+        }
+
+        $('#names').html('');
+        $('#expiration').html('');
+
+        resetFridgeButtons();
+
+        var newItem = createFridgeItem(itemName, expiration, shared);
+        re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
+        
+        fridge_names.push(itemName);
+        fridge_names_to_expirations[itemName] = expiration;
+        
+        window.localStorage.setItem("fridge_names", fridge_names);
+        window.localStorage.setItem("fridge_names_to_expirations", fridge_names_to_expirations);
+        
+        return true;
+    }
+    
+    function resetFridgeButtons() {
+        $('#cancel').off();
+        $('#next-item').off();
+        $('#done').off();
+    }
+    
 /****************************** PUBLIC *********************************/ 
     
     /**
-    *Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
-    **/
+     * Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
+     **/
     function makeNewFridgeItem() {
-        // TODO: implement this method, which will bring up the popup to add an item,
-        // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
-        
         $('#new-fridge-item-btn').css('display', 'none');
-        $('.popupBackground').css('display', 'block');
+        $('.popupBackground.main').css('display', 'block');
         
-        // TODO: Clear old info from popup
+        $('#cancel').on('click', function() {
+            re.controller.hidePopup();
+            resetFridgeButtons();
+        });
         
         // Adds the fridge item to the database when the next item button is pressed
         $('#next-item').click(function() {
-            var itemName = $('#name').val();
-            var expiration = $('expiration').val();
-            var shared;
-            if($('#yes_button').is(':checked')) {
-                shared = "yes";
-            } else if($('#no_button').is(':checked')) {
-                shared = "no";
-            } else {
-                shared = "ask";
-            }
-            
-            var newItem = createFridgeItem(itemName, expiration, shared);
-            re.requestHandler.addItem(newItem, re.controller.rhAddCallback);
+            addItem()
         });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
         $('#done').click(function() {
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            hidePopup();
-            var itemName = $('#name').val();
-            var expiration = $('expiration').val();
-            var shared;
-            if($('#yes_button').is(':checked')) {
-                shared = "yes";
-            } else if($('#no_button').is(':checked')) {
-                shared = "no";
-            } else {
-                shared = "ask";
+            if(addItem()) {
+                re.controller.hidePopup();
             }
-            
-            var newItem = createFridgeItem(itemName, expiration, shared);
-            re.requestHandler.addItem(newItem, re.controller.rhAddCallback);
+        });
+    }
+    
+    /**
+     * Popup that prompts the user if they want to delete an item.
+     * id: The id of the item to be removed
+     * name: The name of the fridge item to be removed
+     */
+    function removeItem(id, name) {
+        
+        $('#new-fridge-item-btn').css('display', 'none');
+        $('#removePopup').css('display', 'block');
+        
+        $('#removeHeader').html('Are you sure you want to remove ' + name + '?');
+        
+        $('#cancel-remove').on('click', function() {
+            $('#cancel-remove').off();
+            $('#remove').off();
+            $('#removePopup').css('display', 'none');
+            $('#new-fridge-item-btn').css('display', 'block');
+        });
+        
+        $('#remove').on('click', function() {
+            $('#cancel-remove').off();
+            $('#remove').off();
+            $('#removePopup').css('display', 'none');
+            $('#new-fridge-item-btn').css('display', 'block');
+            re.requestHandler.deleteItem(id, "fridge_item", re.new_controller.rhDelCallback);
         });
     }
     
@@ -77,5 +132,8 @@ re.fridge_controller = (function() {
     // making the following functions public to other modules.
 	return {
         'makeNewFridgeItem': makeNewFridgeItem,
+        'removeItem': removeItem,
+        'fridge_names': fridge_names,
+        'fridge_names_to_expirations': fridge_names_to_expirations,
 	}
 })();

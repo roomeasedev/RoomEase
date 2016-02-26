@@ -26,13 +26,13 @@ $(document).ready(function() {
     // go to the default test group, or comment out both and observe the natural flow of
     // the app.
     //SET TO EMPTY TO FORCE NEW LOGIN
-    window.localStorage.setItem("user_id", "");
-    window.localStorage.setItem("group_id", "");
+    //window.localStorage.setItem("user_id", "");
+    //window.localStorage.setItem("group_id", "");
     //SET TO TEST VALUES TO GO TO DEFAULT TEST GROUP
 
     //User 1
-    //window.localStorage.setItem("user_id", "893308038"); 
-    //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
+    window.localStorage.setItem("user_id", "893308038"); 
+    window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
     
     //User 2
    //window.localStorage.setItem('user_id', "512963585");

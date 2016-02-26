@@ -15,9 +15,10 @@ re.render = (function() {
     var fridgeTemplate;
     var scheduleTemplate;
     var facebookLoginTemplate;
-    var groupLoginTemplate;
-    var choreTemplate;
     var accountTemplate;
+    var groupMakeJoinTemplate;
+    var groupMakeTemplate;
+    var groupJoinTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -39,7 +40,6 @@ re.render = (function() {
                     re.list_controller.list_items[list._id] = list; 
                     (function (current) {
                         $('#' + current._id).longpress(function() {
-                            $('#popupTitle').html('Edit List');
                             re.list_controller.editList(current._id);
                         })
                     })(list);
@@ -258,9 +258,17 @@ re.render = (function() {
                 var currItems = [];
                 
                 // Determine which items will be displayed based on hash
-                for(var item in allItems) {
-                    if(shared) {
-                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes" || item.sharable == "ask") {
+                for(var i = 0; i < allItems.length; i++) {
+                    var item = allItems[i];
+                    var dateArray = item.expiration_date.split('-');
+                    var expDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]) + 1);
+                    var currDate = new Date();
+                    
+                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                    var diffDays = Math.round(Math.abs((expDate.getTime() - currDate.getTime())/(oneDay)));
+                    item.expiration_date = diffDays;
+                    if(shared) {                        
+                        if(item.sharable == "yes") {
                             currItems.push(item);
                         }
                     } else {
@@ -275,12 +283,32 @@ re.render = (function() {
                 
                 // Add longpress listener to fridge items to ask if the user wants to delete them
                 // or potentially inform them they don't own the item
-                for(var item in currItems) {
+                for(var i = 0; i < currItems.length; i++) {
+                    var item = currItems[i];
                     $('#' + item._id).longpress(function () {
-                        //TODO: write re.controller.deleteFridgeItem()
-                        //re.controller.deleteFridgeItem(); 
+                        if(item.owner == window.localStorage.getItem("user_id")) {
+                            re.fridge_controller.removeItem(item._id, item.item);
+                        } else {
+                            Materialize.toast("You can't delete an item you don't own");
+                        }
                     });
                 }
+                
+                // Add options to datalist field of popup
+                for(var i = 0; i < re.fridge_controller.fridge_names.length; i++) {
+                    var name = re.fridge_controller.fridge_names[i];
+                    $('#names-datalist').append('<option value=' + name + '>');
+                }
+                
+                // Check to see if the user entered a item that was used previously
+                $('#names').on('input', function () {
+                    for(var i = 0; i < re.fridge_controller.fridge_names.length; i++) {
+                        var name = re.fridge_controller.fridge_names[i];
+                        if($('#names').val() == name) {
+                           $('#expiration').html(re.fridge_controller.fridge_names_to_expirations[name]);
+                        }
+                    }
+                });
             }
         });
         
@@ -291,14 +319,6 @@ re.render = (function() {
     }
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered chores view.
-    */
-    function renderChoreView() {
-        $('.page-title').html('Chores');
-        $('.page').html(choreTemplate());
-    }
-    
-        /**
     * Sets the HTML value of the injectable page area to the rendered chores view.
     */
     function renderAccountView() {
@@ -315,12 +335,32 @@ re.render = (function() {
     }
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered group joining/creation view.
-    * This view should only be shown to users for whom we do not yet have a group id number.
+    * Presents the HTML injection that allows a user to either make or join
+    * a group after sucessfully logining in with facebook
     */
-    function renderGroupLoginView() {
-        $('.page').html(groupLoginTemplate());
+    function renderGroupMakeOrJoinView() {
+       $('.page').html(groupMakeJoinTemplate());
     }
+    
+    /**
+     * Allows the user to request the creation of a new group.
+     * The user is given a group id and password that they will then
+     * distribute among the other roommates
+     */ 
+    function renderGroupMakeView() {
+       $('.page').html(groupMakeTemplate());
+    }
+    
+    /**
+    * Sets the HTML value of the injectable page area to the rendered group joining view.
+    * This view should will be shown for users who do not have a group_id but intended on
+    * joining an already created group.
+    */
+    function renderGroupJoinView() {
+        $('.page').html(groupJoinTemplate());
+    }
+    
+
     
     /**
     * Renders the correct view for the injectable area of the viewport.
@@ -346,7 +386,11 @@ re.render = (function() {
         if (!u_id || hash == "#fb") {
             renderFacebookLoginView();
         } else if ((!g_id) || hash == "#gl") {
-            renderGroupLoginView();
+            renderGroupMakeOrJoinView();
+        } else if(hash == "#gm") {
+            renderGroupMakeView();
+        } else if (hash == "#gj") {
+            renderGroupJoinView();
         } else if (hash == "#feed") {
             renderFeedView();
         } else if (!hash || hash == "#list") { 
@@ -355,7 +399,6 @@ re.render = (function() {
         } else if (hash == "#fridge-mine") {
             renderFridgeView(false);
         } else if (hash == "#fridge-shared") {
-            alert("W");
             renderFridgeView(true);
         } else if (hash == "#reservations") {
             renderSchedulerView();
@@ -373,15 +416,16 @@ re.render = (function() {
      */
     function init() {
         console.log("called render.init");
-        re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
-                           "FacebookLogin", "GroupLogin", "Account"]).done(function () {
+        re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin",
+				"GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
             scheduleTemplate = re.templates.get("Reservations");
-            choreTemplate = re.templates.get("Chores");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
-            groupLoginTemplate = re.templates.get("GroupLogin");
+            groupJoinTemplate = re.templates.get("GroupJoin");
+            groupMakeJoinTemplate = re.templates.get("GroupMakeJoin");
+            groupMakeTemplate = re.templates.get("GroupMake");
             accountTemplate = re.templates.get("Account");
             // Attach an event listener to route to the proper view
             // when the hash of the URL is changed.

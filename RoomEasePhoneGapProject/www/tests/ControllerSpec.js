@@ -1,6 +1,7 @@
 describe("Controller suite", function() {
     
-    it("createChoreTest", function() {
+    // Removed this test because we don't have the chorse feature anymore   
+    /* it("createChoreTest", function() {
         var choreName = "chore";
         var recurring = "everyday";
         var date = "date";
@@ -15,7 +16,7 @@ describe("Controller suite", function() {
         expect(chore_item[assigned]).toEqual(assigned);
         
         pending();
-    });
+    });*/
     
     it("createFridgeItemTest", function() {
         var name = "name";

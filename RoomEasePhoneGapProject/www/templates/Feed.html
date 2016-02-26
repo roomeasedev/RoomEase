@@ -2,8 +2,52 @@
         and whenever the user navigates to the Feed page. It will include the list of important
         upcoming items that will be dynamically loaded from local storage.  -->
 <script>
-    document.getElementById("navbar").style.display = "";
+    document.getElementById("navbar").style.display = "";  
 </script>
+
+<!---->
+<div class = "feed-container" style="overflow: scroll; height: 60%">
+	{{#each this}}
+	    <div class="feed-item" id="{{ this._id }}">
+			<h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
+		
+			{{#ifCond this.type '==' "reservation"}}
+				<h5 class="white-text">{{this.date}} You have {{this.item}} reserved at {{this.time}}.</h5>
+			{{/ifCond}}
+
+			{{#ifCond this.type '==' "fridge"}}
+				<h5 class="white-text fridgeItem">{{this.person}}'s {{this.item}} has expired!</h5>
+			{{/ifCond}}
+	    </div>
+	{{/each}}
+</div>
+
+<!-- Buttons for going to the other pages of the application -->
+<div id="viewButtons">
+	<div onclick="re.feedController.listModuleButton()" id="list-module-btn" style="float: left">
+		<a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">List</i></a>
+	</div>
+	<div onclick="re.feedController.fridgeModuleButton()" id="list-module-btn" style="margin-left: auto; margin-right: auto">
+		<a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">Fridge</i></a>
+	</div>
+	<div onclick="re.feedController.reservationModuleButton()" id="list-module-btn" style="float: right">
+		<a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">Reservations</i></a>
+	</div>
+</div>
+
+<!-- popup displayed in case trying to delete a fridge item, hidden by default -->
+<div class="popupBackground" id="removePopup">
+    <div class='popup'  style="top: 20%; height: auto">
+        <h6 class="white-text left-align" style="margin-bottom: 0; font-size: 3em; line-height: 1em; text-align: center" id="removeHeader"></h6>
+        
+        <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float: left; width: 49%" name="action" id="cancel-remove">Cancel</button>
+        
+        <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float: right; width: 49%" name="action" id="remove">Remove</button>
+    </div>
+</div>
+
 <div>
     <h3 class="left-align pink-text text-lighten-4" style="padding-left: 10px">Feed (coming soon!)</h3>
 </div>

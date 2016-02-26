@@ -270,7 +270,7 @@ re.controller = (function() {
             $('#name').val('');
         });
     }
-        
+    
     /**
     *Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
     **/
@@ -279,57 +279,85 @@ re.controller = (function() {
         // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
         
         $('#new-fridge-item-btn').css('display', 'none');
-        $('.popupBackground').css('display', 'block');
+        $('.popupBackground.main').css('display', 'block');
         
         // TODO: Clear old info from popup
         
+        $('#cancel').on('click', function() {
+            hidePopup();
+            resetFridgeButtons();
+        });
+        
         // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').click(function() {
+        $('#next-item').on("click", function() {
             var itemName = $('#name').val();
-            var expiration = $('expiration').val();
+            var expiration = $('#expiration').val();
             var shared;
-            if($('#yes_button').is(':checked')) {
+            if($('#yes-button').is(':checked')) {
                 shared = "yes";
             } else {
                 shared = "no";
             }
-            
-            // TODO: Figure out what expiration is if it's unset
-            if(itemName == "" /* || expiration is unset*/) {
+
+            // Check to see if input was valid
+            if(itemName == "") {
+                Materialize.toast("Enter an item name", 2000);
                 return;
+            } else if (expiration == "") {
+                 Materialize.toast("Enter a valid expiration", 2000);
+                 return;
             }
+            
+            $('#name').html('');
+            $('#expiration').html('');
+
+            resetFridgeButtons();
+            hidePopup();
             
             var newItem = createFridgeItem(itemName, expiration, shared);
             re.requestHandler.addItem(newItem, rhAddCallback);
         });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
-        $('#done').click(function() {
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            hidePopup();
+        $('#done').on("click", function() {
             var itemName = $('#name').val();
-            var expiration = $('expiration').val();
+            var expiration = $('#expiration').val();
             var shared;
-            if($('#yes_button').is(':checked')) {
+            if($('#yes-button').is(':checked')) {
                 shared = "yes";
             } else {
                 shared = "no";
             }
-            
-            // TODO: Figure out what expiration is if it's unset
-            if(itemName == "" /* || expiration is unset*/) {
+
+            // Check to see if input was valid
+            if(itemName == "") {
+                Materialize.toast("Enter an item name", 2000);
                 return;
+            } else if (expiration == "") {
+                 Materialize.toast("Enter a valid expiration", 2000);
+                 return;
             }
+            
+            $('#name').html('');
+            $('#expiration').html('');
+            
+            resetFridgeButtons();
+            hidePopup();
             
             var newItem = createFridgeItem(itemName, expiration, shared);
             re.requestHandler.addItem(newItem, rhAddCallback);
         });
     }
     
+    function resetFridgeButtons() {
+        $('#cancel').off();
+        $('#next-item').off();
+        $('#done').off();
+    }
     
     /**
-    *Function called make all of the resources visible to add a new chore item in the Chores tremplate
-    **/
+     * Function called make all of the resources visible to add a new chore item in the Chores tremplate
+     */
     function makeNewChore() {
         // TODO: implement this method, which will bring up the popup to add a chore,
         // call createNewChore to create the JSON, and then make the necessary requesthandler call
@@ -487,6 +515,20 @@ re.controller = (function() {
             re.render.renderSchedulerView(displayedReservations);
 
         });
+    }
+    
+    function editFridgeItem(item) {
+        if (item.owner != window.localStorage.getItem("user_id") && item.sharable == "ask") {
+            $('#cannot-delete-fridge-item-popup').css('display', 'block');
+            $('#new-fridge-item-btn').css('display', 'none');
+            
+            $('#cannot-delete-got-it').click(function() {
+                $('#new-fridge-item-btn').css("display", "block");
+                $('#cannot-delete-fridge-item-popup').css("display", "none");
+            });     
+        } else {
+            //TODO ask if the user wants to delete this item. implement deletions
+        }
     }
     
     /* Switches the onfocus method from the previous next-item input field to a new one
