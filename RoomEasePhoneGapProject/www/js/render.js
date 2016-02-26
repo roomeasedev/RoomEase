@@ -295,14 +295,6 @@ re.render = (function() {
     /**
     * Sets the HTML value of the injectable page area to the rendered chores view.
     */
-    function renderChoreView() {
-        $('.page-title').html('Chores');
-        $('.page').html(choreTemplate());
-    }
-    
-        /**
-    * Sets the HTML value of the injectable page area to the rendered chores view.
-    */
     function renderAccountView() {
         $('.page-title').html('Account Details');
         $('.page').html(accountTemplate());
@@ -395,13 +387,12 @@ re.render = (function() {
      */
     function init() {
         console.log("called render.init");
-        re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
-                           "FacebookLogin", "GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
+        re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin",
+				"GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
             scheduleTemplate = re.templates.get("Reservations");
-            choreTemplate = re.templates.get("Chores");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupJoinTemplate = re.templates.get("GroupJoin");
             groupMakeJoinTemplate = re.templates.get("GroupMakeJoin");
