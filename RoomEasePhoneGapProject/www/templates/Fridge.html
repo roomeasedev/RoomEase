@@ -35,10 +35,10 @@
 
 {{#each this}}
     <div class="list-item" id="{{ this._id }}">
-        <h5>{{ this.item }} expires in {{ this.expiration }} days</h5>
+        <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
         
         {{#ifCond this.sharable '==' "yes"}}
-            <h5>Shared</h5>
+            <h5 class="white-text">Shared</h5>
         {{/ifCond}}
     </div>
 {{/each}}

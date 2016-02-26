@@ -251,6 +251,13 @@ re.render = (function() {
                 // Determine which items will be displayed based on hash
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
+                    var dateArray = item.expiration_date.split('-');
+                    var expDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]) + 1);
+                    var currDate = new Date();
+                    
+                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                    var diffDays = Math.round(Math.abs((expDate.getTime() - currDate.getTime())/(oneDay)));
+                    item.expiration_date = diffDays;
                     if(shared) {                        
                         if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes") {
                             currItems.push(item);
