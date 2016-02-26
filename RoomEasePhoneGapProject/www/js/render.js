@@ -259,7 +259,7 @@ re.render = (function() {
                     var diffDays = Math.round(Math.abs((expDate.getTime() - currDate.getTime())/(oneDay)));
                     item.expiration_date = diffDays;
                     if(shared) {                        
-                        if(item.owner == window.localStorage.getItem("user_id") || item.sharable == "yes") {
+                        if(item.sharable == "yes") {
                             currItems.push(item);
                         }
                     } else {
