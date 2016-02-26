@@ -35,16 +35,15 @@ a {
     font-size: 1.5em;
 }
 
-input:focus, {
-    focus: none;
-    color: white;
+input[type="text"] {
+    font-size: 1.3em;
 }
 
 ::-webkit-input-placeholder {
     color: #b2dfdb;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 1.1em;
+    font-size: 1em;
     font-style: italic;
 }
 

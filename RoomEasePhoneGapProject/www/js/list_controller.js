@@ -71,7 +71,7 @@ re.list_controller = (function() {
     /**
      * Clears & resets elements within the document to prepare for user's actions
      */
-    function setup(containerId) {
+    function setup() {
         $('#new-list-btn').css('display', 'none');
         $('.popupBackground').css('display', 'block');
         
@@ -88,6 +88,9 @@ re.list_controller = (function() {
         $('#first-item').on('focus', changeFocus);
     }
     
+    /**
+     *
+     */
     function itemsValid() {
         var validItem = false;
         $('#list-items :input').each(function() {
