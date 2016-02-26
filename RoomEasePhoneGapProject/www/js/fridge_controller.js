@@ -55,8 +55,14 @@ re.fridge_controller = (function() {
         re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
         
         fridge_names[itemName] = expiration;
+        alert("name: " + itemNamme);
+        alert("expiration: " + expiration);
         
-        window.localStorage.setItem("fridge_names", JSON.stringify(fridge_names);
+        window.localStorage.setItem("fridge_names", JSON.stringify(fridge_names));
+        
+        var tmp = JSON.parse(window.localStorage.getItem("fridge_names"));
+        alert(tmp["Cheese"]);
+        
         
         return true;
     }

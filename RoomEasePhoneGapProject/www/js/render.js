@@ -279,7 +279,7 @@ re.render = (function() {
                 }
                 
                 // Check to see if the user entered a item that was used previously
-                $('#names').on('input', function () {
+                $('#names').on('focusout', function () {
                     for(var name in re.fridge_controller.fridge_names) {
                         if($('#names').val() == name) {
                            $('#expiration').html(re.fridge_controller.fridge_names[name]);
