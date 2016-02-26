@@ -15,7 +15,6 @@ re.render = (function() {
     var fridgeTemplate;
     var scheduleTemplate;
     var facebookLoginTemplate;
-    var choreTemplate;
     var accountTemplate;
     var groupMakeJoinTemplate;
     var groupMakeTemplate;
