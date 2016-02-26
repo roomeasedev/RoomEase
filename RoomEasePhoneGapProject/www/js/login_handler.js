@@ -305,12 +305,16 @@ re.loginHandler = (function() {
                         // the landing page, they are now in their group!
                         console.log("successfully joined group");
                         window.localStorage.setItem("group_id", groupNum);
+                        window.localStorage.setItem('group_name', name);
+                        window.localStorage.setItem('group_password', password);
                         re.requestHandler.init("http://40.114.43.49:5984/", userId, groupNum);
                         window.location.hash = "";
                         re.render.route();
                     }else if (alreadyIn) {
                         //alert("Welcome back!");
                         window.localStorage.setItem("group_id", groupNum);
+                        window.localStorage.setItem('group_name', name);
+                        window.localStorage.setItem('group_password', password);
                         re.requestHandler.init("http://40.114.43.49:5984/", userId, groupNum);
                         window.location.hash = "";
                         re.render.route();

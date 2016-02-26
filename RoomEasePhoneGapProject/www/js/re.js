@@ -35,8 +35,8 @@ $(document).ready(function() {
     window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
     
     //User 2
-   //window.localStorage.setItem('user_id', "512963585");
-
+    window.localStorage.setItem('user_id', "512963585");
+    console.log("hello world");
     //User 3
     //window.localStorage.setItem('user_id', "743566854");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7157b47");
