@@ -62,10 +62,7 @@ re.new_controller = (function() {
     function displayError(error) {
         console.log(error);
         // let user know an error occurred and prompt them to try again
-        $('.error-popup').css('display', 'block');
-        $('#exit-error').click(function() {
-            $('.error-popup').css('display', 'none');
-        });
+        Materialize.toast('Sorry! Something went wrong. Please try again', 4000);
     }
     
 /****************************** PUBLIC *********************************/ 

@@ -88,6 +88,16 @@ re.list_controller = (function() {
         $('#first-item').on('focus', changeFocus);
     }
     
+    function itemsValid() {
+        var validItem = false;
+        $('#list-items :input').each(function() {
+            if ($(this).val() != '') {
+                validItem = true;
+            }
+        });
+        return validItem;
+    }
+    
 /****************************** PUBLIC *********************************/    
     
     /** 
@@ -107,19 +117,23 @@ re.list_controller = (function() {
         
         // Adds the new list to the database when the done button is pressed
         $('#done').click(function() {
-            re.controller.hidePopup();
-            var listName = $('#name').val();
-            var listItems = [];
-            var inputs = $('#list-items :input');
-            inputs.each(function() {
-                if ($(this).val() != '') {
-                    listItems.push($(this).val());                    
-                }
-            });
-            var newlist = createList(listName, listItems);
-            // note: right now, the following call & calls like this will work during testing only if the callback is
-            //       re.new_controller.rhAddCallback. 
-            re.requestHandler.addItem(newlist, re.new_controller.rhAddCallback);
+            if (!itemsValid() || !($('#name').val().length)) {
+                Materialize.toast('Please input a name and at least one item for the list', 4000);
+            } else {
+                re.controller.hidePopup();
+                var listName = $('#name').val();
+                var listItems = [];
+                var inputs = $('#list-items :input');
+                inputs.each(function() {
+                    if ($(this).val() != '') {
+                        listItems.push($(this).val());                    
+                    }
+                });
+                var newlist = createList(listName, listItems);
+                // note: right now, the following call & calls like this will work during testing only if the callback is
+                //       re.new_controller.rhAddCallback. 
+                re.requestHandler.addItem(newlist, re.new_controller.rhAddCallback);                
+            }
         });
     }
     
@@ -144,17 +158,21 @@ re.list_controller = (function() {
         loadListItems(thisList);
         
         $('#done').click(function() {
-            re.controller.hidePopup();
-            var updatedItems = [];
-            $('#list-items :input').each(function() {
-                if ($(this).val() != '') {
-                    updatedItems.push($(this).val());
-                }
-            });
-            var editedList = thisList;
-            editedList.items = updatedItems;
-            editedList.name_of_list = $('#name').val();
-            re.requestHandler.updateItem(editedList, re.new_controller.rhUpdateCallback);
+            if (!itemsValid() || !($('#name').val().length)) {
+                Materialize.toast('Please input a name and at least one item for the list', 4000);                
+            } else {
+                re.controller.hidePopup();
+                var updatedItems = [];
+                $('#list-items :input').each(function() {
+                    if ($(this).val() != '') {
+                        updatedItems.push($(this).val());
+                    }
+                });
+                var editedList = thisList;
+                editedList.items = updatedItems;
+                editedList.name_of_list = $('#name').val();
+                re.requestHandler.updateItem(editedList, re.new_controller.rhUpdateCallback);                
+            }
         });
         
         $('#delete').click(function() {
