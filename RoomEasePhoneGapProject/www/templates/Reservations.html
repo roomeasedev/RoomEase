@@ -7,7 +7,7 @@
 </script>
 <!-- This section should dynamically insert all of the reservations into the page-->
 
-<div style="height:40px; margin-bottom: 20px;">
+<div style="height:40px; margin-bottom: 20px; margin-top: 10px;">
 
     <div style="width: 73%; padding-left: 2%;float:left; height: 100%" >
         <select id="filter-dropdown" class="black-text" style="margin-bottom: 0; font-size: 10em; line-height: 1.5em; background-color: "></select>
@@ -16,27 +16,24 @@
                     type="submit" onclick="re.reserve_controller.addNewReservationType()" name="action" id="create-cancel" style="width:21%; float: right; height: 100%; margin-right: 4%;">Add New Type</button>
 </div>
 
-
 {{#each this}}
-<div class="all-reservation-items" id="{{this._id}}">
-    <div class="reservation-item {{this.color_class}}">
-        
+    {{#ifCond this.type '==' 'time'}}
+        <div style="padding-left: 2%;">
+            <header color="blue" style="font-size: 1.4em"> <h3 class="left-align pink-text text-lighten-4"> {{this.label}}</h3></header>
+        </div>
+    {{/ifCond}}
     {{#ifCond this.type '==' 'reservation'}}
 
-        
-        <header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">{{this.title}} reserved by {{this.user}} </header>
-       
-        
-      <ul>
-            <li class="white-text" style="font-size: 1.4em">  {{this.time}}</li>  
-        </ul>    
+    <div class="all-reservation-items" id="{{this._id}}">
+        <div class="reservation-item {{this.color_class}}">
+            <header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">{{this.title}} reserved by {{this.user}} </header>
+            <ul>
+                <li class="white-text" style="font-size: 1.4em">  {{this.time}}</li>  
+            </ul>    
+
+        </div>
+    </div>
     {{/ifCond}}
-        
-    {{#ifCond this.type '==' 'time'}}
-            <header color="blue" style="font-size: 1.4em">  {{this.label}}</header>      
-    {{/ifCond}}
-</div>
-</div>
 {{/each}}
 
 <!-- Button to add new chore-->
