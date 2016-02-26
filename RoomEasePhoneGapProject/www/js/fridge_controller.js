@@ -6,13 +6,9 @@ re.fridge_controller = (function() {
     
 /****************************** "PRIVATE" ****************************************/
     
-    var fridge_names = window.localStorage.getItem("fridge_names");
+    var fridge_names = JSON.parse(window.localStorage.getItem("fridge_names"));
     if(!fridge_names) {
-        fridge_names = [];
-    }
-    var fridge_names_to_expirations = window.localStorage.getItem("fridge_names_to_expirations");
-    if(!fridge_names_to_expirations) {
-        fridge_names_to_expirations = {};
+        fridge_names = {};
     }
     
     /**
@@ -58,11 +54,9 @@ re.fridge_controller = (function() {
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
         
-        fridge_names.push(itemName);
-        fridge_names_to_expirations[itemName] = expiration;
+        fridge_names[itemName] = expiration;
         
-        window.localStorage.setItem("fridge_names", fridge_names);
-        window.localStorage.setItem("fridge_names_to_expirations", fridge_names_to_expirations);
+        window.localStorage.setItem("fridge_names", JSON.stringify(fridge_names);
         
         return true;
     }
@@ -134,6 +128,5 @@ re.fridge_controller = (function() {
         'makeNewFridgeItem': makeNewFridgeItem,
         'removeItem': removeItem,
         'fridge_names': fridge_names,
-        'fridge_names_to_expirations': fridge_names_to_expirations,
 	}
 })();
