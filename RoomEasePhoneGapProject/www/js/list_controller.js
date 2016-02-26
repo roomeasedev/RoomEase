@@ -118,7 +118,7 @@ re.list_controller = (function() {
         $('#done').css('width', '30%');
         
         // ** change after refactoring into local storage
-        thisList = re.controller.list_items[listId];
+        thisList = list_items[listId];
         loadListItems(thisList);
         
         $('#done').click(function() {
