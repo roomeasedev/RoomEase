@@ -41,11 +41,11 @@ input:focus, {
 }
 
 ::-webkit-input-placeholder {
-    color: white;
+    color: #b2dfdb;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-family: "Roboto";
     font-size: 1.1em;
+    font-style: italic;
 }
 
 .list-item {
