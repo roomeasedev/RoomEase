@@ -289,8 +289,13 @@ re.controller = (function() {
         
         // TODO: Clear old info from popup
         
+        $('#cancel').on('click', function() {
+            hidePopup();
+            resetFridgeButtons();
+        });
+        
         // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').click(function() {
+        $('#next-item').on("click", function() {
             var itemName = $('#name').val();
             var expiration = $('#expiration').val();
             var shared;
@@ -310,7 +315,8 @@ re.controller = (function() {
         });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
-        $('#done').click(function() {
+        $('#done').on("click", function() {
+
             // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
             var itemName = $('#name').val();
             var expiration = $('#expiration').val();
@@ -321,15 +327,25 @@ re.controller = (function() {
                 shared = "no";
             }
             // TODO: Figure out what expiration is if it's unset
-            if(itemName == ""  || expiration == "") {
+            if(itemName == "") {
+                Materialize.toast("Enter an item name", 2000);
                 return;
+            } else if (expiration == "") {
+                 Materialize.toast("Enter a valid expiration", 2000);
+                 return;
             }
-            
+            $('#done').off();
             hidePopup();
             
             var newItem = createFridgeItem(itemName, expiration, shared);
             re.requestHandler.addItem(newItem, rhAddCallback);
         });
+    }
+    
+    function resetFridgeButtons() {
+        $('#cancel').off();
+        $('#next-item').off();
+        $('#done').off();
     }
     
     
