@@ -7,11 +7,11 @@
     document.getElementById("navbar").style.display = "none";
     
     function goToMakeView() {
-        window.location.hash = "#gm";
+        setTimeout(function(){ window.location.hash = "#gm" }, 250);
     }
     
     function goToJoinView() {
-        window.location.hash = "#gj";
+        setTimeout(function(){ window.location.hash = "#gj" }, 250);
     }
 </script>
 <div id="group-login">
@@ -21,12 +21,16 @@
     <div class="container">
       <div class="card"></div>
       <div class="card">
-        <h1 class="title" style="font-size: 1.75em">Make or join a group</h1>
+        <h1 class="title" style="font-size: 1.75em">Make or join a group!</h1>
           <div class="button-container">
             <button onclick="goToMakeView()"><span>Make</span></button>
             <br />
             <br />
             <button onclick="goToJoinView()"><span>Join</span></button>
+            <br />
+            <br />
+            <br />
+            <br />
           </div>
       </div>
     </div>

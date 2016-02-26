@@ -276,7 +276,7 @@ re.controller = (function() {
             $('#name').val('');
         });
     }
-        
+    
     /**
     *Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
     **/
@@ -285,7 +285,7 @@ re.controller = (function() {
         // call createNewFridgeItem to create the JSON, and then make the necessary requesthandler call
         
         $('#new-fridge-item-btn').css('display', 'none');
-        $('.popupBackground').css('display', 'block');
+        $('.popupBackground.main').css('display', 'block');
         
         // TODO: Clear old info from popup
         
@@ -361,10 +361,9 @@ re.controller = (function() {
         $('#done').off();
     }
     
-    
     /**
-    *Function called make all of the resources visible to add a new chore item in the Chores tremplate
-    **/
+     * Function called make all of the resources visible to add a new chore item in the Chores tremplate
+     */
     function makeNewChore() {
         // TODO: implement this method, which will bring up the popup to add a chore,
         // call createNewChore to create the JSON, and then make the necessary requesthandler call
