@@ -1,5 +1,11 @@
 /**
- * re.list_controller is a module that contains
+ * re.list_controller is a module that contains the logic behind the List view of the app.
+ * Contains functions that are tied to various buttons and interactive elements that drive
+ * events such as adding or updating list items to the database. This modules serves as a wrapper and
+ * middle man of List's request handler calls, so that error handling and results from the DB
+ * can be properly transferred to the front end.
+ * @return {Object} the re.controller object, which has a public API containing functions
+ *     for various buttons and interactive elements within the application. 
  */
 
 re.list_controller = (function() {  
@@ -27,7 +33,7 @@ re.list_controller = (function() {
     }
     
     /** 
-     * Switches the onfocus method from the previous next-item input field to a new one
+     * Switches the onfocus method from the previous next-item input field to the next one
      */
     function changeFocus() {
         // Bind Focus listener to next-item only if item immediately before has been filled out
@@ -48,7 +54,8 @@ re.list_controller = (function() {
     } 
     
     /** 
-     * Takes the items in JSON list object thisList & fills in the popup items section with them
+     * Takes the items in JSON list object thisList & fills in the populates the popup with them
+     * @ param: thisList: the list whose items will be put into the popup
      */
     function loadListItems(thisList) {
         $('#name').val(thisList.name_of_list);
@@ -71,7 +78,7 @@ re.list_controller = (function() {
     /**
      * Clears & resets elements within the document to prepare for user's actions
      */
-    function setup(containerId) {
+    function setup() {
         $('#new-list-btn').css('display', 'none');
         $('.popupBackground').css('display', 'block');
         
@@ -88,6 +95,10 @@ re.list_controller = (function() {
         $('#first-item').on('focus', changeFocus);
     }
     
+    /**
+     * Checks to see if there is at least one non-blank item entered into the list. Returns true if there
+     * is and false if not.
+     */
     function itemsValid() {
         var validItem = false;
         $('#list-items :input').each(function() {
@@ -101,8 +112,8 @@ re.list_controller = (function() {
 /****************************** PUBLIC *********************************/    
     
     /** 
-     * Onclick function for new list button
-     *
+     * Brings up a popup lets user add a new list to the module. Lists with no name and/or no items
+     * will not be added; in such a situation, the user will be reminded of this usage.
      */
     function makeNewList() {
         setup('list-items');

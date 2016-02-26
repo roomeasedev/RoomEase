@@ -6,11 +6,11 @@
 </script>
 <!-- This section should dynamically insert all of the lists into the page-->
 {{#each this}}
-    <div class="list-item" id="{{ this._id }}"><header class="white-text left-align" style="margin-bottom: .1em; font-size: 1.6em; line-height: 1.25em;">{{ this.name_of_list }}</header>
+    <div class="list-item" id="{{ this._id }}"><header class="white-text left-align" style="margin-bottom: .1em; font-size: 1.8em; line-height: 1.25em;">{{ this.name_of_list }}</header>
         <div class="divider teal lighten-5" id="popupDivider"></div>
         <ul style="list-style-type: circle !important">
             {{#items}}
-                <li class="white-text" style="font-size: 1.4em; list-style-type: circle; margin-top: .2em">{{ this }}</li>
+                <li class="white-text" style="font-size: 1.6em; list-style-type: circle; margin-top: .2em">{{ this }}</li>
             {{/items}}
         </ul>
     </div>
