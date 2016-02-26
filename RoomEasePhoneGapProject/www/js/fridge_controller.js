@@ -6,6 +6,8 @@ re.fridge_controller = (function() {
     
 /****************************** "PRIVATE" ****************************************/
     
+    window.localStorage.removeItem("fridge_names");
+    
     var fridge_names = JSON.parse(window.localStorage.getItem("fridge_names"));
     if(!fridge_names) {
         fridge_names = {};
@@ -36,27 +38,31 @@ re.fridge_controller = (function() {
         } else {
             shared = "no";
         }
-
+        
         // Check to see if input was valid
         if(itemName == "") {
             Materialize.toast("Enter an item name", 2000);
             return false;
         } else if (expiration == "") {
-             Materialize.toast("Enter a valid expiration", 2000);
-             return false;
+            Materialize.toast("Enter a valid expiration", 2000);
+            return false;
         }
-
+        
         $('#names').html('');
         $('#expiration').html('');
 
         resetFridgeButtons();
-
+        alert("In Add Item");
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
         
-        fridge_names[itemName] = expiration;
-        alert("name: " + itemNamme);
-        alert("expiration: " + expiration);
+        
+        var expDate = new Date(expiration);
+        
+        var oneDay = 24*60*80*1000; // hours*minutes*seconds*milliseconds
+        var diffDays = Math.ceil(Math.abs((expDate.getTime() - new Date().getTime())/oneDay));
+        
+        fridge_names[itemName] = diffDays;
         
         window.localStorage.setItem("fridge_names", JSON.stringify(fridge_names));
         
@@ -89,7 +95,7 @@ re.fridge_controller = (function() {
         
         // Adds the fridge item to the database when the next item button is pressed
         $('#next-item').click(function() {
-            addItem()
+            addItem();
         });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup

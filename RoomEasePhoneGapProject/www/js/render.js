@@ -238,14 +238,14 @@ re.render = (function() {
                 // Determine which items will be displayed based on hash
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
-                    var dateArray = item.expiration_date.split('-');
                     
-                    var expDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]) + 1);
-                    var currDate = new Date();
+                    var expDate = new Date(item.expiration_date);
                     
                     var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                    var diffDays = Math.round(Math.abs((expDate.getTime() - currDate.getTime())/(oneDay)));
+                    var diffDays = Math.ceil(Math.abs((expDate.getTime() - new Date().getTime())/oneDay));
+                    
                     item.expiration_date = diffDays;
+                    
                     if(shared) {                        
                         if(item.sharable == "yes") {
                             currItems.push(item);
@@ -280,9 +280,16 @@ re.render = (function() {
                 
                 // Check to see if the user entered a item that was used previously
                 $('#names').on('focusout', function () {
+                    
                     for(var name in re.fridge_controller.fridge_names) {
+                        
                         if($('#names').val() == name) {
-                           $('#expiration').html(re.fridge_controller.fridge_names[name]);
+                            
+                            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                            var expDate = new Date();
+                            expDate.setTime(expDate.getTime() + (oneDay * re.fridge_controller.fridge_names[name]));
+                            
+                            $('#expiration').val(expDate.toISOString());
                         }
                     }
                 });
