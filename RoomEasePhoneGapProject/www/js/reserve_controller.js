@@ -117,8 +117,8 @@ re.reserve_controller = (function() {
         var reservationTypes = getAllReservationTypes();
         dropdown.append(
             $("<option></option>")
-            .attr("reservationName", "")
-            .text("All").css('display', 'block')
+            .attr("reservationName", "None")
+            .text("  None").css('display', 'block')
              );
         for(var i = 0; i < reservationTypes.length; i++){
              dropdown.append(
