@@ -224,6 +224,7 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
+    * shared: Boolean value expressing whether the "shared" view or the "mine" view will be rendered
     */
     function renderFridgeView(shared) {
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
@@ -238,6 +239,7 @@ re.render = (function() {
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
                     var dateArray = item.expiration_date.split('-');
+                    
                     var expDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]) + 1);
                     var currDate = new Date();
                     
