@@ -299,34 +299,13 @@ re.controller = (function() {
             var itemName = $('#name').val();
             var expiration = $('#expiration').val();
             var shared;
-            if($('#yes_button').is(':checked')) {
+            if($('#yes-button').is(':checked')) {
                 shared = "yes";
             } else {
                 shared = "no";
             }
-            
-            // TODO: Figure out what expiration is if it's unset
-            if(itemName == "" /* || expiration is unset*/) {
-                return;
-            }
-            
-            var newItem = createFridgeItem(itemName, expiration, shared);
-            re.requestHandler.addItem(newItem, rhAddCallback);
-        });
-        
-        // Adds the fridge item to the database when the done button is pressed and hides the popup
-        $('#done').on("click", function() {
 
-            // need to pass in name-of-list, text, items, dummy varibles for visible/modifiable users for now
-            var itemName = $('#name').val();
-            var expiration = $('#expiration').val();
-            var shared;
-            if($('#yes_button').is(':checked')) {
-                shared = "yes";
-            } else {
-                shared = "no";
-            }
-            // TODO: Figure out what expiration is if it's unset
+            // Check to see if input was valid
             if(itemName == "") {
                 Materialize.toast("Enter an item name", 2000);
                 return;
@@ -334,7 +313,41 @@ re.controller = (function() {
                  Materialize.toast("Enter a valid expiration", 2000);
                  return;
             }
-            $('#done').off();
+            
+            $('#name').html('');
+            $('#expiration').html('');
+
+            resetFridgeButtons();
+            hidePopup();
+            
+            var newItem = createFridgeItem(itemName, expiration, shared);
+            re.requestHandler.addItem(newItem, rhAddCallback);
+        });
+        
+        // Adds the fridge item to the database when the done button is pressed and hides the popup
+        $('#done').on("click", function() {
+            var itemName = $('#name').val();
+            var expiration = $('#expiration').val();
+            var shared;
+            if($('#yes-button').is(':checked')) {
+                shared = "yes";
+            } else {
+                shared = "no";
+            }
+
+            // Check to see if input was valid
+            if(itemName == "") {
+                Materialize.toast("Enter an item name", 2000);
+                return;
+            } else if (expiration == "") {
+                 Materialize.toast("Enter a valid expiration", 2000);
+                 return;
+            }
+            
+            $('#name').html('');
+            $('#expiration').html('');
+            
+            resetFridgeButtons();
             hidePopup();
             
             var newItem = createFridgeItem(itemName, expiration, shared);

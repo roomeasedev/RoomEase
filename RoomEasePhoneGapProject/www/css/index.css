@@ -162,7 +162,8 @@ input:focus, {
     box-shadow: none;
     text-align: center;
     width: 30%;
-    margin: 2% 0 0 0;
+    margin: 0 0 0 0;
+    padding: 0;
 }
 
 /** the following are components of .popupBackground **/
