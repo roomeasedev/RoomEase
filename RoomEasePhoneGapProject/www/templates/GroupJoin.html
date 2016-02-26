@@ -1,7 +1,6 @@
-<!--Template for the GroupLogin view that will be injected into Index.html at runtime.
-    This will be the default page for users who don't have a group_id stored in the application,
-    but do have a user_id (meaning they are logged in via Facebook). This page will allow users
-    to create a new RoomEase group or join an existing one. -->
+<!--Template for the GroupJoin view that will be injected into Index.html at runtime.
+    This will be the page that is loaded after the user has logged in with Facebook and
+    has selected to join an already existing group -->
 
 <script>
     document.getElementById("navbar").style.display = "none";
@@ -13,7 +12,7 @@
     <div class="container">
       <div class="card"></div>
       <div class="card">
-        <h1 class="title" style="font-size: 2em">Join a group or...</h1>
+        <h1 class="title" style="font-size: 2em">Join a group</h1>
           <div class="input-container">
             <input type="text" id="Username" required="required"/>
             <label for="Username">Group Name</label>
@@ -28,7 +27,9 @@
             <button onclick="re.loginHandler.attemptGroupJoin($('#Username').val(), $('#Password').val())"><span>Join</span></button>
           </div>
       </div>
-      <div class="card alt">
+    </div>
+    <!--       
+    <div class="card alt">
         <div class="toggle"><i class="fa fa-plus" id="addgroup"></i></div>
           <div class="button-container">
             <button onclick="re.loginHandler.createGroupAndDisplayInfo()"><span>Create a group!</span></button>
@@ -38,18 +39,7 @@
               <h4>Your Group Password:</h4>
               <h5 id="groupPwd"></h5>
             </div>
-          </div>
-      </div>
+        </div>
     </div>
+    -->
 </div>
-<script>
-    $('.toggle').on('click', function() {
-        document.getElementById("addgroup").className = "";
-        $('.container').stop().addClass('active');    
-    });
-
-    $('.close').on('click', function() {
-      document.getElementById("addgroup").className = "fa fa-plus";
-      $('.container').stop().removeClass('active');
-    });
-</script>

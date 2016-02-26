@@ -15,9 +15,11 @@ re.render = (function() {
     var fridgeTemplate;
     var scheduleTemplate;
     var facebookLoginTemplate;
-    var groupLoginTemplate;
     var choreTemplate;
     var accountTemplate;
+    var groupMakeJoinTemplate;
+    var groupMakeTemplate;
+    var groupJoinTemplate;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -39,7 +41,6 @@ re.render = (function() {
                     re.list_controller.list_items[list._id] = list; 
                     (function (current) {
                         $('#' + current._id).longpress(function() {
-                            $('#popupTitle').html('Edit List');
                             re.list_controller.editList(current._id);
                         })
                     })(list);
@@ -316,12 +317,32 @@ re.render = (function() {
     }
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered group joining/creation view.
-    * This view should only be shown to users for whom we do not yet have a group id number.
+    * Presents the HTML injection that allows a user to either make or join
+    * a group after sucessfully logining in with facebook
     */
-    function renderGroupLoginView() {
-        $('.page').html(groupLoginTemplate());
+    function renderGroupMakeOrJoinView() {
+       $('.page').html(groupMakeJoinTemplate());
     }
+    
+    /**
+     * Allows the user to request the creation of a new group.
+     * The user is given a group id and password that they will then
+     * distribute among the other roommates
+     */ 
+    function renderGroupMakeView() {
+       $('.page').html(groupMakeTemplate());
+    }
+    
+    /**
+    * Sets the HTML value of the injectable page area to the rendered group joining view.
+    * This view should will be shown for users who do not have a group_id but intended on
+    * joining an already created group.
+    */
+    function renderGroupJoinView() {
+        $('.page').html(groupJoinTemplate());
+    }
+    
+
     
     /**
     * Renders the correct view for the injectable area of the viewport.
@@ -344,7 +365,11 @@ re.render = (function() {
         if (!u_id || hash == "#fb") {
             renderFacebookLoginView();
         } else if ((!g_id) || hash == "#gl") {
-            renderGroupLoginView();
+            renderGroupMakeOrJoinView();
+        } else if(hash == "#gm") {
+            renderGroupMakeView();
+        } else if (hash == "#gj") {
+            renderGroupJoinView();
         } else if (hash == "#feed") {
             renderFeedView();
         } else if (!hash || hash == "#list") { 
@@ -371,14 +396,16 @@ re.render = (function() {
     function init() {
         console.log("called render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "Chores",
-                           "FacebookLogin", "GroupLogin", "Account"]).done(function () {
+                           "FacebookLogin", "GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
             scheduleTemplate = re.templates.get("Reservations");
             choreTemplate = re.templates.get("Chores");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
-            groupLoginTemplate = re.templates.get("GroupLogin");
+            groupJoinTemplate = re.templates.get("GroupJoin");
+            groupMakeJoinTemplate = re.templates.get("GroupMakeJoin");
+            groupMakeTemplate = re.templates.get("GroupMake");
             accountTemplate = re.templates.get("Account");
             // Attach an event listener to route to the proper view
             // when the hash of the URL is changed.
