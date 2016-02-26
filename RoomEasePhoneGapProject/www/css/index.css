@@ -168,6 +168,10 @@ input:focus, {
     margin-bottom: 5px;
 }
 
+#add-new-resevation-type {
+    display: none;
+}
+
 
 #facebook-login {
   background-color: #26A69A;

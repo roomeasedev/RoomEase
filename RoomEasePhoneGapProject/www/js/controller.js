@@ -75,10 +75,6 @@ re.controller = (function() {
         console.log(error);
     }
     
-    function getUIDsMap(){
-        return user_ids_to_names;
-    }
-    
     /* Callback function for database.updateItem
      *
      */
@@ -260,9 +256,7 @@ re.controller = (function() {
             var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);  
   
             re.requestHandler.addItem(newresv, function(isSuccessAddItem, revised_item, error){
-                updateReservationItems(function(isSuccessReviseReservations, error){
-                    rhAddCallback(isSuccessReviseReservations,revised_item, error);
-                });
+                rhAddCallback(isSuccessReviseReservations,revised_item, error);
             });
             
         });
@@ -389,9 +383,7 @@ re.controller = (function() {
             $('.fixed-action-btn').css("display", "block");
 
             re.requestHandler.deleteItem(reservationId, "reservation", function(is_success, was_deleted, err){
-                updateReservationItems(function(isSuccess, error){
-                    re.render.renderSchedulerView(re.controller.reservation_items);   
-                });
+                re.render.route();   
             });
         });
 
@@ -425,22 +417,6 @@ re.controller = (function() {
                 console.log(allReservations);
                 callback(true, null);
             }
-        });
-    }
-    
-    
-    /**
-    *Attemptes to update the reservation_items list with what is most recent in the database
-    *ALSO rerenders the page once the list has been updated
-    *callback(isSuccess, error)
-    *   isSuccess: True if the list was successfully updated
-    *   error: null if no erro occured. Contains string describing an error that occured
-    **/
-    
-    function updateAndRefreshReservationItems(callback){
-        updateReservationItems(function(isSuccess, error){
-            re.render.route();
-            callback(isSuccess, error);
         });
     }
     
@@ -553,7 +529,6 @@ re.controller = (function() {
         'hidePopup': hidePopup,
         'editReservationItem':  editReservationItem,
         'editList': editList,
-        'getUIDsMap': getUIDsMap,
         'filterReservations': filterReservations
 	}
 })();

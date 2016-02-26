@@ -52,7 +52,7 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered scheduler view.
     * reservations: A list of reservation JSON objects that will be rendered to the page
     */
-    function renderSchedulerView(reservations) {
+    function renderSchedulerView() {
         console.log("Rendering Schedule View");
         //TODO: Factor out the date calculations and database calls
         (function() {
@@ -79,8 +79,19 @@ re.render = (function() {
             return strTime;
         }
             
-        
+        re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
+            
+            if(error){
+                console.log("ERROR!");
+            } else {
+                
+            }
+            
+            re.reserve_controller.updateCurrentReservationItems(reservations);
+
             //Convert the date-time reservations int0 a more readable format
+            
+            reservations = re.reserve_controller.getFilteredReservations(reservations);
             var date_time_reservations = [];
             for(var i = 0; i < reservations.length; i++){
                 var reservationObj = {};
@@ -151,12 +162,8 @@ re.render = (function() {
                 reservationObj["_id"] = reservations[i]._id;
                 reservationObj['start_obj'] = startDateObj;
                 reservationObj['end_obj'] = endDateObj;
-                reservationObj['user'] = re.controller.getUIDsMap()[reservations[i].uid];
-                console.log("User");
-                console.log(reservationObj['user']);
-                console.log(re.controller.getUIDsMap());
+                reservationObj['user'] = re.requestHandler.uidToName[reservations[i].uid];
                 
-                console.log("User id");
                 console.log(reservations[i]);
                 
                 
@@ -212,7 +219,8 @@ re.render = (function() {
              //TODO: Make it so we use reservation_dictionary to aggregate all of the 
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
-            
+           re.reserve_controller.refreshFilterReservations();
+
             //Add listener for longclick
             console.log(reservations);
             for (var i in reservations) {
@@ -225,6 +233,7 @@ re.render = (function() {
                     });
                 })(reservations[i]);
             }
+        });
     }
                 
     
@@ -326,6 +335,9 @@ re.render = (function() {
         console.log(hash);
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
+        console.log("Group and user");
+        console.log(u_id);
+        console.log(g_id);
         console.log("routing, hash= " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
         console.log(!null);
@@ -346,7 +358,7 @@ re.render = (function() {
             alert("W");
             renderFridgeView(true);
         } else if (hash == "#reservations") {
-            renderSchedulerView(re.controller.reservation_items);
+            renderSchedulerView();
         } else if(hash == "#account"){
             renderAccountView();
         } else {
