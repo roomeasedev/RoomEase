@@ -41,7 +41,7 @@ re.requestHandler = (function(){
                 user_ids_to_names = map;
                 console.log("Map set!");
                 console.log("Map");
-                console.log(map);
+                console.log(user_ids_to_names);
             } else {
                 console.log(error);
             }
@@ -50,6 +50,10 @@ re.requestHandler = (function(){
         re.requestHandler.getUidToNameMap(grp_id, onGetGroupIDs);
 		return true;
 	}
+    
+    function getLocalUserIdsToNames(){
+        return user_ids_to_names;
+    }
 
 
 	/**
@@ -310,6 +314,7 @@ re.requestHandler = (function(){
 		'u_id': user_id,
 		'grp_id': group_id,
         'uidToName': uidToName,
-        'getUidToNameMap': getUidToNameMap
+        'getUidToNameMap': getUidToNameMap,
+        'getLocalUserIdsToNames': getLocalUserIdsToNames
 	}
 })();

@@ -4,9 +4,9 @@
 
 re.reserve_controller = (function() {
     
-    var filterValue = "None";
+    var filterValue = "All";
     var currentReservationitems = [];
-    var currentReservationTypes = [];
+    var currentReservationTypes = ["All"];
 /****************************** "PRIVATE" ****************************************/
     
     /**
@@ -27,7 +27,7 @@ re.reserve_controller = (function() {
             "hours" : hours,
             "minutes" : minutes,
             'uid': window.localStorage.getItem('user_id')
-        }
+        };
     }
     
     function updateCurrentReservationItems(newestReservations){
@@ -40,18 +40,29 @@ re.reserve_controller = (function() {
     *Function called make all of the resources visible to add a new reservation in the Reservation tremplate
     **/
     function makeNewReservation(){
+        console.log("Here!");
         $('#name').val('');
         $('.fixed-action-btn').css("display", "none");
         $('.popupBackground').css('display', 'block');
         $('#create-done').off();
         var dropdown = $("#new-reservation-dropdown");
         dropdown.empty();
+        
+        if(filterValue != "All"){
+            dropdown.append(
+                  $("<option></option>")
+                    .attr("reservationName", filterValue)
+                    .text(filterValue));
+        }
+        
         var reservationTypes = getAllReservationTypes();
         for(var i = 0; i < reservationTypes.length; i++){
-             dropdown.append(
+            if(!(reservationTypes[i] == filterValue || reservationTypes[i] == "All")){
+              dropdown.append(
               $("<option></option>")
                 .attr("reservationName", reservationTypes[i])
-                .text(reservationTypes[i]));
+                .text(reservationTypes[i]));    
+            }
         }
         
         $('select').material_select();
@@ -62,28 +73,108 @@ re.reserve_controller = (function() {
         
         // Adds the new reservation to the database when the done button is pressed
         $('#create-done').click(function() {
-            re.controller.hidePopup();
             var reserveName = dropdown.find(":selected").text();
-            
+
             //Want to filter by the new type of reservation
             filterValue = reserveName;
-            var start_time = $('#start-time').val();
-            var minutes = $("#reservation-minutes").val();
-            var hours = $("#reservation-hours").val();
-            var start_date = $("#start-date").val();            
-            var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);  
-  
-            re.requestHandler.addItem(newresv, re.new_controller.rhAddCallback);
+            var start_time = $('#start-time').val().trim();
+            var minutes = $("#reservation-minutes").val().trim();
+            var hours = $("#reservation-hours").val().trim();
+            var start_date = $("#start-date").val().trim();
+            var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);
+            
+            var newResTuple = reservationToDateObjects(newresv);
+            var newStartTime = newResTuple.start;
+            var newEndTime = newResTuple.end;
+            
+            if(start_time == '' || minutes == '' || hours == '' || start_date == ''){
+                console.log("empty fields");
+                $("#reservation-create-error-text").html("Error: Empty field.");
+                 $("#reservation-create-error-text").css("display", "block");
+            } else if(newStartTime == newEndTime){
+                $("#reservation-create-error-text").html("Error: Reservation too short.");
+                 $("#reservation-create-error-text").css("display", "block"); 
+            }else {
+                re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
+                    
+                    var noConflicts = true;
+                    for(var i = 0; i < reservations.length; i++){
+                        var reservation = reservations[i];
+                        if(reservation.name_of_item == reserveName) {
+                            var dateTuple = reservationToDateObjects(reservation);
+                            var curResStartTime = dateTuple.start;
+                            var curResEndTime = dateTuple.end;
+                            
+                            
+                            if(!((newStartTime < curResStartTime && newEndTime < curResEndTime) ||
+                                (newStartTime > curResStartTime && newEndTime > curResEndTime))) {
+                                
+                                
+                                    //Format the conflixt string so the user knows the conflicting reservation
+                                var formatAMPM = function(date) {
+                                    var hours = date.getHours();
+                                    var minutes = date.getMinutes();
+                                    var ampm = hours >= 12 ? 'pm' : 'am';
+                                    hours = hours % 12;
+                                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                                    minutes = minutes < 10 ? '0'+minutes : minutes;
+                                    var strTime = hours + ':' + minutes + ' ' + ampm;
+                                    return strTime;
+                                }
+                                
+                                var appendZero = function(number){
+                                    if(number < 10) {
+                                        return "0" + number;
+                                    } else {
+                                        return "" + number;
+                                    }
+                                } 
+                                    
+                                var startDateStr = "";
+                                var endDateStr = "";
+                                //We only add the date to the timeline if we know that it gots over two seperate days
+                                //Example: If a reservation starts at 11PM and end at 1AM
+                                if(curResStartTime.getDate() != curResEndTime.getDate() ||
+                                    curResStartTime.getMonth() != curResEndTime.getMonth() ||
+                                    curResStartTime.getYear() != curResEndTime.getYear()) {
+
+                                    startDateStr += " (" + (curResStartTime.getMonth() + 1) + "/" + curResStartTime.getDate() + ")";
+                                    endDateStr += " (" + (curResEndTime.getMonth() + 1) + "/" + curResEndTime.getDate() + ") ";
+
+                                }
+                                
+                                var timeString = " from " 
+                                    + formatAMPM(curResStartTime)
+                                    + startDateStr 
+                                    + " to " 
+                                    + formatAMPM(curResEndTime)
+                                    + endDateStr; 
+                
+                                
+                                console.log("conflict!");
+                                $("#reservation-create-error-text").html("Error: Conflicting reservation " + timeString);
+                                $("#reservation-create-error-text").css("display", "block");
+                                noConflicts = false;
+                            }      
+                        }
+                    }
+                    if(noConflicts){
+                        re.controller.hidePopup();
+                        re.requestHandler.addItem(newresv, re.new_controller.rhAddCallback);
+                    }
+                });
+
+
+            }
             
         });
         
         // clears the fields in popup & closes it
         $('#create-cancel').click(function() {
-            console.log("Pressed cancel!");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
-            re.controller.resetButtons();
-            $('#name').val('');
+            $("#reservation-create-error-text").css("display", "none");
+
         });
     }
     
@@ -97,7 +188,7 @@ re.reserve_controller = (function() {
             $('.fixed-action-btn').css("display", "block");
 
             re.requestHandler.deleteItem(reservationId, "reservation",
-                re.controller.rhDelCallback);
+                re.new_controller.rhDelCallback);
             });
 
         $('#delete-cancel').click(function() {
@@ -115,11 +206,7 @@ re.reserve_controller = (function() {
         var dropdown = $("#filter-dropdown");
         dropdown.empty();
         var reservationTypes = getAllReservationTypes();
-        dropdown.append(
-            $("<option></option>")
-            .attr("reservationName", "None")
-            .text("  None").css('display', 'block')
-             );
+
         for(var i = 0; i < reservationTypes.length; i++){
              dropdown.append(
               $("<option></option>")
@@ -150,16 +237,23 @@ re.reserve_controller = (function() {
         
         $("#add-new-reservation-type-btn").click(function(){
             console.log("Change!!");
-            $("#add-new-resevation-type").css('display', 'none');
-            var newType = $("#add-new-resevation-type-text").val();
+            var newType = $("#add-new-resevation-type-text").val().trim();
             if(newType != ''){
                 addNewReservationTypeToList(newType);
                 makeNewReservation();
-                console.log("Cool!");
+                $("#add-new-resevation-type").css('display', 'none');
             } else {
-                console.log("Error! Invalid new item!");
+                $("#add-new-reservation-error-text").css("display", "block");
+                $("#add-new-reservation-error-text").html("Error: You did not enter a type.");
             }
         });
+        
+        $('#add-new-reservation-type-btn-cancel').click(function() {
+            $('.fixed-action-btn').css("display", "block");
+            $('#add-new-resevation-type').css("display", "none");
+
+        }); 
+        
     }
     
     function getAllReservationTypes(){
@@ -168,12 +262,46 @@ re.reserve_controller = (function() {
                 currentReservationTypes.push(resName);
             }
         }
+        
+        //Put the filter value at the top of the array
+        var indexOfFilterVal = currentReservationTypes.indexOf(filterValue);
+        if(indexOfFilterVal != -1){
+            currentReservationTypes.splice(indexOfFilterVal, 1);
+            currentReservationTypes.unshift(filterValue);
+        }
+        
         return currentReservationTypes;
+    }
+    
+    function reservationToDateObjects(reservation){
+        var dateTuple = {};
+        var start_date_nums = reservation.start_date.split("-");
+        var hours = parseInt(reservation.hours);
+        var minutes = parseInt(reservation.minutes);
+        var start_time_nums = reservation.start_time.split(":");
+
+
+        var startDateObj = new Date(
+                                    parseInt(start_date_nums[0]), 
+                                    parseInt(start_date_nums[1]) - 1,
+                                    parseInt(start_date_nums[2]),
+                                    parseInt(start_time_nums[0]),
+                                    parseInt(start_time_nums[1]));
+
+        var endDateObj = new Date(
+                                    parseInt(start_date_nums[0]),
+                                    parseInt(start_date_nums[1]) - 1,
+                                    parseInt(start_date_nums[2]),
+                                    parseInt(start_time_nums[0]) + hours,
+                                    parseInt(start_time_nums[1]) + minutes);
+        dateTuple['start'] = startDateObj;
+        dateTuple['end'] = endDateObj;
+        return dateTuple;
     }
     
     function getFilteredReservations(reservations){
         var displayedReservations = [];
-        if(filterValue == "None"){
+        if(filterValue == "All"){
                 displayedReservations = reservations;
             } else {
                 for(var i = 0; i < reservations.length; i++){
@@ -195,6 +323,7 @@ re.reserve_controller = (function() {
         'updateCurrentReservationItems':updateCurrentReservationItems,
         'currentReservationitems': currentReservationitems,
         'addNewReservationType':
-        addNewReservationType
+        addNewReservationType,
+        'reservationToDateObjects': reservationToDateObjects
 	}
 })();

@@ -88,32 +88,16 @@ re.render = (function() {
             }
             
             re.reserve_controller.updateCurrentReservationItems(reservations);
-
+            
             //Convert the date-time reservations int0 a more readable format
             
             reservations = re.reserve_controller.getFilteredReservations(reservations);
             var date_time_reservations = [];
             for(var i = 0; i < reservations.length; i++){
                 var reservationObj = {};
-                var start_date_nums = reservations[i].start_date.split("-");
-                var hours = parseInt(reservations[i].hours);
-                var minutes = parseInt(reservations[i].minutes);
-                var start_time_nums = reservations[i].start_time.split(":");
-    
-                
-                var startDateObj = new Date(
-                                            parseInt(start_date_nums[0]), 
-                                            parseInt(start_date_nums[1]) - 1,
-                                            parseInt(start_date_nums[2]),
-                                            parseInt(start_time_nums[0]),
-                                            parseInt(start_time_nums[1]));
-                
-                var endDateObj = new Date(
-                                            parseInt(start_date_nums[0]),
-                                            parseInt(start_date_nums[1]) - 1,
-                                            parseInt(start_date_nums[2]),
-                                            parseInt(start_time_nums[0]) + hours,
-                                            parseInt(start_time_nums[1]) + minutes);
+                var dateTuple = re.reserve_controller.reservationToDateObjects(reservations[i]);
+                var startDateObj = dateTuple.start;
+                var endDateObj = dateTuple.end;
                 
                 
               var appendZero = function(number){
@@ -162,11 +146,7 @@ re.render = (function() {
                 reservationObj["_id"] = reservations[i]._id;
                 reservationObj['start_obj'] = startDateObj;
                 reservationObj['end_obj'] = endDateObj;
-                reservationObj['user'] = re.requestHandler.uidToName[reservations[i].uid];
-                
-                console.log(reservations[i]);
-                
-                
+                reservationObj['user'] = re.requestHandler.getLocalUserIdsToNames()[reservations[i].uid];                
                 reservationObj["unix_start"] = startDateObj.getTime();
                 reservationObj["unix_end"] = endDateObj.getTime();
                 reservationObj["type"] = "reservation";
@@ -224,12 +204,9 @@ re.render = (function() {
             //Add listener for longclick
             console.log(reservations);
             for (var i in reservations) {
-                console.log("reservation");
-                console.log("#" + reservations[i]._id);
                 (function(current) {
                     $("#" + current._id).longpress(function() {
                         re.controller.editReservationItem(current._id);
-                        console.log("Long press on reservation!");
                     });
                 })(reservations[i]);
             }
