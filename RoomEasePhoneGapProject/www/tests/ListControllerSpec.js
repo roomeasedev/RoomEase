@@ -45,43 +45,63 @@ describe("List Controller suite", function() {
 //    }
     
     describe("Make new list", function() {
-        var listTemplate;
-        beforeEach(function() {
-//            loadFixtures('index.html');
+//        var listTemplate;
+//        var templateSet = false;
+//        beforeEach(function() {
+////            loadFixtures('index.html');
+//            re.templates.load(["List"]).done(function () {
+//                listTemplate = re.templates.get("List");
+//            });
+//            
+//            $('body').append("<div id='testPage'></div>");
+//            $('#testPage').html(listTemplate());
+//
+//        });
+//        
+        it("Make new list title test", function( ){
+            var listTemplate;
+            var templateSet = false;
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
-                console.log("hello");
-            });
+                $('body').append("<div></div>");
+                
+                $('#testPage').html(listTemplate());
+//                
+//                
+//                re.list_controller.makeNewList();
+//            
+//                var title = $('#popupTitle').val();
+//                console.log("title: " + title);
+//                expect(title).toEqual("New List");
+//                
+//                
+//                $('#testPage').html('');
+                templateSet = true;
+            });    
             
-            $('body')
-            $('.page').html(listTemplate());
-        });
-        
-        it("Make new list title test", function( ){
-            re.list_controller.makeNewList();
-            
-            var title = $('#popupTitle').val();
-            console.log("title: " + title);
-            expect(title).toEqual("New List");
+            waitsFor(function(){
+                return templateSet;
+            }, "Make new list title test failed", 10000);
+
         });
 
         it("Make new list name test", function( ){
-            re.list_controller.makeNewList();
-
-            var name = $('#name').val();
-            console.log("name: " + title);
-            expect(name).toEqual('');
+//            re.list_controller.makeNewList();
+//
+//            var name = $('#name').val();
+//            console.log("name: " + title);
+//            expect(name).toEqual('');
         });
 
         it("Make new list popup test", function( ){
-            re.list_controller.makeNewList();
-
-            var buttonDisplay = $('#new-list-btn').attr('display');
-            var popupDisplay = $('.popupBackground').attr('display');
-            console.log("buttonDisplay: " + buttonDisplay);
-            console.log("popupDisplay: " + popupDisplay);
-            expect(buttonDisplay).toEqual("none");
-            expect(popupDisplay).toEqual("block");
+//            re.list_controller.makeNewList();
+//
+//            var buttonDisplay = $('#new-list-btn').attr('display');
+//            var popupDisplay = $('.popupBackground').attr('display');
+//            console.log("buttonDisplay: " + buttonDisplay);
+//            console.log("popupDisplay: " + popupDisplay);
+//            expect(buttonDisplay).toEqual("none");
+//            expect(popupDisplay).toEqual("block");
         });
      });
 });
