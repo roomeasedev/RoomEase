@@ -140,12 +140,12 @@ re.requestHandler = (function(){
 		 	                response_array.push(result.rows[i].doc);
                         }
 		 			}
-		 			callback(response_array, null);
+		 			return callback(response_array, null);
 		 		})
 			}
 		})
 		.catch(function(err){
-			callback(null, err);
+			return callback(null, err);
 		});
 	}
     
