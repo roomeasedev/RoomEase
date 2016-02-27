@@ -18,7 +18,6 @@ re.reserve_controller = (function() {
      * minutes: The number of minutes in the reservation
      */
     function createReservation(name_of_res, start_time, start_date, hours, minutes){
-        console.log(window.localStorage.getItem('user_id'));
         return test_reservations_item = {
             "type": "reservation",
             "name_of_item" : name_of_res,
@@ -34,30 +33,33 @@ re.reserve_controller = (function() {
         currentReservationitems = newestReservations;
     }
     
+    /**
+     * Function to add a new reservation item to the database, using the input
+     * fields of the current popup.
+     * @return {boolean} true if the item was added, false if there was some
+     *     input preventing the reservation item from being added (empty or
+     *     invalid field, or time conflict)
+     */
     function addReservation() {
-        console.log("adding new reservation");
         filterValue = $("#new-reservation-dropdown").find(":selected").text();
         var reserveName = filterValue;
-        console.log(filterValue);
         //Want to filter by the new type of reservation
         var start_time = $('#start-time').val().trim();
         var minutes = $("#reservation-minutes").val().trim();
         var hours = $("#reservation-hours").val().trim();
         var start_date = $("#start-date").val().trim();
-        console.log(start_time);
         // Check to see if input was valid, give the corresponding
         // toast error message if necessary, then return false to
         // indicate no reservation was added. The popup will not 
         // be hidden when the method returns false, the user can
         // immediately try again.
-        console.log("checking");
         if(start_date == "" || new Date(start_date) < new Date()) {
             Materialize.toast("Please enter a valid start date", 2000);
             return false;
         } else if (start_time == "") {
             Materialize.toast("Please enter a valid start time", 2000);
             return false;   
-        }else if (!hours || !hours.parseInt() || hours.parseInt() < 0) {
+        } else if (!hours || !hours.parseInt() || hours.parseInt() < 0) {
             Materialize.toast("Please enter a valid duation (hours)", 2000);
             return false;
         } else if (!minutes || !minutes.parseInt() || minutes.parseInt() < 0) {
@@ -67,7 +69,6 @@ re.reserve_controller = (function() {
             Materialize.toast("Invalid duration of reservation", 2000);
             return false;
         }
-        console.log("made it");
         
         var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);
         var newResTuple = reservationToDateObjects(newresv);
@@ -134,7 +135,6 @@ re.reserve_controller = (function() {
                             + endDateStr; 
 
 
-                        console.log("conflict!");
                         Materialize.toast("This reservation conflicts: " + timeString);
                         noConflicts = false;
                     }      
@@ -154,7 +154,6 @@ re.reserve_controller = (function() {
     *Function called make all of the resources visible to add a new reservation in the Reservation tremplate
     **/
     function makeNewReservation(){
-        console.log("Here!");
         $('#name').val('');
         $('.fixed-action-btn').css("display", "none");
         $('.popupBackground').css('display', 'block');
@@ -255,11 +254,9 @@ re.reserve_controller = (function() {
     }
     
     function addNewReservationType(){
-        console.log("Here!");
         $("#add-new-resevation-type").css('display', 'block');
         
         $("#add-new-reservation-type-btn").click(function(){
-            console.log("Change!!");
             var newType = $("#add-new-resevation-type-text").val().trim();
             if(newType != ''){
                 addNewReservationTypeToList(newType);

@@ -108,7 +108,6 @@ re.loginHandler = (function() {
 	**/
 
 	function addUserToGroup(facebook_id, group_id, callback) {
-        console.log("adding user to group");
 		var already_in_grp = false;
 		var name_of_map_reduce_function = 'get_by_uids/uids';
 
@@ -207,7 +206,6 @@ re.loginHandler = (function() {
 	*	error: String describing if an error occured, null if no error occured.
 	**/
 	function getGroupNumber(group_name, group_password, callback) {
-        console.log("getting group num");
 		//NOTE: THIS IS INSECURE! MUST FIND A BETTER WAY
 		databases["group_login"].query('group_login/get_group_obj_by_name', {
 			key: group_name,
@@ -216,18 +214,15 @@ re.loginHandler = (function() {
 
 		})
         .then(function(result){
-            console.log("groupNum then branch");
 			if (result.rows[0].doc.group_password === group_password) {
 				callback(true, false, result.rows[0].doc.group_id, null);
 			} else {
 				callback(false, true, null, "Error: Incorrect password");
 			}
 		}).catch(function(err){
-            console.log("groupNum error branch");
 			callback(false, false, null, err);
 
 		});
-        console.log("finished groupNum call");
 	}
     
     
@@ -235,13 +230,11 @@ re.loginHandler = (function() {
         console.log("creating group and info");
         var u_id = window.localStorage.getItem("user_id");
         var u_name = window.localStorage.getItem("user_name");
-        console.log("user id: " + u_id +", name: " + u_name);
         // This function will be passed as a callback to generateGroupLoginInfo
         var finalCallback = function(is_success, group_name, group_password, error) {
             if (error) {
                 alert("error occurred when generating group info:" + error);
             } else {
-                console.log("successfully generated group info");
                 window.localStorage.setItem('group_name', group_name);
                 window.localStorage.setItem('group_password', group_password);
                 $('#groupName').html(group_name);
@@ -249,19 +242,8 @@ re.loginHandler = (function() {
                 re.requestHandler.init("http://40.114.43.49:5984/",
                                        u_id, window.localStorage.getItem('group_id'));
 
-                // For clarity, we need to set the group name and pwd to be visible within the app.
-                // For now, sticking it crudely into the slide-out menu
-                $('.menuGrpName').each(function() {
-                    $(this).html(group_name);
-                });
-                $('.menuGrpPwd').each(function() {
-                    $(this).html(group_password);
-                });
-                
-                // After a delay, re-route them to the landing page inside the app.
-                window.setTimeout(function() {
-                    window.location.hash = "#feed";
-                }, 4000);
+                // Show continue button
+				 
             }
         };
         var newGroupCallback = function(group_id, error) {
@@ -269,7 +251,6 @@ re.loginHandler = (function() {
                 alert("error occurred when creating group: " + error);
             } else {
                 window.localStorage.setItem('group_id', group_id);
-                console.log("set group id to: " + window.localStorage.getItem('group_id'));
                 var groupNamePrefix = u_name.replace(" ", "");
                 generateGroupLoginInfo(group_id, groupNamePrefix, finalCallback);
             }
@@ -288,7 +269,6 @@ re.loginHandler = (function() {
         console.log("group name:" + name);
         console.log("group password: " + password);
         getGroupNumber(name, password, function(isSuccess, incorrectPwd, groupNum, error) {
-            console.log("function call in groupNumber");
             if (!isSuccess) {
                 alert("group name/password combination not found.");
             } else if (incorrectPwd) {
@@ -297,13 +277,10 @@ re.loginHandler = (function() {
                 alert("An error occurred: " + error);
             } else {
                 var userId = window.localStorage.getItem('user_id');
-                console.log("successful group lookup, attempting to join");
                 addUserToGroup(userId, groupNum, function(success, alreadyIn, error) {
-                    console.log("checking results");
                     if (success) {
                         // Store the group ID locally and permanently, then route to
                         // the landing page, they are now in their group!
-                        console.log("successfully joined group");
                         window.localStorage.setItem("group_id", groupNum);
                         window.localStorage.setItem('group_name', name);
                         window.localStorage.setItem('group_password', password);
@@ -324,7 +301,6 @@ re.loginHandler = (function() {
                 });
             }
         });
-        console.log("got to end of attemptGroupJoin");
     }
     
 	/**

@@ -1,1 +1,38 @@
-<h1>This is group make</h1>
+<!--Template for the GroupMake view. This template is presented after the the user
+has logged into facebook and has decided to create a new group rather than join a group.
+After clicking on the create group, the user is given a generated group name and password  -->
+
+<script>
+    document.getElementById("navbar").style.display = "none";
+    $("#continue").hide();
+    function goToFeedView() {
+        setTimeout(function(){ window.location.hash = "#feed" }, 250);
+    }
+    
+    function getGroupNameAndPassword() {
+        re.loginHandler.createGroupAndDisplayInfo()
+        setTimeout(function(){ $("#continue").show(50); }, 3250);
+        $("#back").hide();
+    }
+</script>
+<div id="group-login">
+    <div class="pen-title">
+      <h1 style="font-weight: bold" id="grouptitle">RoomEase</h1>
+    </div>
+    <div class="container">
+      <div class="card"></div>
+      <div class="card">
+        <h1 class="title" style="font-size: 1.75em">Create</h1>
+          <div class="button-container">
+            <button onclick="getGroupNameAndPassword()"><span>Create a group!</span></button>
+              <h5 style="font-size: 1.5em">Your Group Name:</h5>
+              <h5 id="groupName"></h5>
+              <h5 style="font-size: 1.5em">Your Group Password:</h5>
+              <h5 id="groupPwd"></h5>
+            <button id="continue" onclick="goToFeedView()"><span>Continue</span></button>
+            <br />
+            <a href="#gl" id="back" class="waves-effect waves-light btn">Back</a>
+        </div>
+      </div>
+    </div>
+</div>

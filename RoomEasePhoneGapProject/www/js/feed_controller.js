@@ -7,12 +7,29 @@
  */
 re.feedController = (function() {
 	var feedItems = {};
+    
 	/**
 	 * Creates the JSON representing a feed item, which will not be added to the
 	 * Database, but will be rendered using the Handlebars template for the feed view.
+     * @param //TODO: ADD PARAM COMMENTS
+     * @return {Object} JSON object with the proper format of a feed item, or null if
+     *    the wrong type of item was passed as an argument
 	 */
-	function createFeedItem(type, date, content) {
+	function createFeedItem(type, owner, date) {
 		// TODO: implement the feed item creation
+        if (type == "fridge_item") {
+            return {
+                
+            };
+        } else if (type == "reservation") {
+            return {
+                
+            };
+        } else {
+            console.log("Feed error, unknown item type");
+            return null;
+        }
+        
 	}
 
 	/**
@@ -22,6 +39,11 @@ re.feedController = (function() {
 	 */
 	function removeExpiredFood(foodID) {
 		// TODO: implement this function
+        
+        // Popup to confirm deletion of food
+        // Make a call on DB to get fridge item with given ID and delete it
+        // Remove item from local list of feed items
+        // Hide the item  
 	}
 
 	/**
@@ -32,6 +54,8 @@ re.feedController = (function() {
 	 */
 	function reservationInteract(reservationID) {
 		// TODO: implement this function
+        
+        window.location.hash = "#reservations";
 	}
 
 	/**
@@ -41,30 +65,6 @@ re.feedController = (function() {
 	 */
 	function updateFeedItems() {
 		// TODO: get the relevant items to 
-	}
-
-	/**
-	 * Onclick function for the button which will take the user to the
-	 * list view of the application.
-	 */
-	function listModuleButton() {
-	
-	}
-
-	/**
-	 * Onclick function for the button which will take the user to the
-	 * reservation view of the application.
-	 */
-	function reservationModuleButton() {
-
-	}
-
-	/**
-	 * Onclick function for the button which will take the user to the
-	 * fridge view of the application.
-	 */
-	function fridgeModuleButton() {
-	
 	}
 
 	// Return the public API of re.feedController, which allows the fields

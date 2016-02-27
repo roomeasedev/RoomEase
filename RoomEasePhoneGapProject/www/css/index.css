@@ -3,18 +3,48 @@
     src: url("../font/zag/Zag-Bold.otf") format("opentype");
 }
 
-#popupDivider {
-    left: 0;
-    position: absolute;
-    width: 100%;    
+/* Feed view style rules */
+.feedBtn {
+    width: 20%;
+    height: 20%;
+    bottom: 5%;
+    position: fixed;
 }
 
-ul{
+#feed-container {
+    position: fixed;
+    overflow: scroll;
+    height: 60%;
+    width: 100%;
+    color: aqua;
+    border: 1px solid black;
+}
+
+#list-module-btn {
+    left: 10%;
+}
+
+#fridge-module-btn {
+    left: 40%;
+}
+
+#reservation-module-btn {
+    right: 10%;
+}
+
+#popupDivider {
+    left: 0;
+    position: relative;
+    width: 150%;
+    margin: 0 -10%;
+}
+
+ul {
     margin:0 0 0 1.25em;
     padding:0;
 }
 
-li{
+li {
     margin:0;
     padding:0;
     line-height: 1.25em;
@@ -73,11 +103,11 @@ input[type="text"] {
 }
 
 .reservation_happening_color {
-    background-color: #006400;
+    background-color: #f8bbd0;
 }
 
 .reservation_happened_color {
-    background-color:#DC381F;
+    background-color:#cdcdcd;
 }
 
 .reservation_not_happened_color {
@@ -152,7 +182,6 @@ input[type="text"] {
     width: 100%;
     height: 60%;
     top: 1%;
-    display: none;
 }
 
 .popup-button {
@@ -207,9 +236,6 @@ input[type="text"] {
     display: none;
 }
 
-#delete-reservation-popup {
-    display: none;
-}
     #facebook-login p {
         text-align: center;
         color: #00415d;
@@ -691,6 +717,11 @@ input[type="text"] {
 }
 .card.alt .button-container button:active:before, .card.alt .button-container button:focus:before {
   display: none;
+}
+
+#fridge-tabs {
+    position: fixed;
+    
 }
 
 /* Keyframes */

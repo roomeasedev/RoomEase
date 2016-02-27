@@ -34,6 +34,7 @@ re.fbHandler = (function() {
                         console.log("Error when registering user: " + error);
                     }
                 window.location.hash = "#gl";
+                re.render.route();
             });
         }
     }
@@ -92,7 +93,6 @@ re.fbHandler = (function() {
 					  *		id:   "123456789"
                       *   }
                       */
-                      console.log(JSON.stringify(data));
 
                       // alert user's data for testing purposes
                       //alert(JSON.stringify(data));

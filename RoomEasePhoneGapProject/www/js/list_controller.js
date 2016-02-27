@@ -188,7 +188,6 @@ re.list_controller = (function() {
         
         $('#delete').click(function() {
             re.controller.hidePopup();
-            console.log("deleting list");
             re.requestHandler.deleteItem(listId, "list", re.new_controller.rhDelCallback);
         });
     }

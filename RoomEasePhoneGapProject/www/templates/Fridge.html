@@ -22,41 +22,38 @@
     
 </script>
 
-<div class="divider teal lighten-4"></div>
+
 <div class="row">
     <div class="nav-wrapper">
-      <ul class="tabs">
+      <ul class="tabs" id="fridge-tabs">
         <li class="tab col s3 teal lighten-1"><a onclick="window.location.hash='#fridge-mine'" id="fm" class="white-text" href="#fridge-mine">Mine</a></li>
         <li class="tab col s3 teal lighten-1"><a onclick="window.location.hash='#fridge-shared'"id="fs" class="active white-text" href="#fridge-shared">Shared</a></li>
       </ul>
     </div>
 </div>
 
-
+<div class="row"></div>
+<div class="row"></div>
 {{#each this}}
-    
     {{#ifCond this.expiration_date '==' -1}}
-        <div class="list-item grey lighten-1" id="{{ this._id }}">
+        <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
             <h5 class="white-text">{{ this.item }} has expired</h5>
-    {{/ifCond}}
+        {{/ifCond}}
 
-    {{#ifCond this.expiration_date '==' 0}}
+        {{#ifCond this.expiration_date '==' 0}}
         <div class="list-item pink lighten-4" id="{{ this._id }}">
             <h5 class="white-text">{{ this.item }} expires today</h5>
-    {{/ifCond}}
-            
-    {{#ifCond this.expiration_date '!=' 0}}
-        <div class="list-item" id="{{ this._id }}">
+        {{/ifCond}}
+
+        {{#ifCond this.expiration_date '!=' 0}}
+            <div class="list-item" id="{{ this._id }}">
             <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
             
             {{#ifCond this.sharable '==' "yes"}}
                 <h5 class="white-text">Shared</h5>
             {{/ifCond}}
     {{/ifCond}}
-    
-
-        
-    </div>
+        </div>
 {{/each}}
 
 <!-- Button to add new fridge items -->

@@ -53,7 +53,6 @@ re.render = (function() {
     * reservations: A list of reservation JSON objects that will be rendered to the page
     */
     function renderSchedulerView() {
-        console.log("Rendering Schedule View");
         //TODO: Factor out the date calculations and database calls
         (function() {
             var days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
@@ -202,7 +201,6 @@ re.render = (function() {
            re.reserve_controller.refreshFilterReservations();
 
             //Add listener for longclick
-            console.log(reservations);
             for (var i in reservations) {
                 (function(current) {
                     $("#" + current._id).longpress(function() {
@@ -270,6 +268,8 @@ re.render = (function() {
                     }
                 }
                 
+                console.log(currItems);
+                
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));
                 
@@ -278,7 +278,7 @@ re.render = (function() {
                 for(var i = 0; i < currItems.length; i++) {
                     var item = currItems[i];
                     $('#' + item._id).longpress(function () {
-                        if(item.owner == window.localStorage.getItem("user_id")) {
+                        if(item.owner == window.localStorage.getItem("user_name")) {
                             re.fridge_controller.removeItem(item._id, item.item);
                         } else {
                             Materialize.toast("You can't delete an item you don't own");
@@ -369,29 +369,21 @@ re.render = (function() {
     */
     function route() {
         var hash = window.location.hash;
-        console.log(hash);
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
-        console.log("Group and user");
-        console.log(u_id);
-        console.log(g_id);
-        console.log("routing, hash= " + hash + ", user id: " + u_id +
+        console.log("routing, hash = " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
-        console.log(!null);
-        console.log(!u_id);
-        console.log(typeof u_id);
-        if (!u_id || hash == "#fb") {
+        if (!u_id) {
             renderFacebookLoginView();
-        } else if ((!g_id) || hash == "#gl") {
+        } else if ((!g_id) && hash == "#gl") {
             renderGroupMakeOrJoinView();
-        } else if(hash == "#gm") {
+        } else if((!g_id) && hash == "#gm") {
             renderGroupMakeView();
-        } else if (hash == "#gj") {
+        } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
-        } else if (hash == "#feed") {
+        } else if (!hash || hash == "#feed") {
             renderFeedView();
-        } else if (!hash || hash == "#list") { 
-            console.log("Here!");
+        } else if (hash == "#list") { 
             renderListView();
         } else if (hash == "#fridge-mine") {
             renderFridgeView(false);
@@ -402,7 +394,13 @@ re.render = (function() {
         } else if(hash == "#account"){
             renderAccountView();
         } else {
-            alert("routing to unknown location");
+            if ((g_id && hash == "#gm") || (g_id && hash == "#gj") || (g_id && hash == "#gl")) {
+                renderFeedView();
+            } else if (u_id) {
+                renderGroupMakeOrJoinView();
+            } else {
+                alert("error: routing to unkown location");
+            }
         }
     }
     
@@ -412,7 +410,6 @@ re.render = (function() {
      * route the viewport to the correct view based on the current hash.
      */
     function init() {
-        console.log("called render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin",
 				"GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
             feedTemplate = re.templates.get("Feed");

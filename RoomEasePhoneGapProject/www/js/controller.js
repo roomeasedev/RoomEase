@@ -23,7 +23,6 @@ re.controller = (function() {
      * (login handler, request handler).
      */
 	function init() {
-        console.log("Bar!");
         //Initialize login handler and request_handler
         re.loginHandler.init("http://40.114.43.49:5984/");
 		if (!userId){
@@ -42,9 +41,6 @@ re.controller = (function() {
         var onGetGroupIDs = function(isSucces, map, error){ 
             if(isSucces) {
                 user_ids_to_names = map;
-                console.log("Map set!");
-                console.log("Map");
-                console.log(map);
             } else {
                 console.log(error);
             }
@@ -59,7 +55,6 @@ re.controller = (function() {
         // Initalize the reservations and rerender reservation, if it is active
         // TODO: This can't go here, we don't know at init time that request handler exists
         //updateAndRefreshReservationItems(onGetInitialReservations);
-        console.log("re.controller init finished!");
 	}
     
     
@@ -80,7 +75,6 @@ re.controller = (function() {
      */
     function rhUpdateCallback(is_success, was_deleted, updated_item, error) {
         if (is_success) {
-            console.log("success");
             list_items[updated_item._id] = updated_item;
             re.render.route();
             // TODO: scroll to where the new list is
@@ -100,7 +94,6 @@ re.controller = (function() {
      */
     function errorHandler(is_success, error) {
         if (is_success) {
-            console.log("success");
             re.render.route();
             // TODO: scroll to where the new list is
         } else {
@@ -156,7 +149,6 @@ re.controller = (function() {
      * minutes: The number of minutes in the reservation
      */
     function createReservation(name_of_res, start_time, start_date, hours, minutes){
-        console.log(window.localStorage.getItem('user_id'));
         return test_reservations_item = {
             "type": "reservation",
             "name_of_item" : name_of_res,
@@ -244,7 +236,6 @@ re.controller = (function() {
         
         // Adds the new reservation to the database when the done button is pressed
         $('#create-done').click(function() {
-            console.log("hi trying to fix things");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
             resetButtons();
@@ -263,7 +254,6 @@ re.controller = (function() {
 
         // clears the fields in popup & closes it
         $('#create-cancel').click(function() {
-            console.log("Pressed cancel!");
             $('#new-reservation-btn').css('display', 'block');
             $('.popupBackground').css('display', 'none');
             resetButtons();
@@ -390,13 +380,11 @@ re.controller = (function() {
             var editedList = thisList;
             editedList.items = updatedItems;
             editedList.name_of_list = $('#name').val();
-            console.log("edited list: " + JSON.stringify(editedList));
             re.requestHandler.updateItem(editedList, rhUpdateCallback);
         });
         
         $('#delete').click(function() {
             hidePopup();
-            console.log("deleting list");
             re.requestHandler.deleteItem(listId, "list", errorHandler);
         });
     }
@@ -431,18 +419,11 @@ re.controller = (function() {
     
     function updateReservationItems(callback){
         var reservations;
-        console.log("Rendering schedule view");
         re.requestHandler.getAllItemsOfType('reservation', function(allReservations, error) {
             if(allReservations == null) {
-                console.log("Error");
                 callback(false, error);
             } else {
-                console.log(allReservations);
-                console.log("Success!");
-
                 re.controller.reservation_items = allReservations;
-                console.log("Reservations::::");
-                console.log(allReservations);
                 callback(true, null);
             }
         });
@@ -497,7 +478,6 @@ re.controller = (function() {
             
             var displayedReservations = [];
             var selectedValue = $selectDropdown.find(":selected").text();
-            console.log("Selected value:" + selectedValue);
             if(selectedValue == "None"){
                 displayedReservations = re.controller.reservation_items;
             } else {
@@ -507,11 +487,6 @@ re.controller = (function() {
                     }
                 }
             }
-            
-            console.log("Displayed reservations:");
-            console.log(displayedReservations);
-            console.log("Reservations");
-            console.log(reservations);
             re.render.renderSchedulerView(displayedReservations);
 
         });

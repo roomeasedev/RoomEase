@@ -133,8 +133,6 @@ re.requestHandler = (function(){
 		 			attachments: true,
 		 			keys: ids 
 		 		}).then(function(result){
-		 			console.log("Result rows");
-		 			console.log(result.rows);
 		 			for (var i = 0; i < result.rows.length; i++){
                         if(result.rows[i].doc != null){
 		 	                response_array.push(result.rows[i].doc);

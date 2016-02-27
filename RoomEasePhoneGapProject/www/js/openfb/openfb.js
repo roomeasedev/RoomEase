@@ -140,7 +140,6 @@ var openFB = (function () {
 
         // Inappbrowser exit handler: Used when running in Cordova only
         function loginWindow_exitHandler() {
-            console.log('exit and remove listeners');
             // Handle the situation where the user closes the login window manually before completing the login process
             if (loginCallback && !loginProcessed) loginCallback({status: 'user_cancelled'});
             // This line refers to an eventListener that isn't attached in this file, and was causing an error
@@ -148,7 +147,6 @@ var openFB = (function () {
             loginWindow.removeEventListener('loadstop', loginWindow_loadStartHandler);
             loginWindow.removeEventListener('exit', loginWindow_exitHandler);
             loginWindow = null;
-            console.log('done removing listeners');
         }
 
         if (options && options.scope) {

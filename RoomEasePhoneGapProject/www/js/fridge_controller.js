@@ -50,13 +50,10 @@ re.fridge_controller = (function() {
         $('#expiration').html('');
 
         resetFridgeButtons();
-        alert("In Add Item");
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
         
-        var expDate = new Date(expiration);
-        alert(expDate);
-        
+        var expDate = new Date(expiration);        
         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
         var diffDays = Math.ceil(Math.abs((expDate.getTime() - new Date().getTime())/oneDay));
         
