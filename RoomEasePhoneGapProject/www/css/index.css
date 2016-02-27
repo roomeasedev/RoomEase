@@ -5,31 +5,31 @@
 
 /* Feed view style rules */
 .feedBtn {
-    width: 20%;
-    height: 20%;
-    bottom: 5%;
+    width: 29%;
+    height: 7%;
+    bottom: 2%;
     position: fixed;
 }
 
 #feed-container {
     position: fixed;
     overflow: scroll;
-    height: 60%;
+    top: 6%;
+    height: 75%;
     width: 100%;
     color: aqua;
-    border: 1px solid black;
 }
 
 #list-module-btn {
-    left: 10%;
+    left: 3%;
 }
 
 #fridge-module-btn {
-    left: 40%;
+    left: 35.5%;
 }
 
 #reservation-module-btn {
-    right: 10%;
+    right: 3%;
 }
 
 #popupDivider {

@@ -217,7 +217,46 @@ re.render = (function() {
     */
     function renderFeedView() {
         $('.page-title').html('Feed');
-        $('.page').html(feedTemplate());
+        
+        var feedItems = [];
+        var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
+            for (var i = 0; i < allItems.length; i++) {
+                var item = allItems[i];
+
+                var expDate = new Date(item.expiration_date);
+                var currDate = new Date();
+
+                var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
+
+                /* Because of the ceiling the diffdays will almost never be 0 to
+                 * account for this we set the expiration to 0 if diffdays is -1.
+                 * This is in order to show the user that an item is expiring today.
+                 * All other items that have expired are set to -1 simply to show the
+                 * user that their food has expired.
+                 */
+                if(diffDays == -1) {
+                    feedItems.push(re.feedController.createFeedItem(item));
+                }
+            }
+            var reservationItems = re.requestHandler.getAllItemsOfType("reservation", function(allItems, error) {
+                for (var i = 0; i < allItems.length; i++) {
+                    var item = allItems[i];
+                    
+                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                    var currDate = new Date();
+                    var reserveTime = new Date(item.start_date);
+                    reserveTime.setHours(item.start_time.substr(0, 2));
+                    reserveTime.setMinutes(item.start_time.substr(3));
+                    
+                    if(reserveTime.getTime() - currDate.getTime() < oneDay) {
+                        feedItems.push(re.feedController.createFeedItem(item));
+                    }
+                }
+                
+                $('.page').html(feedTemplate(feedItems));
+            });
+        });
     }
     
     /**
