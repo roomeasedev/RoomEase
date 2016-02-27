@@ -240,11 +240,24 @@ re.render = (function() {
                     var item = allItems[i];
                     
                     var expDate = new Date(item.expiration_date);
+                    var currDate = new Date();
                     
                     var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                    var diffDays = Math.ceil(Math.abs((expDate.getTime() - new Date().getTime())/oneDay));
+                    var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
                     
-                    item.expiration_date = diffDays;
+                    /* Because of the ceiling the diffdays will almost never be 0 to
+                     * account for this we set the expiration to 0 if diffdays is -1.
+                     * This is in order to show the user that an item is expiring today.
+                     * All other items that have expired are set to -1 simply to show the
+                     * user that their food has expired.
+                     */
+                    if(diffDays == -1) {
+                        item.expiration_date = 0;
+                    } else if (diffDays < -1) {
+                        item.expiration_date = -1;
+                    } else {
+                        item.expiration_date = diffDays;
+                    }
                     
                     if(shared) {                        
                         if(item.sharable == "yes") {
@@ -275,7 +288,7 @@ re.render = (function() {
                 
                 // Add options to datalist field of popup
                 for(var name in re.fridge_controller.fridge_names) {
-                    $('#names-datalist').append('<option value=' + name + '>');
+                    $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
                 }
                 
                 // Check to see if the user entered a item that was used previously
@@ -283,13 +296,13 @@ re.render = (function() {
                     
                     for(var name in re.fridge_controller.fridge_names) {
                         
-                        if($('#names').val() == name) {
+                        if($('#names').val().toLowerCase() == name.toLowerCase()) {
                             
                             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                             var expDate = new Date();
                             expDate.setTime(expDate.getTime() + (oneDay * re.fridge_controller.fridge_names[name]));
                             
-                            $('#expiration').val(expDate.toISOString());
+                            $('#expiration').val(expDate.toISOString().substr(0, 10));
                         }
                     }
                 });

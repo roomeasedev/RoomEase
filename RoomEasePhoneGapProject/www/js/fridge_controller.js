@@ -6,8 +6,6 @@ re.fridge_controller = (function() {
     
 /****************************** "PRIVATE" ****************************************/
     
-    window.localStorage.removeItem("fridge_names");
-    
     var fridge_names = JSON.parse(window.localStorage.getItem("fridge_names"));
     if(!fridge_names) {
         fridge_names = {};
@@ -56,19 +54,17 @@ re.fridge_controller = (function() {
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
         
-        
         var expDate = new Date(expiration);
+        alert(expDate);
         
-        var oneDay = 24*60*80*1000; // hours*minutes*seconds*milliseconds
+        var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
         var diffDays = Math.ceil(Math.abs((expDate.getTime() - new Date().getTime())/oneDay));
         
-        fridge_names[itemName] = diffDays;
+        fridge_names[itemName.toLowerCase()] = diffDays;
         
         window.localStorage.setItem("fridge_names", JSON.stringify(fridge_names));
         
         var tmp = JSON.parse(window.localStorage.getItem("fridge_names"));
-        alert(tmp["Cheese"]);
-        
         
         return true;
     }
