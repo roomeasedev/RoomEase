@@ -53,7 +53,11 @@ re.reserve_controller = (function() {
         // indicate no reservation was added. The popup will not 
         // be hidden when the method returns false, the user can
         // immediately try again.
-        if(start_date == "" || new Date(start_date) < new Date()) {
+        var validDate = new Date().getTime() - (60 * 60 * 24 * 1000);
+        if(start_date == "" || new Date(start_date) < (new Date(validDate)) {
+           // Allow the user to make a reservation at any time in the current date
+           // (by correcting backward 24 hours). TODO: fix this logic to be more
+           // accurate to the current time.
             Materialize.toast("Please enter a valid start date", 2000);
             return false;
         } else if (start_time == "") {

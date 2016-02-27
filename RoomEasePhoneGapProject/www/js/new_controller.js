@@ -23,7 +23,6 @@ re.new_controller = (function() {
      * (login handler, request handler).
      */
 	function init() {
-        alert("Bar!");
         //Initialize login handler and request_handler
         re.loginHandler.init("http://40.114.43.49:5984/");
 		if (!userId){
