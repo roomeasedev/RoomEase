@@ -5,34 +5,19 @@
 
 <script>
     document.getElementById("navbar").style.display = "none";
-    
-    /**
-     * Routes the user to create group view
-     */
-    function goToMakeView() {
-        setTimeout(function(){ window.location.hash = "#gm"; alert("hello"); re.render.route(); }, 300);
-    }
-    
-    /**
-     * Routes the user to join group view
-     */
-    function goToJoinView() {
-        setTimeout(function(){ window.location.hash = "#gj"; alert("hello"); re.render.route(); }, 300);
-    }
 </script>
 <div id="group-login">
     <div class="pen-title">
       <h1 style="font-weight: bold" id="grouptitle">RoomEase</h1>
     </div>
     <div class="container">
-      <div class="card"></div>
       <div class="card">
         <h1 class="title" style="font-size: 1.75em">Make or join a group!</h1>
           <div class="button-container">
-            <button onclick="goToMakeView()"><span>Make</span></button>
+            <button onclick="re.new_controller.goToMakeView()"><span>Make</span></button>
             <br />
             <br />
-            <button onclick="goToJoinView()"><span>Join</span></button>
+            <button onclick="re.new_controller.goToJoinView()"><span>Join</span></button>
             <br />
             <br />
             <br />

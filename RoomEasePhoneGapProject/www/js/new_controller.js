@@ -129,6 +129,21 @@ re.new_controller = (function() {
         }  
     }
     
+        
+    /**
+     * Routes the user to create group view
+     */
+    function goToMakeView() {
+        setTimeout(function(){ window.location.hash = "#gm"; alert("hello"); re.render.route(); }, 300);
+    }
+    
+    /**
+     * Routes the user to join group view
+     */
+    function goToJoinView() {
+        setTimeout(function(){ window.location.hash = "#gj"; alert("hello"); re.render.route(); }, 300);
+    }
+    
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
@@ -139,6 +154,8 @@ re.new_controller = (function() {
         'hidePopup': hidePopup,
         'rhAddCallback': rhAddCallback,
         'rhDelCallback': rhDelCallback,
-        'rhUpdateCallback': rhUpdateCallback
+        'rhUpdateCallback': rhUpdateCallback,
+        'goToMakeView': goToMakeView,
+        'goToJoinView': goToJoinView
 	}
 })();
