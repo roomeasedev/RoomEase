@@ -59,13 +59,13 @@ re.reserve_controller = (function() {
         } else if (start_time == "") {
             Materialize.toast("Please enter a valid start time", 2000);
             return false;   
-        } else if (!hours || !hours.parseInt() || hours.parseInt() < 0) {
+        } else if (!hours || parseInt(hours) < 0) {
             Materialize.toast("Please enter a valid duation (hours)", 2000);
             return false;
-        } else if (!minutes || !minutes.parseInt() || minutes.parseInt() < 0) {
+        } else if (!minutes || parseInt(minutes) < 0) {
              Materialize.toast("Please enter a valid duration (minutes)", 2000);
              return false;
-        } else if (minutes.parseInt() == 0 && hours.parseInt() == 0) {
+        } else if (parseInt(minutes) == 0 && parseInt(hours) == 0) {
             Materialize.toast("Invalid duration of reservation", 2000);
             return false;
         }
@@ -155,8 +155,9 @@ re.reserve_controller = (function() {
     **/
     function makeNewReservation(){
         $('#name').val('');
-        $('.fixed-action-btn').css("display", "none");
-        $('.popupBackground').css('display', 'block');
+        $('#new-reservation-btn').css('display', 'none');
+        $('#add-new-btn').css('display', 'none');
+        $('#background1').css('display', 'block');
         $('#create-done').off();
         var dropdown = $("#new-reservation-dropdown");
         dropdown.empty();
@@ -187,37 +188,41 @@ re.reserve_controller = (function() {
         // Adds the new reservation to the database when the done button is pressed
         $('#create-done').click(function() {
             if (addReservation()) {
-                re.controller.hidePopup();
+                hidePopup('#background1');
             }    
         });
         
         // clears the fields in popup & closes it
         $('#create-cancel').click(function() {
-            $('#new-reservation-btn').css('display', 'block');
-            $('.popupBackground').css('display', 'none');
-            $("#reservation-create-error-text").css("display", "none");
-
+            hidePopup('#background1');
         });
+    }
+    
+    /* Brings user back to whatever main module screen they're on (usually the onclick for a cancel button)
+     *
+     */
+    function hidePopup(containerId) {
+        $('#new-reservation-btn').css('display', 'block');
+        $('#add-new-btn').css('display', 'block');
+        $(containerId).css('display', 'none');
+        $("#reservation-create-error-text").css("display", "none");
     }
     
     //Function called when a reservation item should be edited or deleted in the Reservation template
     function editReservationItem(reservationId){
+        $('#backround2').css('display', 'block');
         $('.fixed-action-btn').css("display", "none");
         $('#delete-reservation-popup').css('display', 'block');
                 
         $('#delete-delete').click(function() {
-            $('#delete-reservation-popup').css('display', 'none');
-            $('.fixed-action-btn').css("display", "block");
-
             re.requestHandler.deleteItem(reservationId, "reservation",
                 re.new_controller.rhDelCallback);
-            });
+            hidePopup('#background2');
+        });
 
         $('#delete-cancel').click(function() {
-            $('.fixed-action-btn').css("display", "block");
-            $('#delete-reservation-popup').css("display", "none");
-
-        });            
+            hidePopup('#background2');
+        });       
     }
     
     
@@ -254,14 +259,14 @@ re.reserve_controller = (function() {
     }
     
     function addNewReservationType(){
-        $("#add-new-resevation-type").css('display', 'block');
+        $('#background3').css('display', 'block');
         
         $("#add-new-reservation-type-btn").click(function(){
             var newType = $("#add-new-resevation-type-text").val().trim();
             if(newType != ''){
                 addNewReservationTypeToList(newType);
+                hidePopup('#background3');
                 makeNewReservation();
-                $("#add-new-resevation-type").css('display', 'none');
             } else {
                 $("#add-new-reservation-error-text").css("display", "block");
                 $("#add-new-reservation-error-text").html("Error: You did not enter a type.");
@@ -269,9 +274,7 @@ re.reserve_controller = (function() {
         });
         
         $('#add-new-reservation-type-btn-cancel').click(function() {
-            $('.fixed-action-btn').css("display", "block");
-            $('#add-new-resevation-type').css("display", "none");
-
+            hidePopup('#background3');
         }); 
         
     }

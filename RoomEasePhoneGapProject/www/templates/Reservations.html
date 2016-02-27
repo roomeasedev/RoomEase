@@ -13,7 +13,7 @@
         <select id="filter-dropdown" class="black-text" style="margin-bottom: 0; font-size: 10em; line-height: 1.5em; background-color: green"></select>
     </div>
     <button class="btn waves-effect waves-light popup-button" 
-                    type="submit" onclick="re.reserve_controller.addNewReservationType()" name="action" style="width:21%; float: right; height: 100%; margin-right: 4%;">Add New Type</button>
+                    type="submit" onclick="re.reserve_controller.addNewReservationType()" name="action" style="width:21%; float: right; height: 100%; margin-right: 4%;" id="add-new-btn">Add Type</button>
 </div>
 
 {{#each this}}
@@ -44,44 +44,42 @@
 
 <!-- Small popup menu to add new schedule item, hidden by default -->
 <div class="popupBackground" id="background1">
-    <div class="popupBackground" style="height: auto;">
-        <div class="popup" style="height: auto">
+    <div class="popup" style="height: auto; top: 30%">
 
-            <h4 class="white-text" style="margin: .5rem 0">New Reservation</h4>
-            <div class="divider teal lighten-5" id="popupDivider"></div>
+        <h4 class="white-text" style="margin: .5rem 0">New Reservation</h4>
+        <div class="divider teal lighten-5" id="popupDivider"></div>
 
-            <form>
-                <select id="new-reservation-dropdown" class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; "></select>
+        <form>
+            <select id="new-reservation-dropdown" class="white-text left-align" style="margin-bottom: 0; font-size: 4em; line-height: 1.5em; "></select>
+        </form>
+
+        <div  class="white-text left-align reservation-entry" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;">
+            <form style="float:left; width: 49% ">
+                Start Date:
+                <input type="date" id="start-date" class="reservation-form-field" style="margin-bottom: .5em; font-size: 1.25em; line-height: 1.25em;"/>
             </form>
+            <form style="float: right; width: 49% ">
+                Start Time:
+                <input type="time" id="start-time" onfocus="" class="reservation-form-field" style="margin-bottom: .5em; font-size: 1.25em; line-height: 1.25em;"><br>
+            </form>
+            <form style="float: left; width: 49%">
+                Hours:
+                <input class="reservation-form-field" type="number" id="reservation-hours" min="0" max="11" step="1" style="margin-bottom: .5em; font-size:  1.25em; line-height: 1.25em;" value="0">
+            </form>
+            <form style="float: right; width: 49%">
+                Minutes:
+                <input type="number" id="reservation-minutes" min="0" max="55" step="5" class="reservation-form-field" style="margin-bottom: .5em; font-size:  1.25em; line-height: 1.25em;" value="0">
+            </form>
+        </div>
+        <div id="buttons">
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float:left; width: 48%" name="action" id="create-cancel">Cancel</button>
 
-            <div  class="white-text left-align reservation-entry" style="margin-bottom: 0; font-size: 1.5em; line-height: 1.25em;">
-                <form style="float:left; width: 49% ">
-                    Start Date:
-                    <input type="date" id="start-date" class="reservation-form-field" style="margin-bottom: .5em; font-size: 1.25em; line-height: 1.25em;"/>
-                </form>
-                <form style="float: right; width: 49% ">
-                    Start Time:
-                    <input type="time" id="start-time" onfocus="" class="reservation-form-field" style="margin-bottom: .5em; font-size: 1.25em; line-height: 1.25em;"><br>
-                </form>
-                <form style="float: left; width: 49%">
-                    Hours:
-                    <input class="reservation-form-field" type="number" id="reservation-hours" min="0" max="11" step="1" style="margin-bottom: .5em; font-size:  1.25em; line-height: 1.25em;" value="0">
-                </form>
-                <form style="float: right; width: 49%">
-                    Minutes:
-                    <input type="number" id="reservation-minutes" min="0" max="55" step="5" class="reservation-form-field" style="margin-bottom: .5em; font-size:  1.25em; line-height: 1.25em;" value="0">
-                </form>
-            </div>
-            <div id="buttons">
-                <button class="btn waves-effect waves-light popup-button" 
-                    type="submit" onclick="re.rcontroller.hidePopup()" style="float:left; width: 48%" name="action" id="create-cancel">Cancel</button>
-
-                <button class="btn waves-effect waves-light popup-button" 
-                    type="submit" style="float:right; width: 48%" name="action" id="create-done">Reserve</button>
-            </div>
-            <div style="margin-top: 10px">
-                <h3 style="text-align: center; display: none;" id="reservation-create-error-text"></h3>
-            </div>
+            <button class="btn waves-effect waves-light popup-button" 
+                type="submit" style="float:right; width: 48%" name="action" id="create-done">Reserve</button>
+        </div>
+        <div style="margin-top: 10px">
+            <h3 style="text-align: center; display: none;" id="reservation-create-error-text"></h3>
         </div>
     </div>
 </div>
@@ -94,7 +92,6 @@
                 tytype="submit" style="float:left; height: 20%; width: 48%" name="action" id="delete-cancel">Cancel</button>
             <button class="btn waves-effect waves-light popup-button" 
                 type="submit" style="float:right; height: 20%; width: 48%" name="action" id="delete-delete">Delete</button>
-
         </div>
     </div>
 </div>

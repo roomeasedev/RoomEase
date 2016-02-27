@@ -212,11 +212,6 @@ input[type="text"] {
     margin-bottom: 5px;
 }
 
-#add-new-resevation-type {
-    display: none;
-}
-
-
 #facebook-login {
   background-color: #26A69A;
   position: fixed;
@@ -230,10 +225,6 @@ input[type="text"] {
     margin-bottom: 0; 
     font-size: 2.0em; 
     line-height: 1.25em;
-}
- 
-#filter-reservation-popup{
-    display: none;
 }
 
     #facebook-login p {
