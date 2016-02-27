@@ -34,23 +34,21 @@ re.new_controller = (function() {
             window.location.hash = "#gl";
 		} else {
 			console.log("we found both a uid and a group id");
-            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);  
-		}
-        
-        
-        var onGetGroupIDs = function(isSucces, map, error){
-            if(isSucces) {
-                user_ids_to_names = map;
-                console.log("Map set!");
-                console.log("Map");
-                console.log(map);
-            } else {
-                console.log(error);
+            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId);
+            var onGetGroupIDs = function(isSucces, map, error){
+                if(isSucces) {
+                    user_ids_to_names = map;
+                    console.log("Map set!");
+                    console.log("Map");
+                    console.log(map);
+                } else {
+                    console.log(error);
+                }
             }
-        }
-        
-        re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
-        alert("re.controller init finished!");
+
+            re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
+            console.log("re.new_controller init finished!");
+		}
 	}
     
     

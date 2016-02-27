@@ -35,20 +35,7 @@ re.controller = (function() {
 			console.log("we found both a uid and a group id");
             re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId); 
 		}
-        
-        
-        
-        var onGetGroupIDs = function(isSucces, map, error){ 
-            if(isSucces) {
-                user_ids_to_names = map;
-            } else {
-                console.log(error);
-            }
-        }
-        
-        var onGetInitialReservations = function(isSuccess, error){
-        }
-        
+     
         //Get intial mapping of uid to names
         //re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
         

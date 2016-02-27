@@ -410,6 +410,7 @@ re.render = (function() {
         var hash = window.location.hash;
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
+        console.log("routing: " + hash);
         if (!u_id) {
             renderFacebookLoginView();
         } else if ((!g_id) && hash == "#gl") {
@@ -431,7 +432,7 @@ re.render = (function() {
         } else if(hash == "#account"){
             renderAccountView();
         } else {
-            if ((g_id && hash == "#gm") || (g_id && hash == "#gj") || (g_id && hash == "#gl")) {
+            if (g_id && (hash == "#gm" || hash == "#gj" || hash == "#gl")) {
                 renderFeedView();
             } else if (u_id) {
                 renderGroupMakeOrJoinView();

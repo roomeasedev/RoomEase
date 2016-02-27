@@ -34,7 +34,7 @@ re.fbHandler = (function() {
                         console.log("Error when registering user: " + error);
                     }
                 window.location.hash = "#gl";
-                re.render.route();
+               // re.render.route();
             });
         }
     }
