@@ -47,13 +47,14 @@ describe("List Controller suite", function() {
     describe("Make new list", function() {
         var listTemplate;
         beforeEach(function() {
-//            loadFixtures('List.html, index.html');
+//            loadFixtures('index.html');
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
+                console.log("hello");
             });
-            $('.page-title').html('List');
+            
+            $('body')
             $('.page').html(listTemplate());
-            console.log($(''))
         });
         
         it("Make new list title test", function( ){
