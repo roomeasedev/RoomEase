@@ -53,7 +53,6 @@ re.render = (function() {
     * reservations: A list of reservation JSON objects that will be rendered to the page
     */
     function renderSchedulerView() {
-        console.log("Rendering Schedule View");
         //TODO: Factor out the date calculations and database calls
         (function() {
             var days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
@@ -202,7 +201,6 @@ re.render = (function() {
            re.reserve_controller.refreshFilterReservations();
 
             //Add listener for longclick
-            console.log(reservations);
             for (var i in reservations) {
                 (function(current) {
                     $("#" + current._id).longpress(function() {
@@ -369,13 +367,8 @@ re.render = (function() {
     */
     function route() {
         var hash = window.location.hash;
-        console.log(hash);
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
-        console.log("Group and user");
-        console.log(u_id);
-        console.log(g_id);
-        console.log(hash);
         console.log("routing, hash = " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
         if (!u_id) {
@@ -389,7 +382,6 @@ re.render = (function() {
         } else if (!hash || hash == "#feed") {
             renderFeedView();
         } else if (hash == "#list") { 
-            console.log("Here!");
             renderListView();
         } else if (hash == "#fridge-mine") {
             renderFridgeView(false);
@@ -416,7 +408,6 @@ re.render = (function() {
      * route the viewport to the correct view based on the current hash.
      */
     function init() {
-        console.log("called render.init");
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin",
 				"GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
             feedTemplate = re.templates.get("Feed");
