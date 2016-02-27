@@ -26,7 +26,7 @@ re.requestHandler = (function(){
 	*group_id: The group id of the client
 	**/
 	function init(db_location, u_id, grp_id) {
-        console.log("initializing RH with u_id: " + u_id + " and grp_id: " + grp_id);
+		console.log("initializing RH with u_id: " + u_id + " and grp_id: " + grp_id);
 		database_location = db_location;
 		user_id = u_id;
 		group_id = grp_id;
@@ -38,7 +38,7 @@ re.requestHandler = (function(){
         
         var onGetGroupIDs = function(isSucces, map, error) {
             if(isSucces) {
-                user_ids_to_names = map;
+				user_ids_to_names = map;
                 console.log("Map set!");
                 console.log("Map");
                 console.log(user_ids_to_names);
@@ -47,7 +47,7 @@ re.requestHandler = (function(){
             }
         };
         
-        re.requestHandler.getUidToNameMap(grp_id, onGetGroupIDs);
+        getUidToNameMap(grp_id, onGetGroupIDs);
 		return true;
 	}
     

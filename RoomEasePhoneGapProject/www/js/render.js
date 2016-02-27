@@ -232,11 +232,11 @@ re.render = (function() {
                 $('.page-title').html('Fridge');
                 
                 var currItems = [];
-                
+                var user_ids_to_names = re.requestHandler.getLocalUserIdsToNames();
                 // Determine which items will be displayed based on hash
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
-                    
+                    item.owner = user_ids_to_names[item.owner];
                     var expDate = new Date(item.expiration_date);
                     var currDate = new Date();
                     
@@ -262,7 +262,7 @@ re.render = (function() {
                             currItems.push(item);
                         }
                     } else {
-                        if(item.owner == window.localStorage.getItem("user_id")) {
+                        if(item.owner == window.localStorage.getItem("user_name")) {
                             currItems.push(item);
                         }
                     }
