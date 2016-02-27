@@ -35,13 +35,25 @@
 <div class="row"></div>
 <div class="row"></div>
 {{#each this}}
-    <div class="list-item" id="{{ this._id }}">
-        <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
-        
-        {{#ifCond this.sharable '==' "yes"}}
-            <h5 class="white-text">Shared</h5>
+    {{#ifCond this.expiration_date '==' -1}}
+        <div class="list-item grey lighten-1" id="{{ this._id }}">
+            <h5 class="white-text">{{ this.item }} has expired</h5>
         {{/ifCond}}
-    </div>
+
+        {{#ifCond this.expiration_date '==' 0}}
+        <div class="list-item pink lighten-4" id="{{ this._id }}">
+            <h5 class="white-text">{{ this.item }} expires today</h5>
+        {{/ifCond}}
+
+        {{#ifCond this.expiration_date '!=' 0}}
+            <div class="list-item" id="{{ this._id }}">
+            <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
+            
+            {{#ifCond this.sharable '==' "yes"}}
+                <h5 class="white-text">Shared</h5>
+            {{/ifCond}}
+    {{/ifCond}}
+        </div>
 {{/each}}
 
 <!-- Button to add new fridge items -->

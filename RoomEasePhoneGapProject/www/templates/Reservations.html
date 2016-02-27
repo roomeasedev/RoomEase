@@ -19,13 +19,13 @@
 {{#each this}}
     {{#ifCond this.type '==' 'time'}}
         <div style="padding-left: 2%;">
-            <header color="blue" style="font-size: 1.4em"> <h3 class="left-align pink-text text-lighten-4"> {{this.label}}</h3></header>
+            <h3 class="left-align pink-text text-lighten-4"> {{this.label}}</h3>
         </div>
     {{/ifCond}}
     {{#ifCond this.type '==' 'reservation'}}
 
-    <div class="all-reservation-items" id="{{this._id}}">
-        <div class="reservation-item {{this.color_class}}">
+    <div class="all-reservation-items" id="{{ this._id }}">
+        <div class="reservation-item {{ this.color_class }}">
             <header class="white-text left-align" style="margin-bottom: 0; font-size: 3.0em; line-height: 1.25em;">{{this.title}} reserved by {{this.user}} </header>
             <ul>
                 <li class="white-text" style="font-size: 1.4em">  {{this.time}}</li>  

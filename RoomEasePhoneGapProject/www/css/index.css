@@ -73,11 +73,11 @@ input[type="text"] {
 }
 
 .reservation_happening_color {
-    background-color: #006400;
+    background-color: #f8bbd0;
 }
 
 .reservation_happened_color {
-    background-color:#DC381F;
+    background-color:#bdbdbd;
 }
 
 .reservation_not_happened_color {
