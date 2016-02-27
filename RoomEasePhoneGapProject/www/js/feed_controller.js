@@ -25,7 +25,8 @@ re.feedController = (function() {
         } else if (input.type == "reservation") {
             return {
                 'type': "reservation",
-                'item': input.
+                'item': input.name_of_item,
+                'time': input.start_time
             };
         } else {
             console.log("Feed error, unknown item type");
