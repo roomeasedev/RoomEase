@@ -14,8 +14,9 @@ var re = {};
 * Function to be called when the page has loaded.  Initializes the necessary
 * modules to start the page on the correct viewport.
 */
+alert("anyone home?");
 $(document).ready(function() {
-    
+    alert("pleeeease");
         
     $(function() {
         FastClick.attach(document.body);
