@@ -7,8 +7,12 @@
 
 <!-- The feed of items that come after-->
 <div id="feed-container">
+    {{#ifCond this.length '==' 0}}
+        <h4 class="pink-text">You currently have no feed items</h4>
+    {{/ifCond}}
+    
 	{{#each this}}
-	    <div class="list-item" id="{{ this._id }}">		
+	    <div class="list-item" id="{{ this._id }}">
 			{{#ifCond this.type '==' "fridge_item"}}
 				<h5 class="white-text fridgeItem">Your group's {{this.item}} has expired!</h5>
 			{{/ifCond}}

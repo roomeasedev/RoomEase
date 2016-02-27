@@ -70,7 +70,7 @@ re.feedController = (function() {
     }
     
     function fridgeModuleButton() {
-        window.location.has = '#fridge-mine';
+        window.location.hash = '#fridge-mine';
     }
     
 	// Return the public API of re.feedController, which allows the fields
