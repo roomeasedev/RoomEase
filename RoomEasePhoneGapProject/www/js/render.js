@@ -268,6 +268,8 @@ re.render = (function() {
                     }
                 }
                 
+                console.log(currItems);
+                
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));
                 
@@ -276,7 +278,7 @@ re.render = (function() {
                 for(var i = 0; i < currItems.length; i++) {
                     var item = currItems[i];
                     $('#' + item._id).longpress(function () {
-                        if(item.owner == window.localStorage.getItem("user_id")) {
+                        if(item.owner == window.localStorage.getItem("user_name")) {
                             re.fridge_controller.removeItem(item._id, item.item);
                         } else {
                             Materialize.toast("You can't delete an item you don't own");
