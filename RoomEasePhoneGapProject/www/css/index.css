@@ -3,18 +3,47 @@
     src: url("../font/zag/Zag-Bold.otf") format("opentype");
 }
 
+/* Feed view style rules */
+.feedBtn {
+    width: 20%;
+    height: 20%;
+    bottom: 5%;
+    position: fixed;
+}
+
+#feed-container {
+    position: fixed;
+    overflow: scroll;
+    height: 60%;
+    width: 100%;
+    color: aqua;
+    border: 1px solid black;
+}
+
+#list-module-btn {
+    left: 10%;
+}
+
+#fridge-module-btn {
+    left: 40%;
+}
+
+#reservation-module-btn {
+    right: 10%;
+}
+
 #popupDivider {
     left: 0;
     position: absolute;
     width: 100%;    
 }
 
-ul{
+ul {
     margin:0 0 0 1.25em;
     padding:0;
 }
 
-li{
+li {
     margin:0;
     padding:0;
     line-height: 1.25em;

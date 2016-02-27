@@ -5,12 +5,10 @@
     document.getElementById("navbar").style.display = "";  
 </script>
 
-<!---->
-<div class = "feed-container" style="overflow: scroll; height: 60%">
+<!-- The feed of items that come after-->
+<div id="feed-container">
 	{{#each this}}
-	    <div class="feed-item" id="{{ this._id }}">
-			<h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
-		
+	    <div class="feed-item" id="{{ this._id }}">		
 			{{#ifCond this.type '==' "reservation"}}
 				<h5 class="white-text">{{this.date}} You have {{this.item}} reserved at {{this.time}}.</h5>
 			{{/ifCond}}
@@ -23,16 +21,14 @@
 </div>
 
 <!-- Buttons for going to the other pages of the application -->
-<div id="viewButtons">
-	<div onclick="re.feedController.listModuleButton()" id="list-module-btn" style="float: left">
-		<a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">List</i></a>
-	</div>
-	<div onclick="re.feedController.fridgeModuleButton()" id="list-module-btn" style="margin-left: auto; margin-right: auto">
-		<a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">Fridge</i></a>
-	</div>
-	<div onclick="re.feedController.reservationModuleButton()" id="list-module-btn" style="float: right">
-		<a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">Reservations</i></a>
-	</div>
+<div onclick="re.feedController.listModuleButton()" id="list-module-btn" class="feedBtn">
+    <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">List</i></a>
+</div>
+<div onclick="re.feedController.fridgeModuleButton()" id="fridge-module-btn" class="feedBtn">
+    <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">Fridge</i></a>
+</div>
+<div onclick="re.feedController.reservationModuleButton()" id="reservation-module-btn" class="feedBtn">
+    <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">Reservations</i></a>
 </div>
 
 <!-- popup displayed in case trying to delete a fridge item, hidden by default -->
