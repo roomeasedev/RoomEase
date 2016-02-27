@@ -63,19 +63,17 @@ describe("List Controller suite", function() {
             var templateSet = false;
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
-                $('body').append("<div></div>");
+                $("body").append("<div id='test'></div>");
+                $('#test').html($.parseHTML(listTemplate()));
+              
+                re.list_controller.makeNewList();
+            
+                var title = $('#popupTitle').html();
+                console.log("title: " + title);
+                expect(title).toEqual("New List");
                 
-                $('#testPage').html(listTemplate());
-//                
-//                
-//                re.list_controller.makeNewList();
-//            
-//                var title = $('#popupTitle').val();
-//                console.log("title: " + title);
-//                expect(title).toEqual("New List");
-//                
-//                
-//                $('#testPage').html('');
+                
+                $('#testPage').html('');
                 templateSet = true;
             });    
             
