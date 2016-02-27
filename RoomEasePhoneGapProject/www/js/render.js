@@ -362,22 +362,20 @@ re.render = (function() {
         console.log("Group and user");
         console.log(u_id);
         console.log(g_id);
-        console.log("routing, hash= " + hash + ", user id: " + u_id +
+        console.log(hash);
+        console.log("routing, hash = " + hash + ", user id: " + u_id +
                     ", group id: " + g_id);
-        console.log(!null);
-        console.log(!u_id);
-        console.log(typeof u_id);
-        if (!u_id || hash == "#fb") {
+        if (!u_id) {
             renderFacebookLoginView();
-        } else if ((!g_id) || hash == "#gl") {
+        } else if ((!g_id) && hash == "#gl") {
             renderGroupMakeOrJoinView();
-        } else if(hash == "#gm") {
+        } else if((!g_id) && hash == "#gm") {
             renderGroupMakeView();
-        } else if (hash == "#gj") {
+        } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
-        } else if (hash == "#feed") {
+        } else if (!hash || hash == "#feed") {
             renderFeedView();
-        } else if (!hash || hash == "#list") { 
+        } else if (hash == "#list") { 
             console.log("Here!");
             renderListView();
         } else if (hash == "#fridge-mine") {
@@ -389,7 +387,13 @@ re.render = (function() {
         } else if(hash == "#account"){
             renderAccountView();
         } else {
-            alert("routing to unknown location");
+            if ((g_id && hash == "#gm") || (g_id && hash == "#gj") || (g_id && hash == "#gl")) {
+                renderFeedView();
+            } else if (u_id) {
+                renderGroupMakeOrJoinView();
+            } else {
+                alert("error: routing to unkown location");
+            }
         }
     }
     

@@ -52,7 +52,6 @@ re.fridge_controller = (function() {
         $('#expiration').html('');
 
         resetFridgeButtons();
-        alert("In Add Item");
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
         
@@ -67,7 +66,6 @@ re.fridge_controller = (function() {
         window.localStorage.setItem("fridge_names", JSON.stringify(fridge_names));
         
         var tmp = JSON.parse(window.localStorage.getItem("fridge_names"));
-        alert(tmp["Cheese"]);
         
         
         return true;

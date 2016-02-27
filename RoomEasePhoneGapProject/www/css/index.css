@@ -693,6 +693,11 @@ input[type="text"] {
   display: none;
 }
 
+#fridge-tabs {
+    position: fixed;
+    
+}
+
 /* Keyframes */
 @-webkit-keyframes buttonFadeInUp {
   0% {

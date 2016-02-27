@@ -249,19 +249,8 @@ re.loginHandler = (function() {
                 re.requestHandler.init("http://40.114.43.49:5984/",
                                        u_id, window.localStorage.getItem('group_id'));
 
-                // For clarity, we need to set the group name and pwd to be visible within the app.
-                // For now, sticking it crudely into the slide-out menu
-                $('.menuGrpName').each(function() {
-                    $(this).html(group_name);
-                });
-                $('.menuGrpPwd').each(function() {
-                    $(this).html(group_password);
-                });
-                
-                // After a delay, re-route them to the landing page inside the app.
-                window.setTimeout(function() {
-                    window.location.hash = "#feed";
-                }, 4000);
+                // Show continue button
+				 
             }
         };
         var newGroupCallback = function(group_id, error) {
