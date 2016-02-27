@@ -133,7 +133,6 @@ re.new_controller = (function() {
      */
     function goToMakeView() {
         window.location.hash = "#gm";
-        re.render.route();
     }
     
     /**
@@ -141,7 +140,6 @@ re.new_controller = (function() {
      */
     function goToJoinView() {
         window.location.hash = "#gj"; 
-        re.render.route();
     }
     
     // Return the public API of the controller module,

@@ -376,6 +376,7 @@ re.render = (function() {
     */
     function renderGroupMakeOrJoinView() {
        $('.page').html(groupMakeJoinTemplate());
+        console.log("made gl");
     }
     
     /**
@@ -414,6 +415,7 @@ re.render = (function() {
         if (!u_id) {
             renderFacebookLoginView();
         } else if ((!g_id) && hash == "#gl") {
+            console.log("routed to gl");
             renderGroupMakeOrJoinView();
         } else if((!g_id) && hash == "#gm") {
             renderGroupMakeView();

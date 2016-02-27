@@ -23,18 +23,19 @@ re.controller = (function() {
      * (login handler, request handler).
      */
 	function init() {
-        //Initialize login handler and request_handler
-        re.loginHandler.init("http://40.114.43.49:5984/");
-		if (!userId){
-			console.log("we couldn't find a UID! need to do FB Login");
-            window.location.hash = "#fb";
-		} else if (!groupId){
-			console.log("we couldn't find a groupID! Need to do Group login!");
-            window.location.hash = "#gl";
-		} else {
-			console.log("we found both a uid and a group id");
-            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId); 
-		}
+        console.log("initializing re.controller, nothing to do");
+//        //Initialize login handler and request_handler
+//        re.loginHandler.init("http://40.114.43.49:5984/");
+//		if (!userId){
+//			console.log("we couldn't find a UID! need to do FB Login");
+//            window.location.hash = "#fb";
+//		} else if (!groupId){
+//			console.log("we couldn't find a groupID! Need to do Group login!");
+//            window.location.hash = "#gl";
+//		} else {
+//			console.log("we found both a uid and a group id");
+//            re.requestHandler.init("http://40.114.43.49:5984/", userId, groupId); 
+//		}
      
         //Get intial mapping of uid to names
         //re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
