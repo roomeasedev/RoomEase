@@ -14,7 +14,7 @@ var re = {};
 * Function to be called when the page has loaded.  Initializes the necessary
 * modules to start the page on the correct viewport.
 */
-$(document).ready(function() {  
+$(document).addEventListener('deviceready', function() {  
     $(function() {
         FastClick.attach(document.body);
     });
@@ -28,9 +28,10 @@ $(document).ready(function() {
     //window.localStorage.setItem("group_id", "");
     //SET TO TEST VALUES TO GO TO DEFAULT TEST GROUP
     //User 1
-    window.localStorage.setItem("user_id", "795578070");
-    window.localStorage.setItem("user_name", "Nacho Cano");
-    window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f72f8c88");
+    //window.localStorage.setItem("user_id", "795578070");
+    //window.localStorage.setItem("user_name", "Nacho Cano");
+    //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f72f8c88");
+    alert("hello");
     
     //User 2
     //window.localStorage.setItem('user_id', "512963585");
@@ -40,6 +41,6 @@ $(document).ready(function() {
     re.controller.init();
     // load templates and render first viewport
     re.render.init();
-});
+}, false);
 
 
