@@ -15,9 +15,10 @@ var re = {};
 * modules to start the page on the correct viewport.
 */
 $(document).ready(function() {  
+    /*
     $(function() {
         FastClick.attach(document.body);
-    });
+    }); */
     
     //Either set the values to empty string if you want to be directed to a certain page,
     // set them to the default test values if you want to bypass the groups/ids and just
