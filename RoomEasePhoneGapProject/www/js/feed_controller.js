@@ -58,19 +58,19 @@ re.feedController = (function() {
 	function reservationInteract(reservationID) {
 		// TODO: implement this function
         
-        window.location.hash = "#reservations";
+        window.location.hash = '#reservations';
 	}
 
     function listModuleButton() {
-        re.render.renderListView();
+        window.location.hash = '#list';
     }
     
     function reservationModuleButton() {
-        re.render.renderSchedulerView();
+        window.location.hash = '#reservations';
     }
     
     function fridgeModuleButton() {
-        re.render.renderFridgeView();
+        window.location.has = '#fridge-mine';
     }
     
 	// Return the public API of re.feedController, which allows the fields
