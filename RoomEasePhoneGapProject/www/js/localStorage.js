@@ -40,7 +40,6 @@ re.storage = (function () {
      *                   saved into local storage as an Item object
      */
     function store(module){
-        console.log("storing " + module);
         //pull the contents of the fields
         var collection;
         if (module == "fridge") {
