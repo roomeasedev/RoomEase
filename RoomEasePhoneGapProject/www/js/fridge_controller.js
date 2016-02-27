@@ -95,6 +95,7 @@ re.fridge_controller = (function() {
         $('#done').click(function() {
             if(addItem()) {
                 re.controller.hidePopup();
+                re.renderFridgeView();
             }
         });
     }
