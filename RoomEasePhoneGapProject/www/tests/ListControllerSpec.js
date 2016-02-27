@@ -108,8 +108,50 @@ describe("List Controller suite", function() {
         
      });
     
-    describe("Make new list", function() {
-        
-    });
+//    describe("Edit list", function() {
+//        var list;
+//        var id = "123";
+//        
+//        beforeEach(function() {
+//            list = {
+//                "type": "list",
+//                "name_of_list": "food",
+//                "text": "hello",
+//                "items": ["milk", "cheese"],
+//                "visible_users":
+//                    ["12345567878", //Hardcoding in IDs for now
+//                        "124444433333"], 
+//                "modifiable_users":
+//                    ["12344444", //Hardcoded
+//                    "1124444444"]
+//            }
+//        });
+//        
+//        it("title test", function( ){
+//            var listTemplate;
+//            var templateSet = false;
+//            re.templates.load(["List"]).done(function () {
+//                listTemplate = re.templates.get("List");
+//                $("body").append("<div id='test'></div>");
+//                $('#test').html($.parseHTML(listTemplate()));
+//                
+//                re.list_controller.list_items.id = id;
+//                
+//                re.list_controller.editList(id);
+//            
+//                var title = $('#popupTitle').html();
+//                console.log("title: " + title);
+//                expect(title).toEqual("Edit List");
+//                $('#test').html('');
+//                
+//                templateSet = true;
+//            });    
+//            
+//            waitsFor(function(){
+//                return templateSet;
+//            }, "Make new list title test failed", 10000);
+//
+//        });
+//    });
     
 });
