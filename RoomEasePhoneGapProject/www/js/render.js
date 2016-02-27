@@ -204,7 +204,7 @@ re.render = (function() {
             for (var i in reservations) {
                 (function(current) {
                     $("#" + current._id).longpress(function() {
-                        re.controller.editReservationItem(current._id);
+                        re.reserve_controller.editReservationItem(current._id);
                     });
                 })(reservations[i]);
             }

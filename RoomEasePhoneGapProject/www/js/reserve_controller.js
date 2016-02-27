@@ -210,7 +210,8 @@ re.reserve_controller = (function() {
     
     //Function called when a reservation item should be edited or deleted in the Reservation template
     function editReservationItem(reservationId){
-        $('#backround2').css('display', 'block');
+        $('#background2').css('display', 'block');
+        $('#add-new-btn').css('display', 'none');
         $('.fixed-action-btn').css("display", "none");
         $('#delete-reservation-popup').css('display', 'block');
                 
