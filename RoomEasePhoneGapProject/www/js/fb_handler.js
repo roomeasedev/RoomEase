@@ -93,7 +93,6 @@ re.fbHandler = (function() {
 					  *		id:   "123456789"
                       *   }
                       */
-                      console.log(JSON.stringify(data));
 
                       // alert user's data for testing purposes
                       //alert(JSON.stringify(data));
