@@ -34,6 +34,120 @@ re.reserve_controller = (function() {
         currentReservationitems = newestReservations;
     }
     
+    function addReservation() {
+        console.log("adding new reservation");
+        filterValue = $("#new-reservation-dropdown").find(":selected").text();
+        var reserveName = filterValue;
+        console.log(filterValue);
+        //Want to filter by the new type of reservation
+        var start_time = $('#start-time').val().trim();
+        var minutes = $("#reservation-minutes").val().trim();
+        var hours = $("#reservation-hours").val().trim();
+        var start_date = $("#start-date").val().trim();
+        console.log(start_time);
+        // Check to see if input was valid, give the corresponding
+        // toast error message if necessary, then return false to
+        // indicate no reservation was added. The popup will not 
+        // be hidden when the method returns false, the user can
+        // immediately try again.
+        console.log("checking");
+        if(start_date == "" || new Date(start_date) < new Date()) {
+            Materialize.toast("Please enter a valid start date", 2000);
+            return false;
+        } else if (start_time == "") {
+            Materialize.toast("Please enter a valid start time", 2000);
+            return false;   
+        }else if (!hours || !hours.parseInt() || hours.parseInt() < 0) {
+            Materialize.toast("Please enter a valid duation (hours)", 2000);
+            return false;
+        } else if (!minutes || !minutes.parseInt() || minutes.parseInt() < 0) {
+             Materialize.toast("Please enter a valid duration (minutes)", 2000);
+             return false;
+        } else if (minutes.parseInt() == 0 && hours.parseInt() == 0) {
+            Materialize.toast("Invalid duration of reservation", 2000);
+            return false;
+        }
+        console.log("made it");
+        
+        var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);
+        var newResTuple = reservationToDateObjects(newresv);
+        var newStartTime = newResTuple.start;
+        var newEndTime = newResTuple.end;
+        
+        // If we have passed initial checks on the input, we can verify that there are no
+        // conflicts with the current reservation being added. Then we will return true or false
+        // from the function to determine if the reservation was actually added.
+        return re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
+
+            var noConflicts = true;
+            for(var i = 0; i < reservations.length; i++){
+                var reservation = reservations[i];
+                if(reservation.name_of_item == reserveName) {
+                    var dateTuple = reservationToDateObjects(reservation);
+                    var curResStartTime = dateTuple.start;
+                    var curResEndTime = dateTuple.end;
+
+
+                    // Check for time conflicts between the pending reservation and existing
+                    // reservations.
+                    if((newStartTime < curResStartTime && newEndTime > curResStartTime) ||
+                        (newStartTime > curResStartTime && newStartTime < curResEndTime)) {
+
+                        //Format the conflict string so the user knows the conflicting reservation
+                        var formatAMPM = function(date) {
+                            var hours = date.getHours();
+                            var minutes = date.getMinutes();
+                            var ampm = hours >= 12 ? 'pm' : 'am';
+                            hours = hours % 12;
+                            hours = hours ? hours : 12; // the hour '0' should be '12'
+                            minutes = minutes < 10 ? '0'+minutes : minutes;
+                            var strTime = hours + ':' + minutes + ' ' + ampm;
+                            return strTime;
+                        }
+
+                        var appendZero = function(number){
+                            if(number < 10) {
+                                return "0" + number;
+                            } else {
+                                return "" + number;
+                            }
+                        } 
+
+                        var startDateStr = "";
+                        var endDateStr = "";
+                        //We only add the date to the timeline if we know that it gots over two seperate days
+                        //Example: If a reservation starts at 11PM and end at 1AM
+                        if(curResStartTime.getDate() != curResEndTime.getDate() ||
+                            curResStartTime.getMonth() != curResEndTime.getMonth() ||
+                            curResStartTime.getYear() != curResEndTime.getYear()) {
+
+                            startDateStr += " (" + (curResStartTime.getMonth() + 1) + "/" + curResStartTime.getDate() + ")";
+                            endDateStr += " (" + (curResEndTime.getMonth() + 1) + "/" + curResEndTime.getDate() + ") ";
+
+                        }
+
+                        var timeString = " from " 
+                            + formatAMPM(curResStartTime)
+                            + startDateStr 
+                            + " to " 
+                            + formatAMPM(curResEndTime)
+                            + endDateStr; 
+
+
+                        console.log("conflict!");
+                        Materialize.toast("This reservation conflicts: " + timeString);
+                        noConflicts = false;
+                    }      
+                }
+            }
+            
+            if(noConflicts){
+                re.requestHandler.addItem(newresv, re.new_controller.rhAddCallback);
+                return true;
+            }
+        });
+    }
+    
 /****************************** PUBLIC *********************************/    
     
     /**
@@ -73,100 +187,9 @@ re.reserve_controller = (function() {
         
         // Adds the new reservation to the database when the done button is pressed
         $('#create-done').click(function() {
-            var reserveName = dropdown.find(":selected").text();
-
-            //Want to filter by the new type of reservation
-            filterValue = reserveName;
-            var start_time = $('#start-time').val().trim();
-            var minutes = $("#reservation-minutes").val().trim();
-            var hours = $("#reservation-hours").val().trim();
-            var start_date = $("#start-date").val().trim();
-            var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);
-            
-            var newResTuple = reservationToDateObjects(newresv);
-            var newStartTime = newResTuple.start;
-            var newEndTime = newResTuple.end;
-            
-            if(start_time == '' || minutes == '' || hours == '' || start_date == ''){
-                console.log("empty fields");
-                $("#reservation-create-error-text").html("Error: Empty field.");
-                 $("#reservation-create-error-text").css("display", "block");
-            } else if(newStartTime == newEndTime){
-                $("#reservation-create-error-text").html("Error: Reservation too short.");
-                 $("#reservation-create-error-text").css("display", "block"); 
-            }else {
-                re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-                    
-                    var noConflicts = true;
-                    for(var i = 0; i < reservations.length; i++){
-                        var reservation = reservations[i];
-                        if(reservation.name_of_item == reserveName) {
-                            var dateTuple = reservationToDateObjects(reservation);
-                            var curResStartTime = dateTuple.start;
-                            var curResEndTime = dateTuple.end;
-                            
-                            
-                            if(!((newStartTime < curResStartTime && newEndTime < curResEndTime) ||
-                                (newStartTime > curResStartTime && newEndTime > curResEndTime))) {
-                                
-                                
-                                    //Format the conflixt string so the user knows the conflicting reservation
-                                var formatAMPM = function(date) {
-                                    var hours = date.getHours();
-                                    var minutes = date.getMinutes();
-                                    var ampm = hours >= 12 ? 'pm' : 'am';
-                                    hours = hours % 12;
-                                    hours = hours ? hours : 12; // the hour '0' should be '12'
-                                    minutes = minutes < 10 ? '0'+minutes : minutes;
-                                    var strTime = hours + ':' + minutes + ' ' + ampm;
-                                    return strTime;
-                                }
-                                
-                                var appendZero = function(number){
-                                    if(number < 10) {
-                                        return "0" + number;
-                                    } else {
-                                        return "" + number;
-                                    }
-                                } 
-                                    
-                                var startDateStr = "";
-                                var endDateStr = "";
-                                //We only add the date to the timeline if we know that it gots over two seperate days
-                                //Example: If a reservation starts at 11PM and end at 1AM
-                                if(curResStartTime.getDate() != curResEndTime.getDate() ||
-                                    curResStartTime.getMonth() != curResEndTime.getMonth() ||
-                                    curResStartTime.getYear() != curResEndTime.getYear()) {
-
-                                    startDateStr += " (" + (curResStartTime.getMonth() + 1) + "/" + curResStartTime.getDate() + ")";
-                                    endDateStr += " (" + (curResEndTime.getMonth() + 1) + "/" + curResEndTime.getDate() + ") ";
-
-                                }
-                                
-                                var timeString = " from " 
-                                    + formatAMPM(curResStartTime)
-                                    + startDateStr 
-                                    + " to " 
-                                    + formatAMPM(curResEndTime)
-                                    + endDateStr; 
-                
-                                
-                                console.log("conflict!");
-                                $("#reservation-create-error-text").html("Error: Conflicting reservation " + timeString);
-                                $("#reservation-create-error-text").css("display", "block");
-                                noConflicts = false;
-                            }      
-                        }
-                    }
-                    if(noConflicts){
-                        re.controller.hidePopup();
-                        re.requestHandler.addItem(newresv, re.new_controller.rhAddCallback);
-                    }
-                });
-
-
-            }
-            
+            if (addReservation()) {
+                re.controller.hidePopup();
+            }    
         });
         
         // clears the fields in popup & closes it
