@@ -50,7 +50,7 @@ re.new_controller = (function() {
         }
         
         re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
-        console.log("re.controller init finished!");
+        alert("re.controller init finished!");
 	}
     
     
@@ -134,14 +134,18 @@ re.new_controller = (function() {
      * Routes the user to create group view
      */
     function goToMakeView() {
-        setTimeout(function(){ window.location.hash = "#gm"; alert("hello"); re.render.route(); }, 300);
+        window.location.hash = "#gm";
+        alert("hello");
+        re.render.route();
     }
     
     /**
      * Routes the user to join group view
      */
     function goToJoinView() {
-        setTimeout(function(){ window.location.hash = "#gj"; alert("hello"); re.render.route(); }, 300);
+        window.location.hash = "#gj"; 
+        alert("hello");
+        re.render.route();
     }
     
     // Return the public API of the controller module,
