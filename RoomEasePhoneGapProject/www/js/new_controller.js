@@ -135,7 +135,6 @@ re.new_controller = (function() {
      */
     function goToMakeView() {
         window.location.hash = "#gm";
-        alert("hello");
         re.render.route();
     }
     
@@ -144,7 +143,6 @@ re.new_controller = (function() {
      */
     function goToJoinView() {
         window.location.hash = "#gj"; 
-        alert("hello");
         re.render.route();
     }
     

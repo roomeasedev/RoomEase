@@ -410,8 +410,6 @@ re.render = (function() {
         var hash = window.location.hash;
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
-        alert("routing, hash = " + hash + ", user id: " + u_id +
-                    ", group id: " + g_id);
         if (!u_id) {
             renderFacebookLoginView();
         } else if ((!g_id) && hash == "#gl") {
