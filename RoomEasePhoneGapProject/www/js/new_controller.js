@@ -139,6 +139,7 @@ re.new_controller = (function() {
      * Routes the user to join group view
      */
     function goToJoinView() {
+        console.log("called go to join view!");
         window.location.hash = "#gj"; 
     }
     

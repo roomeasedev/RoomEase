@@ -33,7 +33,6 @@ $(document).ready(function() {
     //window.localStorage.setItem("user_id", "795578070");
     //window.localStorage.setItem("user_name", "Nacho Cano");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f72f8c88");
-    alert("hello");
     
     //User 2
     //window.localStorage.setItem('user_id', "512963585");
