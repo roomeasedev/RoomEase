@@ -24,6 +24,7 @@ re.render = (function() {
     * Sets the HTML value of the injectable page area to the rendered list view.
     */
     function renderListView() {
+        $('.page-title').html('List');
         /* Gets all lists from database and renders the list view with these
         *  lists embedded.
         */
@@ -31,7 +32,6 @@ re.render = (function() {
             if(allLists == null) {
                 console.log(error);
             } else {
-                $('.page-title').html('List');
                 $('.page').html(listTemplate(allLists));
                
                 //Add listener for longclick
@@ -53,6 +53,7 @@ re.render = (function() {
     * reservations: A list of reservation JSON objects that will be rendered to the page
     */
     function renderSchedulerView() {
+        $('.page-title').html('Reservations');
         //TODO: Factor out the date calculations and database calls
         (function() {
             var days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
@@ -192,9 +193,7 @@ re.render = (function() {
                     i++;
                 }
             }
-         
-            $('.page-title').html('Reservations');
-            
+                     
              //TODO: Make it so we use reservation_dictionary to aggregate all of the 
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
@@ -264,12 +263,12 @@ re.render = (function() {
     * shared: Boolean value expressing whether the "shared" view or the "mine" view will be rendered
     */
     function renderFridgeView(shared) {
+        $('.page-title').html('Fridge');
+
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
             if(allItems == null) {
                 console.log(error);
-            } else {
-                $('.page-title').html('Fridge');
-                
+            } else {                
                 var currItems = [];
                 var user_ids_to_names = re.requestHandler.getLocalUserIdsToNames();
                 // Determine which items will be displayed based on hash
