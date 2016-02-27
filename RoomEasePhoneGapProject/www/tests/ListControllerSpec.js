@@ -43,14 +43,22 @@ describe("List Controller suite", function() {
 //        // Bind Focus listener to next-item
 //        $('#next-item').on('focus', changeFocus);
 //    }
+    
     describe("Make new list", function() {
+        var listTemplate;
         beforeEach(function() {
-            loadFixtures('List.html, index.html');
+//            loadFixtures('List.html, index.html');
+            re.templates.load(["List"]).done(function () {
+                listTemplate = re.templates.get("List");
+            });
+            $('.page-title').html('List');
+            $('.page').html(listTemplate());
+            console.log($(''))
         });
         
         it("Make new list title test", function( ){
             re.list_controller.makeNewList();
-
+            
             var title = $('#popupTitle').val();
             console.log("title: " + title);
             expect(title).toEqual("New List");
