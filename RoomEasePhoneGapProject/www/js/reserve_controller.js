@@ -33,6 +33,13 @@ re.reserve_controller = (function() {
         currentReservationitems = newestReservations;
     }
     
+    /**
+     * Function to add a new reservation item to the database, using the input
+     * fields of the current popup.
+     * @return {boolean} true if the item was added, false if there was some
+     *     input preventing the reservation item from being added (empty or
+     *     invalid field, or time conflict)
+     */
     function addReservation() {
         filterValue = $("#new-reservation-dropdown").find(":selected").text();
         var reserveName = filterValue;
