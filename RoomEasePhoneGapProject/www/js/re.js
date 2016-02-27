@@ -14,8 +14,9 @@ var re = {};
 * Function to be called when the page has loaded.  Initializes the necessary
 * modules to start the page on the correct viewport.
 */
+alert("anyone home?");
 $(document).ready(function() {
-    
+    alert("pleeeease");
         
     $(function() {
         FastClick.attach(document.body);
@@ -29,11 +30,11 @@ $(document).ready(function() {
     //window.localStorage.setItem("user_id", "");
     //window.localStorage.setItem("group_id", "");
     //SET TO TEST VALUES TO GO TO DEFAULT TEST GROUP
-
+    alert("sad world");
     //User 1
-    window.localStorage.setItem("user_id", "893308038");
-    window.localStorage.setItem("user_name", "johnny test");
-    window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
+    //window.localStorage.setItem("user_id", "893308038");
+    //window.localStorage.setItem("user_name", "johnny test");
+    //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7331849");
     
     //User 2
     //window.localStorage.setItem('user_id', "512963585");
@@ -41,9 +42,10 @@ $(document).ready(function() {
     //window.localStorage.setItem('user_id', "743566854");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7157b47");
     re.controller.init();
-    
+    alert("hello world");
     // load templates and render first viewport
     re.render.init();
+    alert("goodbye world");
 });
 
 
