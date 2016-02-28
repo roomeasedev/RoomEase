@@ -5,14 +5,24 @@ After clicking on the create group, the user is given a generated group name and
 <script>
     document.getElementById("navbar").style.display = "none";
     $("#continue").hide();
+    
+    /**
+     * Routes the user to the feed view after continuing
+     */ 
     function goToFeedView() {
         setTimeout(function(){ window.location.hash = "#feed" }, 250);
     }
     
+    /**
+     * Populates the group name and group password with a generated group
+     * name and password and unhides the continue button to route the user to the
+     * feed view. Disables the create group button to prevent abuse.
+     */ 
     function getGroupNameAndPassword() {
         re.loginHandler.createGroupAndDisplayInfo()
         setTimeout(function(){ $("#continue").show(50); }, 3250);
         $("#back").hide();
+        $("#create").attr('disabled','disabled');
     }
 </script>
 <div id="group-login">
@@ -24,7 +34,7 @@ After clicking on the create group, the user is given a generated group name and
       <div class="card">
         <h1 class="title" style="font-size: 1.75em">Create</h1>
           <div class="button-container">
-            <button onclick="getGroupNameAndPassword()"><span>Create a group!</span></button>
+            <button id="create" onclick="getGroupNameAndPassword()"><span>Create a group!</span></button>
               <h5 style="font-size: 1.5em">Your Group Name:</h5>
               <h5 id="groupName"></h5>
               <h5 style="font-size: 1.5em">Your Group Password:</h5>

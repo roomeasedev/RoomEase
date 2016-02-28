@@ -264,6 +264,17 @@ re.render = (function() {
     */
     function renderFridgeView(shared) {
         $('.page-title').html('Fridge');
+        
+        var user_ids_to_names = {};
+        var onGetGroupIDs = function(isSucces, map, error) {
+            if(isSucces) {
+				user_ids_to_names = map;
+            } else {
+                console.log(error);
+            }
+        };
+        re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), onGetGroupIDs);
+
 
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
             if(allItems == null) {
