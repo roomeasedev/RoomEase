@@ -281,7 +281,7 @@ re.render = (function() {
                 console.log(error);
             } else {                
                 var currItems = [];
-                var user_ids_to_names = re.requestHandler.getLocalUserIdsToNames();
+                alert(user_ids_to_names);
                 // Determine which items will be displayed based on hash
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
