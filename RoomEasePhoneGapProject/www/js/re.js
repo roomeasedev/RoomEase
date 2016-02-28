@@ -34,6 +34,11 @@ $(document).ready(function() {
     //window.localStorage.setItem("user_name", "Nacho Cano");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f72f8c88");
     
+    //window.localStorage.setItem("user_id", "802839149821946");
+    //window.localStorage.setItem("user_name", "Sidd Gorti");
+    //window.localStorage.setItem("group_id", "");
+    
+    
     //User 2
     //window.localStorage.setItem('user_id', "512963585");
     //User 3

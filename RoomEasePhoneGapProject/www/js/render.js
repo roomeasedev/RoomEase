@@ -266,14 +266,15 @@ re.render = (function() {
         $('.page-title').html('Fridge');
         
         var user_ids_to_names = {};
-        var onGetGroupIDs = function(isSucces, map, error) {
-            if(isSucces) {
+
+        re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), function(isSuccess, map, error) {
+            console.log(isSuccess);
+            if(isSuccess) {
 				user_ids_to_names = map;
             } else {
                 console.log(error);
             }
-        };
-        re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), onGetGroupIDs);
+        });
 
 
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
@@ -281,13 +282,10 @@ re.render = (function() {
                 console.log(error);
             } else {                
                 var currItems = [];
-                alert(user_ids_to_names);
                 // Determine which items will be displayed based on hash
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
                     item.owner = user_ids_to_names[item.owner];
-                    alert(item.owner);
-                    alert(window.localStorage.getItem("user_name"));
                     var expDate = new Date(item.expiration_date);
                     var currDate = new Date();
                     
@@ -319,8 +317,6 @@ re.render = (function() {
                     }
                 }
                 
-                alert(currItems);
-                console.log(currItems);
                 
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));

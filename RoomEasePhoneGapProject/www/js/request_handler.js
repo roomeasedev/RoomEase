@@ -171,25 +171,25 @@ re.requestHandler = (function(){
     }
     
     function getUidToNameMap(group_id, callback){
-        var uidsToNameMap = {};
+		var uidsToNameMap = {};
         var uids;
         var numOfTenativeUids;
+		console.log(group_id);
         databases["groups"].get(group_id)
 		.then(function(response){
-            numOfTenativeUids = response.uid.length;
-            uids = response.uid;
+			numOfTenativeUids = response.uid.length;
+			uids = response.uid;
+			console.log(uids);
             for(var i = 0; i < uids.length; i++){
-                
-                var uidCallback = 
-
-                (function(uid) {
+				var uidCallback = (function(uid) {
                     uidToName(uid, function(is_success, name, error){
                         numOfTenativeUids--;
                         if(!is_success){
                             callback(false, null, error);
                         }
                         uidsToNameMap[uid] = name;
-                        if(numOfTenativeUids == 0){
+                        console.log(uidsToNameMap);
+						if(numOfTenativeUids == 0){
                             callback(true, uidsToNameMap, null);
                         }
                     });

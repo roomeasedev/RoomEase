@@ -125,7 +125,7 @@ re.loginHandler = (function() {
 		 		 include_docs : true
 				})
 				.then(function (result) {
-					if(result.rows.ngth != 1){
+					if(result.rows.length != 1){
 						throw "Error: Multiple entries for the same user ID"
 					} else {
 					 	result.rows[0].doc.group_num = group_id;
@@ -241,6 +241,11 @@ re.loginHandler = (function() {
                 $('#groupPwd').html(group_password);
                 re.requestHandler.init("http://40.114.43.49:5984/",
                                        u_id, window.localStorage.getItem('group_id'));
+				addUserToGroup(u_id, window.localStorage.getItem('group_id'), function(is_success, already_in_grp, error) {
+					if (!is_success) {
+                        alert(error);
+                    }
+				});
 
                 // Show continue button
 				 
