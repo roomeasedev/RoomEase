@@ -286,6 +286,8 @@ re.render = (function() {
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
                     item.owner = user_ids_to_names[item.owner];
+                    alert(item.owner);
+                    alert(window.localStorage.getItem("user_name"));
                     var expDate = new Date(item.expiration_date);
                     var currDate = new Date();
                     
@@ -317,6 +319,7 @@ re.render = (function() {
                     }
                 }
                 
+                alert(currItems);
                 console.log(currItems);
                 
                 // Compile page and inject into .page in main html view
