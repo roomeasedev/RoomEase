@@ -1,0 +1,31 @@
+<!--Template for the GroupMakeJoin view that will be injected into Index.html at runtime.
+    This will be the default page for users who don't have a group_id stored in the application,
+    but do have a user_id (meaning they are logged in via Facebook). This page will allow users
+    to create a new RoomEase group or join an existing one. -->
+
+<script>
+    document.getElementById("navbar").style.display = "none";
+    $('#make').on('click', re.new_controller.goToMakeView);
+    $('#join').on('click', re.new_controller.goToJoinView);
+    
+</script>
+<div>
+    <div class="pen-title">
+      <h1 style="font-weight: bold" id="grouptitle">RoomEase</h1>
+    </div>
+    <div>
+      <div>
+        <h1 class="title" style="font-size: 1.75em">Make or join a group!</h1>
+          <div>
+            <button class="btn-large" id="make"><span>Make</span></button>
+            <br />
+            <br />
+            <button class="btn-large" id="join"><span>Join</span></button>
+            <br />
+            <br />
+            <br />
+            <br />
+          </div>
+      </div>
+    </div>
+</div>
