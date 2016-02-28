@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.phonegap.roomease" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>RoomEase 2.0.0</name>
+    <name>RoomEase_FCR</name>
     <description>RoomEase Application</description>
     <author email="roomease@googlegroups.com" href="http://roomeasedev.github.io">RoomEase Team</author>
     <content src="index.html" />
