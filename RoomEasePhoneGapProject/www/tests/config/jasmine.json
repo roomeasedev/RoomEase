@@ -9,7 +9,7 @@
     "..js/lib/materialize.min.js",
     "..js/lib/handlebars-v4.0.5.js",
     "..js/re.js",
-    "..js/template-loader.js",
+    "..js/templateLoader.js",
     "..js/localStorage.js"
   ],
   "stopSpecOnExpectationFailure": false,

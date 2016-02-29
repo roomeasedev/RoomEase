@@ -13,7 +13,7 @@
         <select id="filter-dropdown" class="black-text" style="margin-bottom: 0; font-size: 10em; line-height: 1.5em; background-color: green"></select>
     </div>
     <button class="btn waves-effect waves-light popup-button" 
-                    type="submit" onclick="re.reserve_controller.addNewReservationType()" name="action" style="width:21%; float: right; height: 100%; margin-right: 4%;" id="add-new-btn">Add Type</button>
+                    type="submit" onclick="re.reserveController.addNewReservationType()" name="action" style="width:21%; float: right; height: 100%; margin-right: 4%;" id="add-new-btn">Add Type</button>
 </div>
 
 {{#each this}}
@@ -38,7 +38,7 @@
 {{/each}}
 
 <!-- Button to add new chore-->
-<div class="fixed-action-btn" onclick="re.reserve_controller.makeNewReservation()" id="new-reservation-btn" style="bottom: 45px; right: 24px;">
+<div class="fixed-action-btn" onclick="re.reserveController.makeNewReservation()" id="new-reservation-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
 
