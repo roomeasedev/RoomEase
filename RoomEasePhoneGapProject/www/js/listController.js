@@ -1,5 +1,5 @@
 /**
- * re.list_controller is a module that contains the logic behind the List view of the app.
+ * re.listController is a module that contains the logic behind the List view of the app.
  * Contains functions that are tied to various buttons and interactive elements that drive
  * events such as adding or updating list items to the database. This modules serves as a wrapper and
  * middle man of List's request handler calls, so that error handling and results from the DB
@@ -8,7 +8,7 @@
  *     for various buttons and interactive elements within the application. 
  */
 
-re.list_controller = (function() {  
+re.listController = (function() {  
     var list_items = {};
     
 /****************************** "PRIVATE" ****************************************/
@@ -142,8 +142,8 @@ re.list_controller = (function() {
                 });
                 var newlist = createList(listName, listItems);
                 // note: right now, the following call & calls like this will work during testing only if the callback is
-                //       re.new_controller.rhAddCallback. 
-                re.requestHandler.addItem(newlist, re.new_controller.rhAddCallback);                
+                //       re.newController.rhAddCallback. 
+                re.requestHandler.addItem(newlist, re.newController.rhAddCallback);                
             }
         });
     }
@@ -182,13 +182,13 @@ re.list_controller = (function() {
                 var editedList = thisList;
                 editedList.items = updatedItems;
                 editedList.name_of_list = $('#name').val();
-                re.requestHandler.updateItem(editedList, re.new_controller.rhUpdateCallback);                
+                re.requestHandler.updateItem(editedList, re.newController.rhUpdateCallback);                
             }
         });
         
         $('#delete').click(function() {
             re.controller.hidePopup();
-            re.requestHandler.deleteItem(listId, "list", re.new_controller.rhDelCallback);
+            re.requestHandler.deleteItem(listId, "list", re.newController.rhDelCallback);
         });
     }
     

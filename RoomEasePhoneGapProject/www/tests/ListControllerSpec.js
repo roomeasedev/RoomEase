@@ -10,7 +10,7 @@ describe("List Controller suite", function() {
                 $("body").append("<div id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
               
-                re.list_controller.makeNewList();
+                re.listController.makeNewList();
             
                 var title = $('#popupTitle').html();
                 console.log("title: " + title);
@@ -34,7 +34,7 @@ describe("List Controller suite", function() {
                 $("body").append("<div id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
                 
-                re.list_controller.makeNewList();
+                re.listController.makeNewList();
 
                 var name = $('#name').html();
                 console.log("name: " + name);
@@ -57,7 +57,7 @@ describe("List Controller suite", function() {
                 $("body").append("<div id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
             
-                re.list_controller.makeNewList();
+                re.listController.makeNewList();
 
                 var buttonDisplay = $('#new-list-btn').css('display');
                 var popupDisplay = $('.popupBackground').css('display');
@@ -83,7 +83,7 @@ describe("List Controller suite", function() {
 //                $("body").append("<div id='test'></div>");
 //                $('#test').html($.parseHTML(listTemplate()));
 //            
-//                re.list_controller.makeNewList();
+//                re.listController.makeNewList();
 //                $("#name").val("to do");
 //                $("#next-item").val("write more code");
 //                $("#next-item").val("write more code");
@@ -135,9 +135,9 @@ describe("List Controller suite", function() {
 //                $("body").append("<div id='test'></div>");
 //                $('#test').html($.parseHTML(listTemplate()));
 //                
-//                re.list_controller.list_items.id = id;
+//                re.listController.list_items.id = id;
 //                
-//                re.list_controller.editList(id);
+//                re.listController.editList(id);
 //            
 //                var title = $('#popupTitle').html();
 //                console.log("title: " + title);

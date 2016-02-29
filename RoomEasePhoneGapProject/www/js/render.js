@@ -37,10 +37,10 @@ re.render = (function() {
                 //Add listener for longclick
                 for (var i in allLists) {
                     var list = allLists[i];
-                    re.list_controller.list_items[list._id] = list; 
+                    re.listController.list_items[list._id] = list; 
                     (function (current) {
                         $('#' + current._id).longpress(function() {
-                            re.list_controller.editList(current._id);
+                            re.listController.editList(current._id);
                         })
                     })(list);
                 }
@@ -87,15 +87,15 @@ re.render = (function() {
                 
             }
             
-            re.reserve_controller.updateCurrentReservationItems(reservations);
+            re.reserveController.updateCurrentReservationItems(reservations);
             
             //Convert the date-time reservations int0 a more readable format
             
-            reservations = re.reserve_controller.getFilteredReservations(reservations);
+            reservations = re.reserveController.getFilteredReservations(reservations);
             var date_time_reservations = [];
             for(var i = 0; i < reservations.length; i++){
                 var reservationObj = {};
-                var dateTuple = re.reserve_controller.reservationToDateObjects(reservations[i]);
+                var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
                 var startDateObj = dateTuple.start;
                 var endDateObj = dateTuple.end;
                 
@@ -197,13 +197,13 @@ re.render = (function() {
              //TODO: Make it so we use reservation_dictionary to aggregate all of the 
              //Reservations based off of what they are
             $('.page').html(scheduleTemplate(date_time_reservations));
-           re.reserve_controller.refreshFilterReservations();
+           re.reserveController.refreshFilterReservations();
 
             //Add listener for longclick
             for (var i in reservations) {
                 (function(current) {
                     $("#" + current._id).longpress(function() {
-                        re.reserve_controller.editReservationItem(current._id);
+                        re.reserveController.editReservationItem(current._id);
                     });
                 })(reservations[i]);
             }
@@ -327,7 +327,7 @@ re.render = (function() {
                     var item = currItems[i];
                     $('#' + item._id).longpress(function () {
                         if(item.owner == window.localStorage.getItem("user_name")) {
-                            re.fridge_controller.removeItem(item._id, item.item);
+                            re.fridgeController.removeItem(item._id, item.item);
                         } else {
                             Materialize.toast("You can't delete an item you don't own");
                         }
@@ -335,20 +335,20 @@ re.render = (function() {
                 }
                 
                 // Add options to datalist field of popup
-                for(var name in re.fridge_controller.fridge_names) {
+                for(var name in re.fridgeController.fridge_names) {
                     $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
                 }
                 
                 // Check to see if the user entered a item that was used previously
                 $('#names').on('focusout', function () {
                     
-                    for(var name in re.fridge_controller.fridge_names) {
+                    for(var name in re.fridgeController.fridge_names) {
                         
                         if($('#names').val().toLowerCase() == name.toLowerCase()) {
                             
                             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                             var expDate = new Date();
-                            expDate.setTime(expDate.getTime() + (oneDay * re.fridge_controller.fridge_names[name]));
+                            expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridge_names[name]));
                             
                             $('#expiration').val(expDate.toISOString().substr(0, 10));
                         }

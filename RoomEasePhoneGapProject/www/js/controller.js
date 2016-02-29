@@ -24,7 +24,7 @@ re.controller = (function() {
      */
 	function init() {
         console.log("initializing re.controller, nothing to do");
-//        //Initialize login handler and request_handler
+//        //Initialize login handler and requestHandler
 //        re.loginHandler.init("http://40.114.43.49:5984/");
 //		if (!userId){
 //			console.log("we couldn't find a UID! need to do FB Login");

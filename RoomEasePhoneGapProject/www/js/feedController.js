@@ -38,7 +38,7 @@ re.feedController = (function() {
 	/**
 	 * Removes the given food item with the given ID from the group's
 	 * food database (should only be called if the food has expired).
-	 * @param {String} foodID the DB id number of the food item to be removed
+	 * @param {String} foodID  The DB id number of the food item to be removed
 	 */
 	function removeExpiredFood(foodID) {
 		// TODO: implement this function
@@ -53,11 +53,9 @@ re.feedController = (function() {
 	 * Interaction function for the reservation items in the feed.
 	 * Sends the user to the reservtion module with the filter set to
 	 * the proper value so they can see the relevant reservation immediately.
-	 * @param {String} reservationID the DB id number of the reservation item from feed
+	 * @param {String} reservationID   The DB id number of the reservation item from feed
 	 */
 	function reservationInteract(reservationID) {
-		// TODO: implement this function
-        
         window.location.hash = '#reservations';
 	}
 

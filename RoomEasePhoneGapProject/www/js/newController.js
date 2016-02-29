@@ -7,7 +7,7 @@
  * @return {Object} the re.controller object, which has a public API containing functions
  *     for various buttons and interactive elements within the application. 
  */
-re.new_controller = (function() {
+re.newController = (function() {
 
     // TODO: Refactor these into a different module (localstorage)
 	var list_items = {};
@@ -23,7 +23,7 @@ re.new_controller = (function() {
      * (login handler, request handler).
      */
 	function init() {
-        //Initialize login handler and request_handler
+        //Initialize login handler and requestHandler
         re.loginHandler.init("http://40.114.43.49:5984/");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
@@ -46,7 +46,7 @@ re.new_controller = (function() {
             }
 
             re.requestHandler.getUidToNameMap(groupId, onGetGroupIDs);
-            console.log("re.new_controller init finished!");
+            console.log("re.newController init finished!");
 		}
 	}
     

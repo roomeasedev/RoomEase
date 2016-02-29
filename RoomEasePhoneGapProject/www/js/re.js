@@ -44,7 +44,7 @@ $(document).ready(function() {
     //User 3
     //window.localStorage.setItem('user_id', "743566854");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f7157b47");
-    re.new_controller.init();
+    re.newController.init();
     // load templates and render first viewport
     re.render.init();
 });

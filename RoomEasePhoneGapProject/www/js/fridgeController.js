@@ -1,11 +1,13 @@
 /**
- * re.fridge_controller is a module that contains 
+ * re.fridgeController is a module that contains 
  */
 
-re.fridge_controller = (function() {
+re.fridgeController = (function() {
     
 /****************************** "PRIVATE" ****************************************/
     
+    // Grab the value dictionary of fridge names to expiration dates from local storage
+    // or set it to an empty Object if there is no locally stored data
     var fridge_names = JSON.parse(window.localStorage.getItem("fridge_names"));
     if(!fridge_names) {
         fridge_names = {};
@@ -13,9 +15,9 @@ re.fridge_controller = (function() {
     
     /**
      * Creates a fridge item JSON object that will be added to the database.
-     * itemName: Name of the fridge item
-     * expiration: Expiration date of item
-     * shared: Shared status of item (yes, no, or ask)
+     * @param itemName      Name of the fridge item
+     * @param expiration    Expiration date of item
+     * @param shared        Shared status of item (yes or no)
      */
     function createFridgeItem(itemName, expiration, shared) {
         return fridgeItem = {
@@ -51,7 +53,7 @@ re.fridge_controller = (function() {
 
         resetFridgeButtons();
         var newItem = createFridgeItem(itemName, expiration, shared);
-        re.requestHandler.addItem(newItem, re.new_controller.rhAddCallback);
+        re.requestHandler.addItem(newItem, re.newController.rhAddCallback);
         
         var expDate = new Date(expiration);        
         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
@@ -102,8 +104,8 @@ re.fridge_controller = (function() {
     
     /**
      * Popup that prompts the user if they want to delete an item.
-     * id: The id of the item to be removed
-     * name: The name of the fridge item to be removed
+     * @param {String} id   The reference id the item to be removed
+     * @param {String} name The name of the fridge item to be removed
      */
     function removeItem(id, name) {
         
@@ -124,7 +126,7 @@ re.fridge_controller = (function() {
             $('#remove').off();
             $('#removePopup').css('display', 'none');
             $('#new-fridge-item-btn').css('display', 'block');
-            re.requestHandler.deleteItem(id, "fridge_item", re.new_controller.rhDelCallback);
+            re.requestHandler.deleteItem(id, "fridge_item", re.newController.rhDelCallback);
         });
     }
     

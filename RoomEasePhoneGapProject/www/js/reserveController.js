@@ -1,8 +1,8 @@
 /**
- * re.reserve_controller is a module that contains 
+ * re.reserveController is a module that contains 
  */
 
-re.reserve_controller = (function() {
+re.reserveController = (function() {
     
     var filterValue = "All";
     var currentReservationitems = [];
@@ -146,7 +146,7 @@ re.reserve_controller = (function() {
             }
             
             if(noConflicts){
-                re.requestHandler.addItem(newresv, re.new_controller.rhAddCallback);
+                re.requestHandler.addItem(newresv, re.newController.rhAddCallback);
                 return true;
             }
         });
@@ -221,7 +221,7 @@ re.reserve_controller = (function() {
                 
         $('#delete-delete').click(function() {
             re.requestHandler.deleteItem(reservationId, "reservation",
-                re.new_controller.rhDelCallback);
+                re.newController.rhDelCallback);
             hidePopup('#background2');
         });
 
