@@ -204,25 +204,26 @@ re.render = (function() {
                     }
                 }
 
-                 //TODO: Make it so we use reservation_dictionary to aggregate all of the 
+                //TODO: Make it so we use reservation_dictionary to aggregate all of the 
                  //Reservations based off of what they are
                 $('.page').html(scheduleTemplate(date_time_reservations));
-
                re.reserveController.refreshFilterReservations();
 
                 //Add listener for longclick
                 for (var i in reservations) {
-                    (function(current) {
-                        $("#" + current._id).longpress(function() {
-                            re.reserveController.editReservationItem(current._id);
-                        });
-                    })(reservations[i]);
+                    var reservation = reservations[i];
+                    $('#' + reservation._id).longpress(function () {
+                       if(reservation.uid == window.localStorage.getItem("user_name")) {
+                           re.reserveController.editReservationItem(reservation._id);
+                       } else {
+                           Materialize.toast("You can't delete someone else's reservation");
+                       }
+                    });
                 }
             }
             $("#loading-bar").css("display", "none");
-        });
+            });
     }
-                
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
@@ -496,13 +497,14 @@ re.render = (function() {
             // when the hash of the URL is changed.
             window.onhashchange = route;
             route();
-            $('#top-of-page').xpull({
-                 'paused': false,  // Is the pulling paused ?
-                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-                'callback':function(){
-                    route();
-                }
-            });
+// DISABLED: Currently does not allow the plus button to stay floating
+//            $('#top-of-page').xpull({
+//                'paused': false,  // Is the pulling paused ?
+//                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+//                'callback':function(){
+//                    route();
+//                }
+//            });
         });   
     }
     
