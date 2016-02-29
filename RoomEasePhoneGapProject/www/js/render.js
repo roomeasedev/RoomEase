@@ -250,7 +250,6 @@ re.render = (function() {
                  * user that their food has expired.
                  */
                 if(diffDays == -1) {
-                    fridgeItems.push(re.feedController.createFeedItem(item));
                     feedItems.push(re.feedController.createFeedItem(item));
                 }
             }
@@ -265,7 +264,6 @@ re.render = (function() {
                     reserveTime.setMinutes(item.start_time.substr(3));
                     
                     if(reserveTime.getTime() - currDate.getTime() < oneDay) {
-                        reservationItems.push(re.feedController.createFeedItem(item));
                         feedItems.push(re.feedController.createFeedItem(item));
                     }
                 }
