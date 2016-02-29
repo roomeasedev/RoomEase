@@ -232,8 +232,6 @@ re.render = (function() {
         $('.page-title').html('Feed');
         
         // Store fridge and reservation items separately to add longpress listeners later
-        var fridgeItems = [];
-        var reservationItems = [];
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
             for (var i = 0; i < allItems.length; i++) {
