@@ -353,7 +353,7 @@ re.render = (function() {
                         if(item.owner == window.localStorage.getItem("user_name")) {
                             re.fridgeController.removeItem(item._id, item.item);
                         } else {
-                            Materialize.toast("You can't delete an item you don't own");
+                            Materialize.toast("You can't delete an item you don't own", 2000);
                         }
                     });
                 }
