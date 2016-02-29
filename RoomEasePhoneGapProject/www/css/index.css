@@ -14,10 +14,19 @@
 #feed-container {
     position: fixed;
     overflow: scroll;
-    top: 6%;
-    height: 75%;
+    top: 10%;
+    height: 72%;
     width: 100%;
-    color: aqua;
+    padding-bottom: 1em;
+}
+
+#shortcut-container {
+    position: fixed;
+    top: 82%;
+    width: 100%;
+    height: 20%;
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.16), 10px 10px 10px 10px rgba(0, 0, 0, 0.12);
+    transition: box-shadow .25s;
 }
 
 #list-module-btn {
