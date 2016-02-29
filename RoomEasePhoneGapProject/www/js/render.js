@@ -201,15 +201,17 @@ re.render = (function() {
 
             //Add listener for longclick
             for (var i in reservations) {
-                (function(current) {
-                    $("#" + current._id).longpress(function() {
-                        re.reserveController.editReservationItem(current._id);
-                    });
-                })(reservations[i]);
+                var reservation = reservations[i];
+                $('#' + reservation._id).longpress(function () {
+                   if(reservation.uid == window.localStorage.getItem("user_name")) {
+                       re.reserveController.editReservationItem(reservation._id);
+                   } else {
+                       Materialize.toast("You can't delete someone else's reservation");
+                   }
+                });
             }
         });
     }
-                
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
