@@ -37,25 +37,42 @@ re.feedController = (function() {
 	 * Removes the given food item with the given ID from the group's
 	 * food database (should only be called if the food has expired).
 	 * @param {String} foodId  The DB id number of the food item to be removed
+     * @param {String} name The name of the fridge item to be removed
 	 */
-	function removeExpiredFood(foodId) {
+	function removeExpiredFood(foodId, name) {
 		// TODO: implement this function
         	
-	        // Popup to confirm deletion of food
-	        $('#removePopup).css('display', 'block');
-	        // Make a call on DB to get fridge item with given ID and delete it
-	        re.requestHandler.removeItem(foodId, "fridge_item", newController.rhDelCallback);
-	        // Remove item from local list of feed items
-	        // Hide the item  
+        // Popup to confirm deletion of food
+        $('#removePopup').css('display', 'block');
+        
+        $('#removeHeader').html('Are you sure you want to remove ' + name + '?');
+        
+        $('#cancel-remove').on('click', function() {
+            $('#cancel-remove').off();
+            $('#remove').off();
+            $('#removePopup').css('display', 'none');
+            $('#new-fridge-item-btn').css('display', 'block');
+        });
+        
+        $('#remove').on('click', function() {
+            $('#cancel-remove').off();
+            $('#remove').off();
+            $('#removePopup').css('display', 'none');
+            $('#new-fridge-item-btn').css('display', 'block');
+            re.requestHandler.deleteItem(id, "fridge_item", re.newController.rhDelCallback);
+        });
+        
+        // Remove item from local list of feed items
+        // Hide the item  
 	}
 
 	/**
 	 * Interaction function for the reservation items in the feed.
 	 * Sends the user to the reservtion module with the filter set to
 	 * the proper value so they can see the relevant reservation immediately.
-	 * @param {String} reservationID   The DB id number of the reservation item from feed
+	 * @param {String} reservationId   The DB id number of the reservation item from feed
 	 */
-	function reservationInteract(reservationID) {
+	function reservationInteract(reservationId) {
         window.location.hash = '#reservations';
 	}
 

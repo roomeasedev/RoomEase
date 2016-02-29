@@ -231,6 +231,9 @@ re.render = (function() {
     function renderFeedView() {
         $('.page-title').html('Feed');
         
+        // Store fridge and reservation items separately to add longpress listeners later
+        var fridgeItems = [];
+        var reservationItems = [];
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
             for (var i = 0; i < allItems.length; i++) {
@@ -249,6 +252,7 @@ re.render = (function() {
                  * user that their food has expired.
                  */
                 if(diffDays == -1) {
+                    fridgeItems.push(re.feedController.createFeedItem(item));
                     feedItems.push(re.feedController.createFeedItem(item));
                 }
             }
@@ -263,11 +267,19 @@ re.render = (function() {
                     reserveTime.setMinutes(item.start_time.substr(3));
                     
                     if(reserveTime.getTime() - currDate.getTime() < oneDay) {
+                        reservationItems.push(re.feedController.createFeedItem(item));
                         feedItems.push(re.feedController.createFeedItem(item));
                     }
                 }
                 
                 $('.page').html(feedTemplate(feedItems));
+                
+                // Add longpress listeners to fridge items to allow them to be removed
+                for(var fridgeItem in fridgeItems) {
+                    $('#' + fridgeItem._id).longpress(function() {
+                        re.feedController.removeExpiredFood(item._id, item.item);
+                    });
+                }
             });
             $("#loading-bar").css("display", "none");
         });
@@ -276,7 +288,7 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
-    * shared: Boolean value expressing whether the "shared" view or the "mine" view will be rendered
+    * @param {Boolean} shared The value expressing whether the "shared" view or the "mine" view will be rendered
     */
     function renderFridgeView(shared) {
         $('.page-title').html('Fridge');
