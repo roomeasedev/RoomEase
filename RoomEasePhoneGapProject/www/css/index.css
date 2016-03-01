@@ -170,6 +170,7 @@ input[type="text"] {
     height: 93%;
     top: 7%;
     display: none;
+    z-index:901;
 }
 
 .list-entry {

@@ -18,11 +18,14 @@ re.feedController = (function() {
 	function createFeedItem(input) {
 	        if (input.type == "fridge_item") {
 			return {
+                '_id': input._id,
 				'type': "fridge_item",
-				'item': input.item
+				'item': input.item,
+                'owner': input.owner
 			};
 	        } else if (input.type == "reservation") {
 			return {
+                '_id': input._id,
 				'type': "reservation",
 				'item': input.name_of_item,
 				'time': input.start_time
@@ -88,7 +91,6 @@ re.feedController = (function() {
     
     function fridgeModuleButton() {
         re.render.setQuickAdd(true);
-        alert(re.render.quickAdd);
         window.location.hash = '#fridge-mine';
     }
     

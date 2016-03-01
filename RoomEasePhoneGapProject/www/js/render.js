@@ -219,14 +219,15 @@ re.render = (function() {
 
                 //Add listener for longclick
                 for (var i in reservations) {
-                    var reservation = reservations[i];
-                    $('#' + reservation._id).longpress(function () {
-                       if(reservation.uid == window.localStorage.getItem("user_name")) {
-                           re.reserveController.editReservationItem(reservation._id);
-                       } else {
-                           Materialize.toast("You can't delete someone else's reservation");
-                       }
-                    });
+                    (function(reservation){
+                        $('#' + reservation._id).longpress(function () {
+                           if(reservation.uid == window.localStorage.getItem("user_name")) {
+                               re.reserveController.editReservationItem(reservation._id);
+                           } else {
+                               Materialize.toast("You can't delete someone else's reservation");
+                           }
+                        });
+                    })(reservations[i]);
                 }
             }
             
@@ -286,12 +287,24 @@ re.render = (function() {
                 $('.page').html(feedTemplate(feedItems));
                 
                 // Add longpress listeners to fridge items to allow them to be removed
-                for(var fridgeItem in fridgeItems) {
-                    $('#' + fridgeItem._id).longpress(function() {
-                        re.feedController.removeExpiredFood(item._id, item.item);
+                for(var i in fridgeItems) {
+                    (function(fridgeItem) {
+                        $('#' + fridgeItem._id).longpress(function() {
+                            re.feedController.removeExpiredFood(item._id, item.item);
+                        });
+                    })(fridgeItems[i]);
+                }
+                
+                // Add onclick shortcut from reservation items to their corresponding area of reservation view
+                for(var i in allItems) {
+                    var reservation = allItems[i];
+                    alert(reservation._id);
+                    $('#' + reservation._id).on('click', function() {
+                        window.location.hash = "#reservations";
                     });
                 }
             });
+            
             $("#loading-bar").css("display", "none");
         });
         
