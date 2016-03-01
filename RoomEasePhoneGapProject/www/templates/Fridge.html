@@ -19,17 +19,6 @@
     $(document).ready(function(){
         $('ul.tabs').tabs();
     });
-    $('#refresh-container').xpull({
-        'paused': false,  // Is the pulling paused ?
-        'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-        'callback': function(){
-            if (window.location.hash == "#fridge-mine") {
-                re.render.renderFridgeView(false);
-            } else {
-                re.render.renderFridgeView(true);
-            }
-        }
-    });
 </script>
 
 
@@ -42,9 +31,11 @@
     </div>
 </div>
 
-<div id="refresh-container">
-    {{#each this}}
-        {{#ifCond this.expiration_date '==' -1}}
+<div class="row"></div>
+<div class="row"></div>
+<div id="fridge-tiles">
+{{#each this}}
+    {{#ifCond this.expiration_date '==' -1}}
         <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
                 <h5 class="white-text">{{ this.item }} has expired</h5>
         {{/ifCond}}
