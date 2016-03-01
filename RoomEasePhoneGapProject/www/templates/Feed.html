@@ -12,14 +12,20 @@
     {{/ifCond}}
     
 	{{#each this}}
-	    <div class="list-item" id="{{ this._id }}">
-			{{#ifCond this.type '==' "fridge_item"}}
-				<h5 class="white-text fridgeItem">Your group's {{this.item}} has expired!</h5>
-			{{/ifCond}}
-            
+	    
+            {{#ifCond this.type '==' "fridge_item"}}
+                <div class="list-item" id="{{ this._id }}" style="padding: .4em; .8em .5em .8em; background-color: #cdcdcd;">
+                    <h5 class="white-text fridgeItem">Your group's {{this.item}} has expired!</h5>
+            {{/ifCond}}
+
             {{#ifCond this.type '==' "reservation"}}
-				<h5 class="white-text">{{this.date}} You have {{this.item}} reserved at {{this.time}}.</h5>
-			{{/ifCond}}
+                <div class="list-item" id="{{ this._id }}" style="padding: .4em; .8em .5em .8em; overflow: hidden;">
+                    <header class="white-text left-align" style="margin-bottom: .2em; font-size: 1.5em; line-height: 1em;">{{ this.date }} {{ this.item }}</header>
+                    <div class="divider teal lighten-5" id="popupDivider"></div>
+                    <ul>
+                        <li class="white-text" style="font-size: 1.4em; text-align: right; margin-top: .4em">{{ this.time }}</li>  
+                    </ul>
+            {{/ifCond}}
 	    </div>
 	{{/each}}
 </div>

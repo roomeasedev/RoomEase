@@ -19,6 +19,7 @@ re.render = (function() {
     var groupMakeJoinTemplate;
     var groupMakeTemplate;
     var groupJoinTemplate;
+    var quickAdd = false;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -46,6 +47,7 @@ re.render = (function() {
                     })(list);
                 }
             }
+<<<<<<< HEAD
              $('#list-tiles').xpull({
                 'paused': false,  // Is the pulling paused ?
                 'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
@@ -54,6 +56,16 @@ re.render = (function() {
                 }
             });
             
+=======
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.listController.makeNewList();
+                quickAdd = false;
+            }
+            
+            $("#loading-bar").css("display", "none");
+>>>>>>> 8625e1b6a29633db55f090e34cdf3a99b61e613e
         });
     }
 
@@ -229,6 +241,7 @@ re.render = (function() {
                     });
                 }
             }
+<<<<<<< HEAD
              $('#reservation-tiles').xpull({
                 'paused': false,  // Is the pulling paused ?
                 'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
@@ -236,6 +249,16 @@ re.render = (function() {
                     re.render.route();
                 }
             });
+=======
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.reserveController.makeNewReservation();
+                quickAdd = false;
+            }
+            
+            $("#loading-bar").css("display", "none");
+>>>>>>> 8625e1b6a29633db55f090e34cdf3a99b61e613e
             });
     }
     
@@ -245,6 +268,7 @@ re.render = (function() {
     function renderFeedView() {
         $('.page-title').html('Feed');
         
+        // Store fridge and reservation items separately to add longpress listeners later
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
             $("#loading-bar").css("display", "none");
@@ -290,6 +314,13 @@ re.render = (function() {
                         re.render.route();
                     }
                 });
+                
+                // Add longpress listeners to fridge items to allow them to be removed
+                for(var fridgeItem in fridgeItems) {
+                    $('#' + fridgeItem._id).longpress(function() {
+                        re.feedController.removeExpiredFood(item._id, item.item);
+                    });
+                }
             });
         });
         
@@ -297,7 +328,7 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
-    * shared: Boolean value expressing whether the "shared" view or the "mine" view will be rendered
+    * @param {Boolean} shared   The value expressing whether the "shared" view or the "mine" view will be rendered
     */
     function renderFridgeView(shared) {
         $('.page-title').html('Fridge');
@@ -367,7 +398,7 @@ re.render = (function() {
                         if(item.owner == window.localStorage.getItem("user_name")) {
                             re.fridgeController.removeItem(item._id, item.item);
                         } else {
-                            Materialize.toast("You can't delete an item you don't own");
+                            Materialize.toast("You can't delete an item you don't own", 2000);
                         }
                     });
                 }
@@ -400,6 +431,17 @@ re.render = (function() {
                     }
                 });
             }
+<<<<<<< HEAD
+=======
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.fridgeController.makeNewFridgeItem();
+                quickAdd = false;
+            }
+            
+            $("#loading-bar").css("display", "none");
+>>>>>>> 8625e1b6a29633db55f090e34cdf3a99b61e613e
         });
         
         // Initialize tabs
@@ -443,15 +485,21 @@ re.render = (function() {
     }
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered group joining view.
-    * This view should will be shown for users who do not have a group_id but intended on
-    * joining an already created group.
+     * Sets the HTML value of the injectable page area to the rendered group joining view.
+     * This view should will be shown for users who do not have a group_id but intended on
+     * joining an already created group.
     */
     function renderGroupJoinView() {
         $('.page').html(groupJoinTemplate());
     }
     
-
+    /**
+     * Set's the quickAdd boolean flag
+     * @param {Boolean} flag    Value to set quickAdd to
+     */
+    function setQuickAdd(flag) {
+        quickAdd = flag;
+    }
     
     /**
     * Renders the correct view for the injectable area of the viewport.
@@ -539,6 +587,8 @@ re.render = (function() {
         'renderListView': renderListView,
         'renderFridgeView': renderFridgeView,
         'renderSchedulerView': renderSchedulerView,
-        'renderAccountView': renderAccountView
+        'renderAccountView': renderAccountView,
+        'quickAdd': quickAdd,
+        'setQuickAdd': setQuickAdd
     };
 })();

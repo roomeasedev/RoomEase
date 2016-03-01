@@ -15,26 +15,26 @@
                         type="submit" onclick="re.reserveController.addNewReservationType()" name="action" style="width:21%; float: right; height: 100%; margin-right: 4%;" id="add-new-btn">Add Type</button>
     </div>
 <div id="reservation-tiles">
-    {{#each this}}
-        {{#ifCond this.type '==' 'time'}}
-            <div style="padding-left: 2%;">
-                <h3 class="left-align pink-text text-lighten-4"> {{this.label}}</h3>
-            </div>
-        {{/ifCond}}
-        {{#ifCond this.type '==' 'reservation'}}
-
-        <div class="all-reservation-items" id="{{ this._id }}">
-            <div class="reservation-item {{ this.color_class }}" style="padding: .4em .8em .5em .8em; overflow: hidden;">
-                <header class="white-text left-align" style="margin-bottom: .2em; font-size: 1.5em; line-height: 1em;">{{this.title}} reserved by {{this.user}} </header>
-                <div class="divider teal lighten-5" id="popupDivider"></div>
-                <ul>
-                    <li class="white-text" style="font-size: 1.4em; text-align: right; margin-top: .4em">  {{this.time}}</li>  
-                </ul>    
-
-            </div>
+{{#each this}}
+    {{#ifCond this.type '==' 'time'}}
+        <div style="padding-left: 2%;">
+            <h3 class="left-align pink-text text-lighten-4"> {{this.label}}</h3>
         </div>
-        {{/ifCond}}
-    {{/each}}
+    {{/ifCond}}
+    {{#ifCond this.type '==' 'reservation'}}
+
+    <div class="all-reservation-items" id="{{ this._id }}">
+        <div class="reservation-item {{ this.color_class }}" style="padding: .4em .8em .5em .8em; overflow: hidden;">
+            <header class="white-text left-align" style="margin-bottom: .2em; font-size: 1.5em; line-height: 1em;">{{this.title}} reserved by {{this.user}} </header>
+            <div class="divider teal lighten-5" id="popupDivider"></div>
+            <ul>
+                <li class="white-text right-align" style="font-size: 1.4em; margin-top: .4em">{{this.time}}</li>  
+            </ul>  
+
+        </div>
+    </div>
+    {{/ifCond}}
+{{/each}}
 </div>
 
 <!-- Button to add new chore-->
@@ -44,7 +44,7 @@
 
 <!-- Small popup menu to add new schedule item, hidden by default -->
 <div class="popupBackground" id="background1">
-    <div class="popup" style="height: auto; top: 30%">
+    <div class="popup" style="height: auto; top: 30%; overflow: hidden;">
 
         <h4 class="white-text" style="margin: .5rem 0">New Reservation</h4>
         <div class="divider teal lighten-5" id="popupDivider"></div>
@@ -98,8 +98,8 @@
 
 <div class="popupBackground" id="background3">
     <div id="add-new-resevation-type">
-        <div class="popup" style="height:auto; top: 30%; padding-top: .3em">
-              <input type="text" placeholder="New Type:" id="add-new-resevation-type-text" class="white-text">
+        <div class="popup" style="height:auto; top: 30%; padding-top: .3em; overflow: hidden;">
+              <input type="text" placeholder="New Type of Reservation" id="add-new-resevation-type-text" class="white-text">
             <button class="btn waves-effect waves-light popup-button" 
             type="submit"
                      style="float: left; width: 48%; height: auto" name="action" id="add-new-reservation-type-btn-cancel">Cancel</button>

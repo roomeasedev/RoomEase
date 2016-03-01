@@ -158,48 +158,52 @@ re.reserveController = (function() {
     *Function called make all of the resources visible to add a new reservation in the Reservation tremplate
     **/
     function makeNewReservation(){
-        $('#name').val('');
-        $('#new-reservation-btn').css('display', 'none');
-        $('#add-new-btn').css('display', 'none');
-        $('#background1').css('display', 'block');
-        $('#create-done').off();
-        var dropdown = $("#new-reservation-dropdown");
-        dropdown.empty();
-        
-        if(filterValue != "All"){
-            dropdown.append(
-                  $("<option></option>")
-                    .attr("reservationName", filterValue)
-                    .text(filterValue));
-        }
-        
-        var reservationTypes = getAllReservationTypes();
-        for(var i = 0; i < reservationTypes.length; i++){
-            if(!(reservationTypes[i] == filterValue || reservationTypes[i] == "All")){
-              dropdown.append(
-              $("<option></option>")
-                .attr("reservationName", reservationTypes[i])
-                .text(reservationTypes[i]));    
+        if(currentReservationTypes.length == 1) {
+            addNewReservationType();
+        } else {
+            $('#name').val('');
+            $('#new-reservation-btn').css('display', 'none');
+            $('#add-new-btn').css('display', 'none');
+            $('#background1').css('display', 'block');
+            $('#create-done').off();
+            var dropdown = $("#new-reservation-dropdown");
+            dropdown.empty();
+
+            if(filterValue != "All"){
+                dropdown.append(
+                      $("<option></option>")
+                        .attr("reservationName", filterValue)
+                        .text(filterValue));
             }
-        }
-        
-        $('select').material_select();
-        $('select').on('contentChanged', function() {
-            // re-initialize (update)
-            $(this).material_select();
-        });
-        
-        // Adds the new reservation to the database when the done button is pressed
-        $('#create-done').click(function() {
-            if (addReservation()) {
+
+            var reservationTypes = getAllReservationTypes();
+            for(var i = 0; i < reservationTypes.length; i++){
+                if(!(reservationTypes[i] == filterValue || reservationTypes[i] == "All")){
+                  dropdown.append(
+                  $("<option></option>")
+                    .attr("reservationName", reservationTypes[i])
+                    .text(reservationTypes[i]));    
+                }
+            }
+
+            $('select').material_select();
+            $('select').on('contentChanged', function() {
+                // re-initialize (update)
+                $(this).material_select();
+            });
+
+            // Adds the new reservation to the database when the done button is pressed
+            $('#create-done').click(function() {
+                if (addReservation()) {
+                    hidePopup('#background1');
+                }    
+            });
+
+            // clears the fields in popup & closes it
+            $('#create-cancel').click(function() {
                 hidePopup('#background1');
-            }    
-        });
-        
-        // clears the fields in popup & closes it
-        $('#create-cancel').click(function() {
-            hidePopup('#background1');
-        });
+            });
+        }
     }
     
     /* Brings user back to whatever main module screen they're on (usually the onclick for a cancel button)
