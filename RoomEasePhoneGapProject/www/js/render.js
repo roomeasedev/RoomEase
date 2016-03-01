@@ -47,7 +47,6 @@ re.render = (function() {
                     })(list);
                 }
             }
-<<<<<<< HEAD
              $('#list-tiles').xpull({
                 'paused': false,  // Is the pulling paused ?
                 'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
@@ -56,8 +55,6 @@ re.render = (function() {
                 }
             });
             
-=======
-            
             // Show add item popup if being rendered from quickAdd shortcut
             if(quickAdd) {
                 re.listController.makeNewList();
@@ -65,7 +62,6 @@ re.render = (function() {
             }
             
             $("#loading-bar").css("display", "none");
->>>>>>> 8625e1b6a29633db55f090e34cdf3a99b61e613e
         });
     }
 
@@ -241,7 +237,6 @@ re.render = (function() {
                     });
                 }
             }
-<<<<<<< HEAD
              $('#reservation-tiles').xpull({
                 'paused': false,  // Is the pulling paused ?
                 'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
@@ -249,7 +244,6 @@ re.render = (function() {
                     re.render.route();
                 }
             });
-=======
             
             // Show add item popup if being rendered from quickAdd shortcut
             if(quickAdd) {
@@ -258,7 +252,6 @@ re.render = (function() {
             }
             
             $("#loading-bar").css("display", "none");
->>>>>>> 8625e1b6a29633db55f090e34cdf3a99b61e613e
             });
     }
     
@@ -431,8 +424,6 @@ re.render = (function() {
                     }
                 });
             }
-<<<<<<< HEAD
-=======
             
             // Show add item popup if being rendered from quickAdd shortcut
             if(quickAdd) {
@@ -441,7 +432,6 @@ re.render = (function() {
             }
             
             $("#loading-bar").css("display", "none");
->>>>>>> 8625e1b6a29633db55f090e34cdf3a99b61e613e
         });
         
         // Initialize tabs
