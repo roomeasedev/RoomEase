@@ -19,6 +19,7 @@ re.render = (function() {
     var groupMakeJoinTemplate;
     var groupMakeTemplate;
     var groupJoinTemplate;
+    var quickAdd = false;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -48,6 +49,13 @@ re.render = (function() {
                     })(list);
                 }
             }
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.listController.makeNewList();
+                quickAdd = false;
+            }
+            
             $("#loading-bar").css("display", "none");
         });
     }
@@ -226,6 +234,13 @@ re.render = (function() {
                     });
                 }
             }
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.reserveController.makeNewReservation();
+                quickAdd = false;
+            }
+            
             $("#loading-bar").css("display", "none");
             });
     }
@@ -239,6 +254,7 @@ re.render = (function() {
     function renderFeedView(fullRefresh) {
         $('.page-title').html('Feed');
         
+        // Store fridge and reservation items separately to add longpress listeners later
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
             for (var i = 0; i < allItems.length; i++) {
@@ -276,6 +292,13 @@ re.render = (function() {
                 }
                 
                 $('.page').html(feedTemplate(feedItems));
+                
+                // Add longpress listeners to fridge items to allow them to be removed
+                for(var fridgeItem in fridgeItems) {
+                    $('#' + fridgeItem._id).longpress(function() {
+                        re.feedController.removeExpiredFood(item._id, item.item);
+                    });
+                }
             });
             $("#loading-bar").css("display", "none");
         });
@@ -356,7 +379,7 @@ re.render = (function() {
                         if(item.owner == window.localStorage.getItem("user_name")) {
                             re.fridgeController.removeItem(item._id, item.item);
                         } else {
-                            Materialize.toast("You can't delete an item you don't own");
+                            Materialize.toast("You can't delete an item you don't own", 2000);
                         }
                     });
                 }
@@ -382,6 +405,13 @@ re.render = (function() {
                     }
                 });
             }
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.fridgeController.makeNewFridgeItem();
+                quickAdd = false;
+            }
+            
             $("#loading-bar").css("display", "none");
         });
         
@@ -426,15 +456,21 @@ re.render = (function() {
     }
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered group joining view.
-    * This view should will be shown for users who do not have a group_id but intended on
-    * joining an already created group.
+     * Sets the HTML value of the injectable page area to the rendered group joining view.
+     * This view should will be shown for users who do not have a group_id but intended on
+     * joining an already created group.
     */
     function renderGroupJoinView() {
         $('.page').html(groupJoinTemplate());
     }
     
-
+    /**
+     * Set's the quickAdd boolean flag
+     * @param {Boolean} flag    Value to set quickAdd to
+     */
+    function setQuickAdd(flag) {
+        quickAdd = flag;
+    }
     
     /**
     * Renders the correct view for the injectable area of the viewport.
@@ -530,6 +566,8 @@ re.render = (function() {
         'renderListView': renderListView,
         'renderFridgeView': renderFridgeView,
         'renderSchedulerView': renderSchedulerView,
-        'renderAccountView': renderAccountView
+        'renderAccountView': renderAccountView,
+        'quickAdd': quickAdd,
+        'setQuickAdd': setQuickAdd
     };
 })();

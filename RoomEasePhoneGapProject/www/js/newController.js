@@ -92,6 +92,8 @@ re.newController = (function() {
     function rhAddCallback(is_success, revised_item, error) {
         if (is_success) {
             console.log("success");
+            // TODO: Add item to local storage here, then prompt a soft refresh
+            // of page (pass parameter through route, perhaps?)
             re.render.route();
             // TODO: scroll to where the new list is
         } else {

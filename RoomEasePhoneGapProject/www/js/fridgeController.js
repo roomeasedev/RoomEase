@@ -47,10 +47,10 @@ re.fridgeController = (function() {
             return false;
         }
         
+        // Clear fields of popup
         $('#names').html('');
         $('#expiration').html('');
 
-        resetFridgeButtons();
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, re.newController.rhAddCallback);
         
@@ -97,6 +97,7 @@ re.fridgeController = (function() {
             if(addItem()) {
                 re.controller.hidePopup();
                 re.render.renderFridgeView(false);
+                resetFridgeButtons();
             }
         });
     }
