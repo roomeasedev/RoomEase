@@ -329,7 +329,6 @@ re.render = (function() {
                 // Add onclick shortcut from reservation items to their corresponding area of reservation view
                 for(var i in allItems) {
                     var reservation = allItems[i];
-                    alert(reservation._id);
                     $('#' + reservation._id).on('click', function() {
                         window.location.hash = "#reservations";
                     });
