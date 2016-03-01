@@ -22,8 +22,11 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
     */
-    function renderListView() {
+    function renderListView(fullRefresh) {
         $('.page-title').html('List');
         /* Gets all lists from database and renders the list view with these
         *  lists embedded.
@@ -51,9 +54,11 @@ re.render = (function() {
 
     /**
     * Sets the HTML value of the injectable page area to the rendered scheduler view.
-    * reservations: A list of reservation JSON objects that will be rendered to the page
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
     */
-    function renderSchedulerView() {
+    function renderSchedulerView(fullRefresh) {
         $(".page").on("end.pulltorefresh", function (evt, y){
             if(window.location.hash == "#reservations"){
                 console.log("refresh!");
@@ -227,8 +232,11 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
     */
-    function renderFeedView() {
+    function renderFeedView(fullRefresh) {
         $('.page-title').html('Feed');
         
         var feedItems = [];
@@ -276,9 +284,12 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
-    * shared: Boolean value expressing whether the "shared" view or the "mine" view will be rendered
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
+    * @param {boolean} shared Whether the "shared" view or the "mine" view will be rendered
     */
-    function renderFridgeView(shared) {
+    function renderFridgeView(fullRefresh, shared) {
         $('.page-title').html('Fridge');
         
         var user_ids_to_names = {};
@@ -454,11 +465,11 @@ re.render = (function() {
         } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
         } else if (!hash || hash == "#feed") {
-            renderFeedView();
+            renderFeedView(true);
         } else if (hash == "#list") { 
-            renderListView();
+            renderListView(true);
         } else if (hash == "#fridge-mine") {
-            renderFridgeView(false);
+            renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {
             renderFridgeView(true);
         } else if (hash == "#reservations") {
@@ -467,7 +478,7 @@ re.render = (function() {
             renderAccountView();
         } else {
             if (g_id && (hash == "#gm" || hash == "#gj" || hash == "#gl")) {
-                renderFeedView();
+                renderFeedView(true);
             } else if (u_id) {
                 renderGroupMakeOrJoinView();
             } else {

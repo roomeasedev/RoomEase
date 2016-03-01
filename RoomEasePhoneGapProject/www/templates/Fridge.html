@@ -19,7 +19,17 @@
     $(document).ready(function(){
         $('ul.tabs').tabs();
     });
-    
+    $('#refresh-container').xpull({
+        'paused': false,  // Is the pulling paused ?
+        'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+        'callback': function(){
+            if (window.location.hash == "#fridge-mine") {
+                re.render.renderFridgeView(false);
+            } else {
+                re.render.renderFridgeView(true);
+            }
+        }
+    });
 </script>
 
 
@@ -32,29 +42,29 @@
     </div>
 </div>
 
-<div class="row"></div>
-<div class="row"></div>
-{{#each this}}
-    {{#ifCond this.expiration_date '==' -1}}
-        <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
-            <h5 class="white-text">{{ this.item }} has expired</h5>
-    {{/ifCond}}
-
-    {{#ifCond this.expiration_date '==' 0}}
-    <div class="list-item pink lighten-4" id="{{ this._id }}">
-        <h5 class="white-text">{{ this.item }} expires today</h5>
-    {{/ifCond}}
-
-    {{#ifCond this.expiration_date '>' 0}}
-        <div class="list-item" id="{{ this._id }}">
-        <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
-        
-        {{#ifCond this.sharable '==' "yes"}}
-            <h5 class="white-text">Shared by {{ this.owner }}</h5>
+<div id="refresh-container">
+    {{#each this}}
+        {{#ifCond this.expiration_date '==' -1}}
+            <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
+                <h5 class="white-text">{{ this.item }} has expired</h5>
         {{/ifCond}}
-    {{/ifCond}}
-        </div>
-{{/each}}
+
+        {{#ifCond this.expiration_date '==' 0}}
+        <div class="list-item pink lighten-4" id="{{ this._id }}">
+            <h5 class="white-text">{{ this.item }} expires today</h5>
+        {{/ifCond}}
+
+        {{#ifCond this.expiration_date '>' 0}}
+            <div class="list-item" id="{{ this._id }}">
+            <h5 class="white-text">{{ this.item }} expires in {{ this.expiration_date }} days</h5>
+
+            {{#ifCond this.sharable '==' "yes"}}
+                <h5 class="white-text">Shared by {{ this.owner }}</h5>
+            {{/ifCond}}
+        {{/ifCond}}
+            </div>
+    {{/each}}
+</div>
 
 <!-- Button to add new fridge items -->
 <div class="fixed-action-btn" onclick="re.fridgeController.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">

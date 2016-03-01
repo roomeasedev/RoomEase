@@ -2,28 +2,36 @@
         and whenever the user navigates to the Feed page. It will include the list of important
         upcoming items that will be dynamically loaded from local storage.  -->
 <script>
-    document.getElementById("navbar").style.display = "";  
+    document.getElementById("navbar").style.display = "";
+    $('#refresh-container').xpull({
+        'paused': false,  // Is the pulling paused ?
+        'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+        'callback': function(){
+            re.render.renderFeedView(true);
+        }
+    });
 </script>
 
 <!-- The feed of items that come after-->
-<div id="feed-container">
-    {{#ifCond this.length '==' 0}}
-        <h4 class="pink-text">You currently have no feed items</h4>
-    {{/ifCond}}
-    
-	{{#each this}}
-	    <div class="list-item" id="{{ this._id }}">
-			{{#ifCond this.type '==' "fridge_item"}}
-				<h5 class="white-text fridgeItem">Your group's {{this.item}} has expired!</h5>
-			{{/ifCond}}
-            
-            {{#ifCond this.type '==' "reservation"}}
-				<h5 class="white-text">{{this.date}} You have {{this.item}} reserved at {{this.time}}.</h5>
-			{{/ifCond}}
-	    </div>
-	{{/each}}
-</div>
+<div id="refresh-container">
+    <div id="feed-container">
+        {{#ifCond this.length '==' 0}}
+            <h4 class="pink-text">You currently have no feed items</h4>
+        {{/ifCond}}
 
+        {{#each this}}
+            <div class="list-item" id="{{ this._id }}">
+                {{#ifCond this.type '==' "fridge_item"}}
+                    <h5 class="white-text fridgeItem">Your group's {{this.item}} has expired!</h5>
+                {{/ifCond}}
+
+                {{#ifCond this.type '==' "reservation"}}
+                    <h5 class="white-text">{{this.date}} You have {{this.item}} reserved at {{this.time}}.</h5>
+                {{/ifCond}}
+            </div>
+        {{/each}}
+    </div>
+</div>
 <!-- Buttons for going to the other pages of the application -->
 <div id="shortcut-container">
     <h4 class="pink-text" style="text-align: center; margin-top: .2em;">Quick Add</h4>
