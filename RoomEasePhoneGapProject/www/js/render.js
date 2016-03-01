@@ -366,11 +366,12 @@ re.render = (function() {
             $("#loading-bar").css("display", "none");
             if(allItems == null) {
                 console.log(error);
-            } else {                
+            } else {
                 var currItems = [];
                 // Determine which items will be displayed based on hash
                 for(var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
+                    var ownerId = item.owner;
                     item.owner = user_ids_to_names[item.owner];
                     var expDate = new Date(item.expiration_date);
                     var currDate = new Date();
@@ -392,17 +393,17 @@ re.render = (function() {
                         item.expiration_date = diffDays;
                     }
                     
+                    window.localStorage.getItem("user_name");
                     if(shared) {                        
                         if(item.sharable == "yes") {
                             currItems.push(item);
                         }
                     } else {
-                        if(item.owner == window.localStorage.getItem("user_name")) {
+                        if(ownerId == window.localStorage.getItem("user_id")) {
                             currItems.push(item);
                         }
                     }
                 }
-                
                 
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));
