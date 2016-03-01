@@ -29,6 +29,7 @@ re.render = (function() {
         *  lists embedded.
         */
         re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
+            $("#loading-bar").css("display", "none");
             if(allLists == null) {
                 console.log(error);
             } else {
@@ -45,7 +46,14 @@ re.render = (function() {
                     })(list);
                 }
             }
-            $("#loading-bar").css("display", "none");
+             $('#list-tiles').xpull({
+                'paused': false,  // Is the pulling paused ?
+                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                'callback':function(){
+                    re.render.route();
+                }
+            });
+            
         });
     }
 
@@ -92,7 +100,7 @@ re.render = (function() {
         
         
         re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-            
+            $("#loading-bar").css("display", "none");
             if(error){
                 alert("Failed to fetch data.")
             } else {
@@ -221,7 +229,13 @@ re.render = (function() {
                     });
                 }
             }
-            $("#loading-bar").css("display", "none");
+             $('#reservation-tiles').xpull({
+                'paused': false,  // Is the pulling paused ?
+                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                'callback':function(){
+                    re.render.route();
+                }
+            });
             });
     }
     
@@ -233,6 +247,7 @@ re.render = (function() {
         
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
+            $("#loading-bar").css("display", "none");
             for (var i = 0; i < allItems.length; i++) {
                 var item = allItems[i];
 
@@ -268,8 +283,14 @@ re.render = (function() {
                 }
                 
                 $('.page').html(feedTemplate(feedItems));
+                $('#feed-container').xpull({
+                    'paused': false,  // Is the pulling paused ?
+                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                    'callback':function(){
+                        re.render.route();
+                    }
+                });
             });
-            $("#loading-bar").css("display", "none");
         });
         
     }
@@ -294,6 +315,7 @@ re.render = (function() {
 
 
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
+            $("#loading-bar").css("display", "none");
             if(allItems == null) {
                 console.log(error);
             } else {                
@@ -370,8 +392,14 @@ re.render = (function() {
                         }
                     }
                 });
+                 $('#fridge-tiles').xpull({
+                    'paused': false,  // Is the pulling paused ?
+                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                    'callback':function(){
+                        re.render.route();
+                    }
+                });
             }
-            $("#loading-bar").css("display", "none");
         });
         
         // Initialize tabs
@@ -497,14 +525,6 @@ re.render = (function() {
             // when the hash of the URL is changed.
             window.onhashchange = route;
             route();
-// DISABLED: Currently does not allow the plus button to stay floating
-//            $('#top-of-page').xpull({
-//                'paused': false,  // Is the pulling paused ?
-//                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-//                'callback':function(){
-//                    route();
-//                }
-//            });
         });   
     }
     

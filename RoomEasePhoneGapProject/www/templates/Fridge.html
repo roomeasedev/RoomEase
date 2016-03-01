@@ -34,6 +34,7 @@
 
 <div class="row"></div>
 <div class="row"></div>
+<div id="fridge-tiles">
 {{#each this}}
     {{#ifCond this.expiration_date '==' -1}}
         <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
@@ -55,6 +56,7 @@
     {{/ifCond}}
         </div>
 {{/each}}
+</div>
 
 <!-- Button to add new fridge items -->
 <div class="fixed-action-btn" onclick="re.fridgeController.makeNewFridgeItem()" id="new-fridge-item-btn" style="bottom: 45px; right: 24px;">
