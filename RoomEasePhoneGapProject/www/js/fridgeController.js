@@ -2,8 +2,7 @@
  * re.fridgeController is a module that contains 
  */
 
-re.fridgeController = (function() {
-    
+re.fridgeController = (function() {   
 /****************************** "PRIVATE" ****************************************/
     
     // Grab the value dictionary of fridge names to expiration dates from local storage
@@ -97,7 +96,7 @@ re.fridgeController = (function() {
         $('#done').click(function() {
             if(addItem()) {
                 re.controller.hidePopup();
-                re.render.renderFridgeView();
+                re.render.renderFridgeView(false);
                 resetFridgeButtons();
             }
         });

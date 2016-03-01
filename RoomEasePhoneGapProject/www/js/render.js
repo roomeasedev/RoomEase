@@ -23,13 +23,17 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
     */
-    function renderListView() {
+    function renderListView(fullRefresh) {
         $('.page-title').html('List');
         /* Gets all lists from database and renders the list view with these
         *  lists embedded.
         */
         re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
+            $("#loading-bar").css("display", "none");
             if(allLists == null) {
                 console.log(error);
             } else {
@@ -46,6 +50,13 @@ re.render = (function() {
                     })(list);
                 }
             }
+             $('#list-tiles').xpull({
+                'paused': false,  // Is the pulling paused ?
+                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                'callback':function(){
+                    re.render.route();
+                }
+            });
             
             // Show add item popup if being rendered from quickAdd shortcut
             if(quickAdd) {
@@ -59,9 +70,11 @@ re.render = (function() {
 
     /**
     * Sets the HTML value of the injectable page area to the rendered scheduler view.
-    * reservations: A list of reservation JSON objects that will be rendered to the page
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
     */
-    function renderSchedulerView() {
+    function renderSchedulerView(fullRefresh) {
         $(".page").on("end.pulltorefresh", function (evt, y){
             if(window.location.hash == "#reservations"){
                 console.log("refresh!");
@@ -100,7 +113,7 @@ re.render = (function() {
         
         
         re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-            
+            $("#loading-bar").css("display", "none");
             if(error){
                 alert("Failed to fetch data.")
             } else {
@@ -230,6 +243,13 @@ re.render = (function() {
                     })(reservations[i]);
                 }
             }
+             $('#reservation-tiles').xpull({
+                'paused': false,  // Is the pulling paused ?
+                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                'callback':function(){
+                    re.render.route();
+                }
+            });
             
             // Show add item popup if being rendered from quickAdd shortcut
             if(quickAdd) {
@@ -243,13 +263,17 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered feed view.
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
     */
-    function renderFeedView() {
+    function renderFeedView(fullRefresh) {
         $('.page-title').html('Feed');
         
         // Store fridge and reservation items separately to add longpress listeners later
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
+            $("#loading-bar").css("display", "none");
             for (var i = 0; i < allItems.length; i++) {
                 var item = allItems[i];
 
@@ -285,6 +309,13 @@ re.render = (function() {
                 }
                 
                 $('.page').html(feedTemplate(feedItems));
+                $('#feed-container').xpull({
+                    'paused': false,  // Is the pulling paused ?
+                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                    'callback':function(){
+                        re.render.route();
+                    }
+                });
                 
                 // Add longpress listeners to fridge items to allow them to be removed
                 for(var i in fridgeItems) {
@@ -304,7 +335,7 @@ re.render = (function() {
                     });
                 }
             });
-            
+      
             $("#loading-bar").css("display", "none");
         });
         
@@ -312,9 +343,12 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
-    * @param {Boolean} shared   The value expressing whether the "shared" view or the "mine" view will be rendered
+    * @param {boolean} fullRefresh Whether or not the rendering of the page should
+    *     contact the DB to get an updated set of items to display (if not, uses
+    *     the locally stored lists of the items)
+    * @param {boolean} shared Whether the "shared" view or the "mine" view will be rendered
     */
-    function renderFridgeView(shared) {
+    function renderFridgeView(fullRefresh, shared) {
         $('.page-title').html('Fridge');
         
         var user_ids_to_names = {};
@@ -330,6 +364,7 @@ re.render = (function() {
 
 
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
+            $("#loading-bar").css("display", "none");
             if(allItems == null) {
                 console.log(error);
             } else {                
@@ -404,6 +439,13 @@ re.render = (function() {
                             
                             $('#expiration').val(expDate.toISOString().substr(0, 10));
                         }
+                    }
+                });
+                 $('#fridge-tiles').xpull({
+                    'paused': false,  // Is the pulling paused ?
+                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                    'callback':function(){
+                        re.render.route();
                     }
                 });
             }
@@ -503,11 +545,11 @@ re.render = (function() {
         } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
         } else if (!hash || hash == "#feed") {
-            renderFeedView();
+            renderFeedView(true);
         } else if (hash == "#list") { 
-            renderListView();
+            renderListView(true);
         } else if (hash == "#fridge-mine") {
-            renderFridgeView(false);
+            renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {
             renderFridgeView(true);
         } else if (hash == "#reservations") {
@@ -516,7 +558,7 @@ re.render = (function() {
             renderAccountView();
         } else {
             if (g_id && (hash == "#gm" || hash == "#gj" || hash == "#gl")) {
-                renderFeedView();
+                renderFeedView(true);
             } else if (u_id) {
                 renderGroupMakeOrJoinView();
             } else {
@@ -546,14 +588,6 @@ re.render = (function() {
             // when the hash of the URL is changed.
             window.onhashchange = route;
             route();
-// DISABLED: Currently does not allow the plus button to stay floating
-//            $('#top-of-page').xpull({
-//                'paused': false,  // Is the pulling paused ?
-//                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-//                'callback':function(){
-//                    route();
-//                }
-//            });
         });   
     }
     

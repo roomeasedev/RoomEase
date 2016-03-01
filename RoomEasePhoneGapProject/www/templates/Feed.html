@@ -2,7 +2,7 @@
         and whenever the user navigates to the Feed page. It will include the list of important
         upcoming items that will be dynamically loaded from local storage.  -->
 <script>
-    document.getElementById("navbar").style.display = "";  
+    document.getElementById("navbar").style.display = "";
 </script>
 
 <!-- The feed of items that come after-->
@@ -10,9 +10,9 @@
     {{#ifCond this.length '==' 0}}
         <h4 class="pink-text">You currently have no feed items</h4>
     {{/ifCond}}
-    
-	{{#each this}}
-	    
+
+    {{#each this}}
+
             {{#ifCond this.type '==' "fridge_item"}}
                 <div class="list-item" id="{{ this._id }}" style="padding: .4em; .8em .5em .8em; background-color: #cdcdcd;">
                     <h5 class="white-text fridgeItem">Your group's {{this.item}} has expired!</h5>
@@ -26,8 +26,8 @@
                         <li class="white-text" style="font-size: 1.4em; text-align: right; margin-top: .4em"> At {{ this.time }} today</li>
                     </ul>
             {{/ifCond}}
-	    </div>
-	{{/each}}
+        </div>
+    {{/each}}
 </div>
 
 <!-- Buttons for going to the other pages of the application -->

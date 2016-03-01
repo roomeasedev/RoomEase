@@ -1,12 +1,11 @@
 <!--    Template for the Reservations view that will be injected into Index.html at runtime when the user navigates
         to the Reservations page. It will include the list of reservation items (shower, tv, laundry, etc.) that
         the user currently has selected and these reservations will be dynamically loaded when the page is rendered.  -->
+    <script>
+        document.getElementById("navbar").style.display = "";
+    </script>
 
-<script>
-    document.getElementById("navbar").style.display = "";
-</script>
 <!-- This section should dynamically insert all of the reservations into the page-->
-
 <div style="height:40px; margin-bottom: 20px; margin-top: 10px;">
 
     <div style="width: 73%; padding-left: 2%;float:left; height: 100%" >
@@ -16,6 +15,7 @@
                     type="submit" onclick="re.reserveController.addNewReservationType()" name="action" style="width:21%; float: right; height: 100%; margin-right: 4%;" id="add-new-btn">Add Type</button>
 </div>
 
+<div id="reservation-tiles">
 {{#each this}}
     {{#ifCond this.type '==' 'time'}}
         <div style="padding-left: 2%;">
@@ -30,13 +30,15 @@
             <div class="divider teal lighten-5" id="popupDivider"></div>
             <ul>
                 <li class="white-text right-align" style="font-size: 1.4em; margin-top: .4em">{{this.time}}</li>  
-            </ul>   
+            </ul>  
 
         </div>
     </div>
     {{/ifCond}}
 {{/each}}
+</div>
 
+>>>>>>> f70908959960e88af4db1369fe97355a6a1732c6
 <!-- Button to add new chore-->
 <div class="fixed-action-btn" onclick="re.reserveController.makeNewReservation()" id="new-reservation-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>

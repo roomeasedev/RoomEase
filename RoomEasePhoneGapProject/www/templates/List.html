@@ -4,7 +4,9 @@
 <script>
     document.getElementById("navbar").style.display = "";
 </script>
+
 <!-- This section should dynamically insert all of the lists into the page-->
+<div id="list-tiles">
 {{#each this}}
     <div class="list-item" id="{{ this._id }}" style="overflow: hidden;"><header class="white-text left-align" style="margin-bottom: .1em; font-size: 1.8em; line-height: 1.25em;">{{ this.name_of_list }}</header>
         <div class="divider teal lighten-5" id="popupDivider"></div>
@@ -15,7 +17,7 @@
         </ul>
     </div>
 {{/each}}
-
+</div>
 
 <!-- Button to add new list -->
 <div class="fixed-action-btn" onclick="re.listController.makeNewList()" id="new-list-btn" style="bottom: 45px; right: 24px;">
