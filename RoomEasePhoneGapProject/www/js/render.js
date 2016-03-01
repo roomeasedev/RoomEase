@@ -391,7 +391,6 @@ re.render = (function() {
                     } else {
                         item.expiration_date = diffDays;
                     }
-                    
                     if(shared) {                        
                         if(item.sharable == "yes") {
                             currItems.push(item);
@@ -403,6 +402,7 @@ re.render = (function() {
                     }
                 }
                 
+                console.log(currItems);
                 
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));
@@ -550,7 +550,7 @@ re.render = (function() {
         } else if (hash == "#fridge-mine") {
             renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {
-            renderFridgeView(true);
+            renderFridgeView(true, true);
         } else if (hash == "#reservations") {
             renderSchedulerView();
         } else if(hash == "#account"){
