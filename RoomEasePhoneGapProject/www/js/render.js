@@ -19,6 +19,7 @@ re.render = (function() {
     var groupMakeJoinTemplate;
     var groupMakeTemplate;
     var groupJoinTemplate;
+    var quickAdd = false;
     
     /**
     * Sets the HTML value of the injectable page area to the rendered list view.
@@ -45,6 +46,13 @@ re.render = (function() {
                     })(list);
                 }
             }
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.listController.makeNewList();
+                quickAdd = false;
+            }
+            
             $("#loading-bar").css("display", "none");
         });
     }
@@ -221,6 +229,13 @@ re.render = (function() {
                     });
                 }
             }
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.reserveController.makeNewReservation();
+                quickAdd = false;
+            }
+            
             $("#loading-bar").css("display", "none");
             });
     }
@@ -284,7 +299,7 @@ re.render = (function() {
     
     /**
     * Sets the HTML value of the injectable page area to the rendered fridge view.
-    * @param {Boolean} shared The value expressing whether the "shared" view or the "mine" view will be rendered
+    * @param {Boolean} shared   The value expressing whether the "shared" view or the "mine" view will be rendered
     */
     function renderFridgeView(shared) {
         $('.page-title').html('Fridge');
@@ -379,6 +394,13 @@ re.render = (function() {
                     }
                 });
             }
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.fridgeController.makeNewFridgeItem();
+                quickAdd = false;
+            }
+            
             $("#loading-bar").css("display", "none");
         });
         
@@ -423,15 +445,21 @@ re.render = (function() {
     }
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered group joining view.
-    * This view should will be shown for users who do not have a group_id but intended on
-    * joining an already created group.
+     * Sets the HTML value of the injectable page area to the rendered group joining view.
+     * This view should will be shown for users who do not have a group_id but intended on
+     * joining an already created group.
     */
     function renderGroupJoinView() {
         $('.page').html(groupJoinTemplate());
     }
     
-
+    /**
+     * Set's the quickAdd boolean flag
+     * @param {Boolean} flag    Value to set quickAdd to
+     */
+    function setQuickAdd(flag) {
+        quickAdd = flag;
+    }
     
     /**
     * Renders the correct view for the injectable area of the viewport.
@@ -527,6 +555,8 @@ re.render = (function() {
         'renderListView': renderListView,
         'renderFridgeView': renderFridgeView,
         'renderSchedulerView': renderSchedulerView,
-        'renderAccountView': renderAccountView
+        'renderAccountView': renderAccountView,
+        'quickAdd': quickAdd,
+        'setQuickAdd': setQuickAdd
     };
 })();
