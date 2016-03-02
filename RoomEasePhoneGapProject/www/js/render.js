@@ -403,7 +403,10 @@ re.render = (function() {
                         }
                     }
                 }
-                                
+                
+                // Sort the fridge items by expiration date
+                currItems.sort(re.fridgeController.fridgeItemComparator);
+                
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));
                 
@@ -421,20 +424,20 @@ re.render = (function() {
                 }
                 
                 // Add options to datalist field of popup
-                for(var name in re.fridgeController.fridge_names) {
+                for(var name in re.fridgeController.fridgeNames) {
                     $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
                 }
                 
                 // Check to see if the user entered a item that was used previously
                 $('#names').on('focusout', function () {
                     
-                    for(var name in re.fridgeController.fridge_names) {
+                    for(var name in re.fridgeController.fridgeNames) {
                         
                         if($('#names').val().toLowerCase() == name.toLowerCase()) {
                             
                             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                             var expDate = new Date();
-                            expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridge_names[name]));
+                            expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridgeNames[name]));
                             
                             $('#expiration').val(expDate.toISOString().substr(0, 10));
                         }
