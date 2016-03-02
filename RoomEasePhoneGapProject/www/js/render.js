@@ -111,154 +111,159 @@ re.render = (function() {
             return strTime;
         }
         
-        
-        re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-            $("#loading-bar").css("display", "none");
-            if(error){
-                alert("Failed to fetch data.")
-            } else {
-            
-                re.reserveController.updateCurrentReservationItems(reservations);
+        re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), function(isSuccess, uidMap, error) {
+            if(!isSuccess){
+                console.log(error);
+               Materialize.toast("You can't delete someone else's reservation");
+            } 
+            re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
+                $("#loading-bar").css("display", "none");
+                if(error){
+                   Materialize.toast("You can't delete someone else's reservation");
+                } else {
 
-                //Convert the date-time reservations int0 a more readable format
+                    re.reserveController.updateCurrentReservationItems(reservations);
 
-                reservations = re.reserveController.getFilteredReservations(reservations);
-                var date_time_reservations = [];
-                for(var i = 0; i < reservations.length; i++){
-                    var reservationObj = {};
-                    var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
-                    var startDateObj = dateTuple.start;
-                    var endDateObj = dateTuple.end;
+                    //Convert the date-time reservations int0 a more readable format
+
+                    reservations = re.reserveController.getFilteredReservations(reservations);
+                    var date_time_reservations = [];
+                    for(var i = 0; i < reservations.length; i++){
+                        var reservationObj = {};
+                        var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
+                        var startDateObj = dateTuple.start;
+                        var endDateObj = dateTuple.end;
 
 
-                  var appendZero = function(number){
-                        if(number < 10) {
-                            return "0" + number;
-                        } else {
-                            return "" + number;
+                      var appendZero = function(number){
+                            if(number < 10) {
+                                return "0" + number;
+                            } else {
+                                return "" + number;
+                            }
+                        } 
+
+                        //We only add the date to the timeline if we know that it gots over two seperate days
+                        //Example: If a reservation starts at 11PM and end at 1AM
+                        var startDateStr = "";
+                        var endDateStr = "";
+
+                        if(startDateObj.getDate() != endDateObj.getDate() ||
+                            startDateObj.getMonth() != endDateObj.getMonth() ||
+                            startDateObj.getYear() != endDateObj.getYear()) {
+
+                            startDateStr += " (" + (startDateObj.getMonth() + 1) + "/" + startDateObj.getDate() + ")";
+                            endDateStr += " (" + (endDateObj.getMonth() + 1) + "/" + endDateObj.getDate() + ") ";
+
                         }
-                    } 
 
-                    //We only add the date to the timeline if we know that it gots over two seperate days
-                    //Example: If a reservation starts at 11PM and end at 1AM
-                    var startDateStr = "";
-                    var endDateStr = "";
+                        var timeString = "" 
+                                        + formatAMPM(startDateObj)
+                                        + startDateStr 
+                                        + " -- " 
+                                        + formatAMPM(endDateObj)
+                                        + endDateStr; 
 
-                    if(startDateObj.getDate() != endDateObj.getDate() ||
-                        startDateObj.getMonth() != endDateObj.getMonth() ||
-                        startDateObj.getYear() != endDateObj.getYear()) {
+                        var currentDate = new Date();
 
-                        startDateStr += " (" + (startDateObj.getMonth() + 1) + "/" + startDateObj.getDate() + ")";
-                        endDateStr += " (" + (endDateObj.getMonth() + 1) + "/" + endDateObj.getDate() + ") ";
 
+                        if(currentDate.getTime() > startDateObj.getTime() && currentDate.getTime() < endDateObj){
+                            //Event currently happening
+                            reservationObj["color_class"] = "reservation_happening_color"; 
+                        } else if(currentDate.getTime() > endDateObj.getTime()) {
+                            reservationObj["color_class"] = "reservation_happened_color"; 
+                        } else {
+                            reservationObj["color_class"] = "reservation_not_happened_color"; 
+                        }
+
+                        reservationObj["time"] = timeString;
+                        reservationObj["title"] = reservations[i].name_of_item;
+                        reservationObj["_id"] = reservations[i]._id;
+                        reservationObj['start_obj'] = startDateObj;
+                        reservationObj['end_obj'] = endDateObj;
+                        reservationObj['user'] = uidMap[reservations[i].uid];                
+                        reservationObj["unix_start"] = startDateObj.getTime();
+                        reservationObj["unix_end"] = endDateObj.getTime();
+                        reservationObj["type"] = "reservation";
+
+                        //Make sure that the reservation hasn't already passed
+                        //TODO: Update this so that the reservation is automatically deleted
+                        if((new Date()).getTime() < endDateObj){
+                            date_time_reservations.push(reservationObj);              
+                        } else {
+                            //TODO: Delete that reservation from the DB
+                            date_time_reservations.push(reservationObj);              
+                        }
                     }
 
-                    var timeString = "" 
-                                    + formatAMPM(startDateObj)
-                                    + startDateStr 
-                                    + " -- " 
-                                    + formatAMPM(endDateObj)
-                                    + endDateStr; 
+                    date_time_reservations.sort(function(a, b){
+                       return a.unix_start - b.unix_start; 
+                    });
 
-                    var currentDate = new Date();
+                    //Inject the headers that go above each reservation
+                    var existing_header_labels = [];
+                    for(var i = 0; i < date_time_reservations.length; i++) {
+                        var time_header_obj = {};
+                        time_header_obj['type'] = 'time';
 
+                        var now_obj = new Date();
+                        if(date_time_reservations[i]["start_obj"].getTime() < now_obj.getTime()
+                                 && date_time_reservations[i]["end_obj"].getTime() > now_obj.getTime()){
+                            time_header_obj['label'] = "Currently Active";
+                        } else if(date_time_reservations[i]["end_obj"].getTime() < now_obj.getTime()) {
+                            time_header_obj['label'] = "Already Complete";
+                        } else if (date_time_reservations[i]['start_obj'].getTime() > now_obj.getTime()) {
+                            time_header_obj['label'] = date_time_reservations[i]['start_obj'].getMonthName() + " \ " 
+                                                        + date_time_reservations[i]['start_obj'].getDate();
 
-                    if(currentDate.getTime() > startDateObj.getTime() && currentDate.getTime() < endDateObj){
-                        //Event currently happening
-                        reservationObj["color_class"] = "reservation_happening_color"; 
-                    } else if(currentDate.getTime() > endDateObj.getTime()) {
-                        reservationObj["color_class"] = "reservation_happened_color"; 
-                    } else {
-                        reservationObj["color_class"] = "reservation_not_happened_color"; 
+                            //Append year if not this year
+                            if(date_time_reservations[i]['end_obj'].getYear() > now_obj.getYear()) {
+                                 time_header_obj['label'] += ", " + date_time_reservations[i]['end_obj'].getFullYear();
+                            }
+                        }
+
+                        if (existing_header_labels.indexOf(time_header_obj.label) == -1){
+                            date_time_reservations.splice(i, 0, time_header_obj);
+                            existing_header_labels.push(time_header_obj.label);
+                            i++;
+                        }
                     }
 
-                    reservationObj["time"] = timeString;
-                    reservationObj["title"] = reservations[i].name_of_item;
-                    reservationObj["_id"] = reservations[i]._id;
-                    reservationObj['start_obj'] = startDateObj;
-                    reservationObj['end_obj'] = endDateObj;
-                    reservationObj['user'] = re.requestHandler.getLocalUserIdsToNames()[reservations[i].uid];                
-                    reservationObj["unix_start"] = startDateObj.getTime();
-                    reservationObj["unix_end"] = endDateObj.getTime();
-                    reservationObj["type"] = "reservation";
+                    //TODO: Make it so we use reservation_dictionary to aggregate all of the 
+                     //Reservations based off of what they are
+                    $('.page').html(scheduleTemplate(date_time_reservations));
+                   re.reserveController.refreshFilterReservations();
 
-                    //Make sure that the reservation hasn't already passed
-                    //TODO: Update this so that the reservation is automatically deleted
-                    if((new Date()).getTime() < endDateObj){
-                        date_time_reservations.push(reservationObj);              
-                    } else {
-                        //TODO: Delete that reservation from the DB
-                        date_time_reservations.push(reservationObj);              
+                    //Add listener for longclick
+                    for (var i in reservations) {
+                        (function(reservation){
+                            $('#' + reservation._id).longpress(function () {
+                               if(reservation.uid == window.localStorage.getItem("user_id")) {
+                                   re.reserveController.editReservationItem(reservation._id);
+                               } else {
+                                   Materialize.toast("You can't delete someone else's reservation");
+                               }
+                            });
+                        })(reservations[i]);
                     }
                 }
-
-                date_time_reservations.sort(function(a, b){
-                   return a.unix_start - b.unix_start; 
+                 $('#reservation-tiles').xpull({
+                    'paused': false,  // Is the pulling paused ?
+                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                    'callback':function(){
+                        re.render.route();
+                    }
                 });
 
-                //Inject the headers that go above each reservation
-                var existing_header_labels = [];
-                for(var i = 0; i < date_time_reservations.length; i++) {
-                    var time_header_obj = {};
-                    time_header_obj['type'] = 'time';
-
-                    var now_obj = new Date();
-                    if(date_time_reservations[i]["start_obj"].getTime() < now_obj.getTime()
-                             && date_time_reservations[i]["end_obj"].getTime() > now_obj.getTime()){
-                        time_header_obj['label'] = "Currently Active";
-                    } else if(date_time_reservations[i]["end_obj"].getTime() < now_obj.getTime()) {
-                        time_header_obj['label'] = "Already Complete";
-                    } else if (date_time_reservations[i]['start_obj'].getTime() > now_obj.getTime()) {
-                        time_header_obj['label'] = date_time_reservations[i]['start_obj'].getMonthName() + " \ " 
-                                                    + date_time_reservations[i]['start_obj'].getDate();
-
-                        //Append year if not this year
-                        if(date_time_reservations[i]['end_obj'].getYear() > now_obj.getYear()) {
-                             time_header_obj['label'] += ", " + date_time_reservations[i]['end_obj'].getFullYear();
-                        }
-                    }
-
-                    if (existing_header_labels.indexOf(time_header_obj.label) == -1){
-                        date_time_reservations.splice(i, 0, time_header_obj);
-                        existing_header_labels.push(time_header_obj.label);
-                        i++;
-                    }
+                // Show add item popup if being rendered from quickAdd shortcut
+                if(quickAdd) {
+                    re.reserveController.makeNewReservation();
+                    quickAdd = false;
                 }
 
-                //TODO: Make it so we use reservation_dictionary to aggregate all of the 
-                 //Reservations based off of what they are
-                $('.page').html(scheduleTemplate(date_time_reservations));
-               re.reserveController.refreshFilterReservations();
-
-                //Add listener for longclick
-                for (var i in reservations) {
-                    (function(reservation){
-                        $('#' + reservation._id).longpress(function () {
-                           if(reservation.uid == window.localStorage.getItem("user_name")) {
-                               re.reserveController.editReservationItem(reservation._id);
-                           } else {
-                               Materialize.toast("You can't delete someone else's reservation");
-                           }
-                        });
-                    })(reservations[i]);
-                }
-            }
-             $('#reservation-tiles').xpull({
-                'paused': false,  // Is the pulling paused ?
-                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-                'callback':function(){
-                    re.render.route();
-                }
+                $("#loading-bar").css("display", "none");
             });
-            
-            // Show add item popup if being rendered from quickAdd shortcut
-            if(quickAdd) {
-                re.reserveController.makeNewReservation();
-                quickAdd = false;
-            }
-            
-            $("#loading-bar").css("display", "none");
-            });
+        });
     }
     
     /**
@@ -330,6 +335,7 @@ re.render = (function() {
                 for(var i in allItems) {
                     var reservation = allItems[i];
                     $('#' + reservation._id).on('click', function() {
+                        re.reserveController.modifyCurrentFilterValue(reservation.name_of_item);
                         window.location.hash = "#reservations";
                     });
                 }
@@ -356,106 +362,108 @@ re.render = (function() {
             console.log(isSuccess);
             if(isSuccess) {
 				user_ids_to_names = map;
+                
+                re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
+                    $("#loading-bar").css("display", "none");
+                    if(allItems == null) {
+                        console.log(error);
+                    } else {
+                        var currItems = [];
+                        // Determine which items will be displayed based on hash
+                        for(var i = 0; i < allItems.length; i++) {
+                            var item = allItems[i];
+                            var ownerId = item.owner;
+                            item.owner = user_ids_to_names[item.owner];
+                            var expDate = new Date(item.expiration_date);
+                            var currDate = new Date();
+
+                            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                            var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
+
+                            /* Because of the ceiling the diffdays will almost never be 0 to
+                             * account for this we set the expiration to 0 if diffdays is -1.
+                             * This is in order to show the user that an item is expiring today.
+                             * All other items that have expired are set to -1 simply to show the
+                             * user that their food has expired.
+                             */
+                            if(diffDays == -1) {
+                                item.expiration_date = 0;
+                            } else if (diffDays < -1) {
+                                item.expiration_date = -1;
+                            } else {
+                                item.expiration_date = diffDays;
+                            }
+
+                            if(shared) {                        
+                                if(item.sharable == "yes") {
+                                    currItems.push(item);
+                                }
+                            } else {
+                                if(ownerId == window.localStorage.getItem("user_id")) {
+                                    currItems.push(item);
+                                }
+                            }
+                        }
+
+                        // Sort the fridge items by expiration date
+                        currItems.sort(re.fridgeController.fridgeItemComparator);
+
+                        // Compile page and inject into .page in main html view
+                        $('.page').html(fridgeTemplate(currItems));
+
+                        // Add longpress listener to fridge items to ask if the user wants to delete them
+                        // or potentially inform them they don't own the item
+                        for(var i = 0; i < currItems.length; i++) {
+                            var item = currItems[i];
+                            $('#' + item._id).longpress(function () {
+                                if(item.owner == window.localStorage.getItem("user_name")) {
+                                    re.fridgeController.removeItem(item._id, item.item);
+                                } else {
+                                    Materialize.toast("You can't delete an item you don't own", 2000);
+                                }
+                            });
+                        }
+
+                        // Add options to datalist field of popup
+                        for(var name in re.fridgeController.fridgeNames) {
+                            $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
+                        }
+
+                        // Check to see if the user entered a item that was used previously
+                        $('#names').on('focusout', function () {
+
+                            for(var name in re.fridgeController.fridgeNames) {
+
+                                if($('#names').val().toLowerCase() == name.toLowerCase()) {
+
+                                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                                    var expDate = new Date();
+                                    expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridgeNames[name]));
+
+                                    $('#expiration').val(expDate.toISOString().substr(0, 10));
+                                }
+                            }
+                        });
+                         $('#fridge-tiles').xpull({
+                            'paused': false,  // Is the pulling paused ?
+                            'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                            'callback':function(){
+                                re.render.route();
+                            }
+                        });
+                    }
+
+                    // Show add item popup if being rendered from quickAdd shortcut
+                    if(quickAdd) {
+                        re.fridgeController.makeNewFridgeItem();
+                        quickAdd = false;
+                    }
+
+                    $("#loading-bar").css("display", "none");
+                });
             } else {
                 console.log(error);
             }
-        });
-
-
-        re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
-            $("#loading-bar").css("display", "none");
-            if(allItems == null) {
-                console.log(error);
-            } else {                
-                var currItems = [];
-                // Determine which items will be displayed based on hash
-                for(var i = 0; i < allItems.length; i++) {
-                    var item = allItems[i];
-                    item.owner = user_ids_to_names[item.owner];
-                    var expDate = new Date(item.expiration_date);
-                    var currDate = new Date();
-                    
-                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                    var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
-                    
-                    /* Because of the ceiling the diffdays will almost never be 0 to
-                     * account for this we set the expiration to 0 if diffdays is -1.
-                     * This is in order to show the user that an item is expiring today.
-                     * All other items that have expired are set to -1 simply to show the
-                     * user that their food has expired.
-                     */
-                    if(diffDays == -1) {
-                        item.expiration_date = 0;
-                    } else if (diffDays < -1) {
-                        item.expiration_date = -1;
-                    } else {
-                        item.expiration_date = diffDays;
-                    }
-                    
-                    if(shared) {                        
-                        if(item.sharable == "yes") {
-                            currItems.push(item);
-                        }
-                    } else {
-                        if(item.owner == window.localStorage.getItem("user_name")) {
-                            currItems.push(item);
-                        }
-                    }
-                }
-                
-                
-                // Compile page and inject into .page in main html view
-                $('.page').html(fridgeTemplate(currItems));
-                
-                // Add longpress listener to fridge items to ask if the user wants to delete them
-                // or potentially inform them they don't own the item
-                for(var i = 0; i < currItems.length; i++) {
-                    var item = currItems[i];
-                    $('#' + item._id).longpress(function () {
-                        if(item.owner == window.localStorage.getItem("user_name")) {
-                            re.fridgeController.removeItem(item._id, item.item);
-                        } else {
-                            Materialize.toast("You can't delete an item you don't own", 2000);
-                        }
-                    });
-                }
-                
-                // Add options to datalist field of popup
-                for(var name in re.fridgeController.fridge_names) {
-                    $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
-                }
-                
-                // Check to see if the user entered a item that was used previously
-                $('#names').on('focusout', function () {
-                    
-                    for(var name in re.fridgeController.fridge_names) {
-                        
-                        if($('#names').val().toLowerCase() == name.toLowerCase()) {
-                            
-                            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                            var expDate = new Date();
-                            expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridge_names[name]));
-                            
-                            $('#expiration').val(expDate.toISOString().substr(0, 10));
-                        }
-                    }
-                });
-                 $('#fridge-tiles').xpull({
-                    'paused': false,  // Is the pulling paused ?
-                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-                    'callback':function(){
-                        re.render.route();
-                    }
-                });
-            }
-            
-            // Show add item popup if being rendered from quickAdd shortcut
-            if(quickAdd) {
-                re.fridgeController.makeNewFridgeItem();
-                quickAdd = false;
-            }
-            
-            $("#loading-bar").css("display", "none");
         });
         
         // Initialize tabs
@@ -550,7 +558,7 @@ re.render = (function() {
         } else if (hash == "#fridge-mine") {
             renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {
-            renderFridgeView(true);
+            renderFridgeView(true, true);
         } else if (hash == "#reservations") {
             renderSchedulerView();
         } else if(hash == "#account"){
