@@ -51,17 +51,18 @@
 ul {
     margin:0 0 0 1.25em;
     padding:0;
+    font-family: Zag;
 }
 
 li {
     margin:0;
     padding:0;
     line-height: 1.25em;
+    font-family: Zag;
 }
 
 h1, h2, h3, h4, h5, h6, header {
     color: #f8bbd0;
-    
     font-family: Zag;
 }
 
