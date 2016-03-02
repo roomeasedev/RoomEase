@@ -156,6 +156,7 @@ re.newController = (function() {
         'rhDelCallback': rhDelCallback,
         'rhUpdateCallback': rhUpdateCallback,
         'goToMakeView': goToMakeView,
-        'goToJoinView': goToJoinView
+        'goToJoinView': goToJoinView,
+        'displayError': displayError
 	}
 })();

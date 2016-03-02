@@ -362,109 +362,108 @@ re.render = (function() {
             console.log(isSuccess);
             if(isSuccess) {
 				user_ids_to_names = map;
-            } else {
-                console.log(error);
-            }
-        });
-
-
-        re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
-            $("#loading-bar").css("display", "none");
-            if(allItems == null) {
-                console.log(error);
-            } else {
-                var currItems = [];
-                // Determine which items will be displayed based on hash
-                for(var i = 0; i < allItems.length; i++) {
-                    var item = allItems[i];
-                    var ownerId = item.owner;
-                    item.owner = user_ids_to_names[item.owner];
-                    var expDate = new Date(item.expiration_date);
-                    var currDate = new Date();
-                    
-                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                    var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
-                    
-                    /* Because of the ceiling the diffdays will almost never be 0 to
-                     * account for this we set the expiration to 0 if diffdays is -1.
-                     * This is in order to show the user that an item is expiring today.
-                     * All other items that have expired are set to -1 simply to show the
-                     * user that their food has expired.
-                     */
-                    if(diffDays == -1) {
-                        item.expiration_date = 0;
-                    } else if (diffDays < -1) {
-                        item.expiration_date = -1;
+                
+                re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
+                    $("#loading-bar").css("display", "none");
+                    if(allItems == null) {
+                        console.log(error);
                     } else {
-                        item.expiration_date = diffDays;
-                    }
-                    
-                    if(shared) {                        
-                        if(item.sharable == "yes") {
-                            currItems.push(item);
-                        }
-                    } else {
-                        if(ownerId == window.localStorage.getItem("user_id")) {
-                            currItems.push(item);
-                        }
-                    }
-                }
-                
-                // Sort the fridge items by expiration date
-                currItems.sort(re.fridgeController.fridgeItemComparator);
-                
-                // Compile page and inject into .page in main html view
-                $('.page').html(fridgeTemplate(currItems));
-                
-                // Add longpress listener to fridge items to ask if the user wants to delete them
-                // or potentially inform them they don't own the item
-                for(var i = 0; i < currItems.length; i++) {
-                    var item = currItems[i];
-                    $('#' + item._id).longpress(function () {
-                        if(item.owner == window.localStorage.getItem("user_name")) {
-                            re.fridgeController.removeItem(item._id, item.item);
-                        } else {
-                            Materialize.toast("You can't delete an item you don't own", 2000);
-                        }
-                    });
-                }
-                
-                // Add options to datalist field of popup
-                for(var name in re.fridgeController.fridgeNames) {
-                    $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
-                }
-                
-                // Check to see if the user entered a item that was used previously
-                $('#names').on('focusout', function () {
-                    
-                    for(var name in re.fridgeController.fridgeNames) {
-                        
-                        if($('#names').val().toLowerCase() == name.toLowerCase()) {
-                            
+                        var currItems = [];
+                        // Determine which items will be displayed based on hash
+                        for(var i = 0; i < allItems.length; i++) {
+                            var item = allItems[i];
+                            var ownerId = item.owner;
+                            item.owner = user_ids_to_names[item.owner];
+                            var expDate = new Date(item.expiration_date);
+                            var currDate = new Date();
+
                             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                            var expDate = new Date();
-                            expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridgeNames[name]));
-                            
-                            $('#expiration').val(expDate.toISOString().substr(0, 10));
+                            var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
+
+                            /* Because of the ceiling the diffdays will almost never be 0 to
+                             * account for this we set the expiration to 0 if diffdays is -1.
+                             * This is in order to show the user that an item is expiring today.
+                             * All other items that have expired are set to -1 simply to show the
+                             * user that their food has expired.
+                             */
+                            if(diffDays == -1) {
+                                item.expiration_date = 0;
+                            } else if (diffDays < -1) {
+                                item.expiration_date = -1;
+                            } else {
+                                item.expiration_date = diffDays;
+                            }
+
+                            if(shared) {                        
+                                if(item.sharable == "yes") {
+                                    currItems.push(item);
+                                }
+                            } else {
+                                if(ownerId == window.localStorage.getItem("user_id")) {
+                                    currItems.push(item);
+                                }
+                            }
                         }
+
+                        // Sort the fridge items by expiration date
+                        currItems.sort(re.fridgeController.fridgeItemComparator);
+
+                        // Compile page and inject into .page in main html view
+                        $('.page').html(fridgeTemplate(currItems));
+
+                        // Add longpress listener to fridge items to ask if the user wants to delete them
+                        // or potentially inform them they don't own the item
+                        for(var i = 0; i < currItems.length; i++) {
+                            var item = currItems[i];
+                            $('#' + item._id).longpress(function () {
+                                if(item.owner == window.localStorage.getItem("user_name")) {
+                                    re.fridgeController.removeItem(item._id, item.item);
+                                } else {
+                                    Materialize.toast("You can't delete an item you don't own", 2000);
+                                }
+                            });
+                        }
+
+                        // Add options to datalist field of popup
+                        for(var name in re.fridgeController.fridgeNames) {
+                            $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
+                        }
+
+                        // Check to see if the user entered a item that was used previously
+                        $('#names').on('focusout', function () {
+
+                            for(var name in re.fridgeController.fridgeNames) {
+
+                                if($('#names').val().toLowerCase() == name.toLowerCase()) {
+
+                                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                                    var expDate = new Date();
+                                    expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridgeNames[name]));
+
+                                    $('#expiration').val(expDate.toISOString().substr(0, 10));
+                                }
+                            }
+                        });
+                         $('#fridge-tiles').xpull({
+                            'paused': false,  // Is the pulling paused ?
+                            'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                            'callback':function(){
+                                re.render.route();
+                            }
+                        });
                     }
-                });
-                 $('#fridge-tiles').xpull({
-                    'paused': false,  // Is the pulling paused ?
-                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
-                    'callback':function(){
-                        re.render.route();
+
+                    // Show add item popup if being rendered from quickAdd shortcut
+                    if(quickAdd) {
+                        re.fridgeController.makeNewFridgeItem();
+                        quickAdd = false;
                     }
+
+                    $("#loading-bar").css("display", "none");
                 });
+            } else {
+                console.log(error);
             }
-            
-            // Show add item popup if being rendered from quickAdd shortcut
-            if(quickAdd) {
-                re.fridgeController.makeNewFridgeItem();
-                quickAdd = false;
-            }
-            
-            $("#loading-bar").css("display", "none");
         });
         
         // Initialize tabs
