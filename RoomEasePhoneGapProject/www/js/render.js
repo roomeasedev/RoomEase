@@ -424,11 +424,15 @@ re.render = (function() {
                                     Materialize.toast("You can't delete an item you don't own", 2000);
                                 }
                             });
-                        }
+                       }
 
                         // Add options to datalist field of popup
                         for(var name in re.fridgeController.fridgeNames) {
-                            $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
+                            var currName = name.substr(0, 1).toUpperCase() + name.substr(1);
+                            console.log(currName);
+                            // attempted workaround for iOS autofill
+                            // TODO: look into JQueryUI as a fallback instead of this
+                            $('#names-datalist-inner').append('<option value=' + currName + '>' + currName);
                         }
 
                         // Check to see if the user entered a item that was used previously
@@ -537,7 +541,7 @@ re.render = (function() {
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
         console.log("routing: " + hash);
-
+        $('.page-title').html("");
         if (!u_id) {
             renderFacebookLoginView();
         } else if ((!g_id) && hash == "#gl") {
