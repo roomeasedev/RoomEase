@@ -11,6 +11,26 @@
     position: fixed;
 }
 
+#slide-out {
+    padding-top: 10px;
+}
+
+.nav-wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#navbar {
+    height: 66px;
+}
+.navbar-fixed {
+    margin-bottom: 10px;
+    height: 66px;
+}
+
+.page-title {
+    margin-bottom: 10px;
+}
+
 #feed-container {
     position: fixed;
     overflow: scroll;
@@ -242,12 +262,13 @@ input[type="text"] {
 }
 
 #facebook-login {
-  background-color: #26A69A;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  left: 0px;
+    background-color: #26A69A;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    padding-top: 20px;
 }
 
 .reservation-form-field {
@@ -349,6 +370,7 @@ input[type="text"] {
     height: 100%;
     width: 100%;
     top: 0px;
+    padding-top: 10px;
     left: 0px;
     color: #666666;
     font-family: 'RobotoDraft', 'Roboto', sans-serif;
@@ -741,7 +763,8 @@ input[type="text"] {
 
 #fridge-tabs {
     position: fixed;
-    
+    margin-top: -20px;
+    z-index: 40;
 }
 
 /* Keyframes */
