@@ -424,6 +424,7 @@ re.render = (function() {
                                     Materialize.toast("You can't delete an item you don't own", 2000);
                                 }
                             });
+
                         }
                         
                         for(var name in re.fridgeController.fridgeNames) {
@@ -432,7 +433,7 @@ re.render = (function() {
                         
                         var nativedatalist = !!('list' in document.createElement('input')) && 
                         !!(document.createElement('datalist') && window.HTMLDataListElement);
-
+                        
                         /* If support for datalist element doesn't exist (iOS, older devices)
                         then a jquery ui element w/polyfill is used to make a predective dropdown
                         list*/
@@ -442,6 +443,7 @@ re.render = (function() {
                             }).get();
                             $('#names').autocomplete({ source: availableTags });
                         }
+
 
                         // Check to see if the user entered a item that was used previously
                         $('#names').on('focusout', function () {
@@ -549,7 +551,7 @@ re.render = (function() {
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
         console.log("routing: " + hash);
-
+        $('.page-title').html("");
         if (!u_id) {
             renderFacebookLoginView();
         } else if ((!g_id) && hash == "#gl") {

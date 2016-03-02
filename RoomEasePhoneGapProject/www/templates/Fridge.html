@@ -34,10 +34,6 @@
 <div class="row"></div>
 <div class="row"></div>
 <div id="fridge-tiles">
-{{#ifCond this.length '==' 0}}
-    <h4 class="center-align" style="margin: .5em">There are no fridge items here</h4>
-{{/ifCond}}
-
 {{#each this}}
     {{#ifCond this.expiration_date '==' -1}}
         <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
@@ -69,7 +65,7 @@
     <a class="btn-floating btn-large waves-effect waves-light pink"><i class="material-icons">add</i></a>
 </div>
 
-<!-- Small popup menu to add new list, hidden by default -->
+<!-- Popup menu to add new Fridge items, hidden by default -->
 <div class="popupBackground main">
     <div class="popup" style="height: auto; overflow: hidden; top: 15%;">
         
@@ -79,7 +75,6 @@
         <div id="namediv" style="padding-top: 1em">
             <h5 class="white-text" style="float: left; margin: 0">Name</h5>
             <div id="fridge-item">
-                <!--<input type="text" placeholder="" id="name"><br>-->
                 <input class="white-text" list="names-datalist" name="name" id="names">
                 <datalist id="names-datalist">
                     <select id="names-select" style="display: none">
