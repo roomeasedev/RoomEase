@@ -52,7 +52,7 @@ re.fridgeController = (function() {
         $('#expiration').html('');
 
         var newItem = createFridgeItem(itemName, expiration, shared);
-        re.requestHandler.addItem(newItem, re.newController.rhAddCallback);
+        re.requestHandler.addItem(newItem, fridgeAddCallBack);
         
         var expDate = new Date(expiration);        
         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
@@ -65,6 +65,18 @@ re.fridgeController = (function() {
         var tmp = JSON.parse(window.localStorage.getItem("fridgeNames"));
         
         return true;
+    }
+    
+    /** 
+     * Callback function for adding a fridge item to the database
+     * @param {Boolean} is_success      True if the callback was successful, false otherwise
+     * @param {Object} revised_item     The revised item returned by the database. Null if failed.
+     * @param {String} error            Describes error if error occured
+     */
+    function fridgeAddCallBack(isSuccess, revisedItem, error) {
+        if(!isSuccess) {
+            re.newController.displayError(error);
+        }
     }
     
     /**

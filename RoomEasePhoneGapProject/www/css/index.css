@@ -59,9 +59,9 @@ li {
     line-height: 1.25em;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, header {
     color: #f8bbd0;
-    margin: 1rem 1rem;
+    
     font-family: Zag;
 }
 
