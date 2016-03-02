@@ -262,12 +262,13 @@ input[type="text"] {
 }
 
 #facebook-login {
-  background-color: #26A69A;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  left: 0px;
+    background-color: #26A69A;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    padding-top: 20px;
 }
 
 .reservation-form-field {
@@ -369,6 +370,7 @@ input[type="text"] {
     height: 100%;
     width: 100%;
     top: 0px;
+    padding-top: 10px;
     left: 0px;
     color: #666666;
     font-family: 'RobotoDraft', 'Roboto', sans-serif;
