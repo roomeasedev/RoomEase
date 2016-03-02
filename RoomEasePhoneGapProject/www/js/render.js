@@ -28,16 +28,18 @@ re.render = (function() {
     *     the locally stored lists of the items)
     */
     function renderListView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
         $('.page-title').html('List');
         /* Gets all lists from database and renders the list view with these
         *  lists embedded.
         */
         re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
-            $("#loading-bar").css("display", "none");
             if(allLists == null) {
+                $("#loading-icon").css("display", "none");
                 console.log(error);
             } else {
                 $('.page').html(listTemplate(allLists));
+                $("#loading-icon").css("display", "none");
                
                 //Add listener for longclick
                 for (var i in allLists) {
@@ -63,8 +65,6 @@ re.render = (function() {
                 re.listController.makeNewList();
                 quickAdd = false;
             }
-            
-            $("#loading-bar").css("display", "none");
         });
     }
 
@@ -75,6 +75,7 @@ re.render = (function() {
     *     the locally stored lists of the items)
     */
     function renderSchedulerView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
         $(".page").on("end.pulltorefresh", function (evt, y){
             if(window.location.hash == "#reservations"){
                 console.log("refresh!");
@@ -113,13 +114,14 @@ re.render = (function() {
         
         re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), function(isSuccess, uidMap, error) {
             if(!isSuccess){
+                $("#loading-icon").css("display", "none");
                 console.log(error);
-               Materialize.toast("You can't delete someone else's reservation");
+                Materialize.toast("An error has occurred1, please try again.", 2000);
             } 
             re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-                $("#loading-bar").css("display", "none");
                 if(error){
-                   Materialize.toast("You can't delete someone else's reservation");
+                    $("#loading-icon").css("display", "none");
+                    Materialize.toast("An error has occurred2, please try again.", 2000);
                 } else {
 
                     re.reserveController.updateCurrentReservationItems(reservations);
@@ -232,7 +234,8 @@ re.render = (function() {
                     //TODO: Make it so we use reservation_dictionary to aggregate all of the 
                      //Reservations based off of what they are
                     $('.page').html(scheduleTemplate(date_time_reservations));
-                   re.reserveController.refreshFilterReservations();
+                    $("#loading-icon").css("display", "none");
+                    re.reserveController.refreshFilterReservations();
 
                     //Add listener for longclick
                     for (var i in reservations) {
@@ -260,8 +263,6 @@ re.render = (function() {
                     re.reserveController.makeNewReservation();
                     quickAdd = false;
                 }
-
-                $("#loading-bar").css("display", "none");
             });
         });
     }
@@ -273,12 +274,12 @@ re.render = (function() {
     *     the locally stored lists of the items)
     */
     function renderFeedView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
         $('.page-title').html('Feed');
         
         // Store fridge and reservation items separately to add longpress listeners later
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
-            $("#loading-bar").css("display", "none");
             for (var i = 0; i < allItems.length; i++) {
                 var item = allItems[i];
 
@@ -314,6 +315,7 @@ re.render = (function() {
                 }
                 
                 $('.page').html(feedTemplate(feedItems));
+                
                 $('#feed-container').xpull({
                     'paused': false,  // Is the pulling paused ?
                     'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
@@ -339,11 +341,10 @@ re.render = (function() {
                         window.location.hash = "#reservations";
                     });
                 }
+                
+                $("#loading-icon").css("display", "none");
             });
-      
-            $("#loading-bar").css("display", "none");
         });
-        
     }
     
     /**
@@ -355,7 +356,7 @@ re.render = (function() {
     */
     function renderFridgeView(fullRefresh, shared) {
         $('.page-title').html('Fridge');
-        
+        $("#loading-icon").css("display", "block");
         var user_ids_to_names = {};
 
         re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), function(isSuccess, map, error) {
@@ -364,8 +365,8 @@ re.render = (function() {
 				user_ids_to_names = map;
                 
                 re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
-                    $("#loading-bar").css("display", "none");
                     if(allItems == null) {
+                        $("#loading-icon").css("display", "none");
                         console.log(error);
                     } else {
                         var currItems = [];
@@ -410,6 +411,7 @@ re.render = (function() {
 
                         // Compile page and inject into .page in main html view
                         $('.page').html(fridgeTemplate(currItems));
+                        $("#loading-icon").css("display", "none");
 
                         // Add longpress listener to fridge items to ask if the user wants to delete them
                         // or potentially inform them they don't own the item
@@ -458,10 +460,9 @@ re.render = (function() {
                         re.fridgeController.makeNewFridgeItem();
                         quickAdd = false;
                     }
-
-                    $("#loading-bar").css("display", "none");
                 });
             } else {
+                $("#loading-icon").css("display", "none");
                 console.log(error);
             }
         });
@@ -536,11 +537,6 @@ re.render = (function() {
         var u_id = window.localStorage.getItem('user_id');
         var g_id = window.localStorage.getItem('group_id');
         console.log("routing: " + hash);
-        
-        //These are the views where we want the loading bar on
-        if(hash == "#feed" || hash == "#list" || hash == "#fridge-mine" || hash == "#fridge-shared" || hash == "#reservations"){
-            $("#loading-bar").css("display", "block");
-        }
 
         if (!u_id) {
             renderFacebookLoginView();

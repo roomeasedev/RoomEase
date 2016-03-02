@@ -5,7 +5,7 @@
     <author email="roomease@googlegroups.com" href="http://roomeasedev.github.io">RoomEase Team</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
+    <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="false" />
