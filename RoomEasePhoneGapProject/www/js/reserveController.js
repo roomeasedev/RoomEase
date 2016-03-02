@@ -262,9 +262,17 @@ re.reserveController = (function() {
     }
     
     function addNewReservationTypeToList(type){
-        if(currentReservationTypes.indexOf(type) == -1){
-            currentReservationTypes.push(type);
+        var reservationTypeExists = false;
+        for(var i = 0; i < currentReservationTypes.length; i++){
+            if(currentReservationTypes[i].toLocaleLowerCase() === type.toLocaleLowerCase()){
+                reservationTypeExists = true;
+            }
         }
+        if(!reservationTypeExists) {
+            currentReservationTypes.push(type);
+            modifyCurrentFilterValue(type);
+        }
+        return !reservationTypeExists;
     }
     
     function addNewReservationType(){
@@ -273,9 +281,13 @@ re.reserveController = (function() {
         $("#add-new-reservation-type-btn").click(function(){
             var newType = $("#add-new-resevation-type-text").val().trim();
             if(newType != ''){
-                addNewReservationTypeToList(newType);
-                hidePopup('#background3');
-                makeNewReservation();
+                var newTypeAdded = addNewReservationTypeToList(newType);
+                    if(newTypeAdded){
+                        hidePopup('#background3');
+                        makeNewReservation();
+                    } else {
+                        Materialize.toast("Similar reservation type already exists.", 2000); 
+                    }
             } else {
                 $("#add-new-reservation-error-text").css("display", "block");
                 $("#add-new-reservation-error-text").html("Error: You did not enter a type.");
@@ -289,8 +301,10 @@ re.reserveController = (function() {
     }
     
     function getAllReservationTypes(){
+        
         for(var i = 0; i < currentReservationitems.length; i++){
-           var resName = currentReservationitems[i].name_of_item; if(currentReservationTypes.indexOf(resName) == -1){
+           var resName = currentReservationitems[i].name_of_item; 
+           if(currentReservationTypes.indexOf(resName) == -1){
                 currentReservationTypes.push(resName);
             }
         }
@@ -301,7 +315,7 @@ re.reserveController = (function() {
             currentReservationTypes.splice(indexOfFilterVal, 1);
             currentReservationTypes.unshift(filterValue);
         }
-        
+                
         return currentReservationTypes;
     }
     
