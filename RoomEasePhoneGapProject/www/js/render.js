@@ -425,10 +425,22 @@ re.render = (function() {
                                 }
                             });
                         }
-
-                        // Add options to datalist field of popup
+                        
                         for(var name in re.fridgeController.fridgeNames) {
-                            $('#names-datalist').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
+                            $('#names-select').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>');
+                        }
+                        
+                        var nativedatalist = !!('list' in document.createElement('input')) && 
+                        !!(document.createElement('datalist') && window.HTMLDataListElement);
+
+                        /* If support for datalist element doesn't exist (iOS, older devices)
+                        then a jquery ui element w/polyfill is used to make a predective dropdown
+                        list*/
+                        if (!nativedatalist) {
+                            var availableTags = $('names-datalist').find('option').map(function () {
+                                return this.value;
+                            }).get();
+                            $('#names').autocomplete({ source: availableTags });
                         }
 
                         // Check to see if the user entered a item that was used previously
