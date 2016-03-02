@@ -28,13 +28,14 @@ re.render = (function() {
     *     the locally stored lists of the items)
     */
     function renderListView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
         $('.page-title').html('List');
         /* Gets all lists from database and renders the list view with these
         *  lists embedded.
         */
         re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
-            $("#loading-bar").css("display", "none");
             if(allLists == null) {
+                $("#loading-icon").css("display", "none");
                 console.log(error);
             } else {
                 $('.page').html(listTemplate(allLists));
@@ -64,7 +65,7 @@ re.render = (function() {
                 quickAdd = false;
             }
             
-            $("#loading-bar").css("display", "none");
+            $("#loading-icon").css("display", "none");
         });
     }
 
@@ -75,6 +76,7 @@ re.render = (function() {
     *     the locally stored lists of the items)
     */
     function renderSchedulerView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
         $(".page").on("end.pulltorefresh", function (evt, y){
             if(window.location.hash == "#reservations"){
                 console.log("refresh!");
@@ -113,9 +115,9 @@ re.render = (function() {
         
         
         re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-            $("#loading-bar").css("display", "none");
             if(error){
-                alert("Failed to fetch data.")
+                console.log("Failed to fetch data.");
+                $("#loading-icon").css("display", "none");
             } else {
             
                 re.reserveController.updateCurrentReservationItems(reservations);
@@ -237,7 +239,7 @@ re.render = (function() {
                            if(reservation.uid == window.localStorage.getItem("user_name")) {
                                re.reserveController.editReservationItem(reservation._id);
                            } else {
-                               Materialize.toast("You can't delete someone else's reservation");
+                               Materialize.toast("Can't delete someone else's reservation", 2000);
                            }
                         });
                     })(reservations[i]);
@@ -257,8 +259,8 @@ re.render = (function() {
                 quickAdd = false;
             }
             
-            $("#loading-bar").css("display", "none");
-            });
+            $("#loading-icon").css("display", "none");
+        });
     }
     
     /**
@@ -268,12 +270,12 @@ re.render = (function() {
     *     the locally stored lists of the items)
     */
     function renderFeedView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
         $('.page-title').html('Feed');
         
         // Store fridge and reservation items separately to add longpress listeners later
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
-            $("#loading-bar").css("display", "none");
             for (var i = 0; i < allItems.length; i++) {
                 var item = allItems[i];
 
@@ -333,11 +335,10 @@ re.render = (function() {
                         window.location.hash = "#reservations";
                     });
                 }
+                
+                $("#loading-icon").css("display", "none");
             });
-      
-            $("#loading-bar").css("display", "none");
-        });
-        
+        });    
     }
     
     /**
@@ -349,6 +350,7 @@ re.render = (function() {
     */
     function renderFridgeView(fullRefresh, shared) {
         $('.page-title').html('Fridge');
+        $("#loading-icon").css("display", "block");
         
         var user_ids_to_names = {};
 
@@ -361,11 +363,10 @@ re.render = (function() {
             }
         });
 
-
         re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
-            $("#loading-bar").css("display", "none");
             if(allItems == null) {
                 console.log(error);
+                $("#loading-icon").css("display", "none");
             } else {                
                 var currItems = [];
                 // Determine which items will be displayed based on hash
@@ -406,6 +407,7 @@ re.render = (function() {
                 
                 // Compile page and inject into .page in main html view
                 $('.page').html(fridgeTemplate(currItems));
+                $("#loading-icon").css("display", "none");
                 
                 // Add longpress listener to fridge items to ask if the user wants to delete them
                 // or potentially inform them they don't own the item
@@ -454,8 +456,6 @@ re.render = (function() {
                 re.fridgeController.makeNewFridgeItem();
                 quickAdd = false;
             }
-            
-            $("#loading-bar").css("display", "none");
         });
         
         // Initialize tabs
@@ -529,11 +529,6 @@ re.render = (function() {
         var g_id = window.localStorage.getItem('group_id');
         console.log("routing: " + hash);
         
-        //These are the views where we want the loading bar on
-        if(hash == "#feed" || hash == "#list" || hash == "#fridge-mine" || hash == "#fridge-shared" || hash == "#reservations"){
-            $("#loading-bar").css("display", "block");
-        }
-
         if (!u_id) {
             renderFacebookLoginView();
         } else if ((!g_id) && hash == "#gl") {
