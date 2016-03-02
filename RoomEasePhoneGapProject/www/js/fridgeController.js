@@ -48,8 +48,12 @@ re.fridgeController = (function() {
         }
         
         // Clear fields of popup
-        $('#names').html('');
-        $('#expiration').html('');
+        $('#names').val(function () {
+            return '';
+        });
+        $('#expiration').val(function () {
+            return '';
+        });
 
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, fridgeAddCallBack);
