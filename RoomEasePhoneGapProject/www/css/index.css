@@ -11,6 +11,26 @@
     position: fixed;
 }
 
+#slide-out {
+    padding-top: 10px;
+}
+
+.nav-wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#navbar {
+    height: 66px;
+}
+.navbar-fixed {
+    margin-bottom: 10px;
+    height: 66px;
+}
+
+.page-title {
+    margin-bottom: 10px;
+}
+
 #feed-container {
     position: fixed;
     overflow: scroll;
@@ -741,7 +761,8 @@ input[type="text"] {
 
 #fridge-tabs {
     position: fixed;
-    
+    margin-top: -20px;
+    z-index: 40;
 }
 
 /* Keyframes */
