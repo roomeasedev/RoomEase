@@ -139,7 +139,7 @@ re.reserveController = (function() {
                             + endDateStr; 
 
 
-                        Materialize.toast("This reservation conflicts: " + timeString, 2000);
+                        Materialize.toast("This reservation conflicts: " + timeString);
                         noConflicts = false;
                     }      
                 }
