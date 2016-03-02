@@ -90,7 +90,7 @@ re.fridgeController = (function() {
             });
             
             if(done) {
-                re.render.renderFridgeView(true, false);
+                re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
                 re.controller.hidePopup();
                 resetFridgeButtons();
                 done = false;
@@ -126,8 +126,16 @@ re.fridgeController = (function() {
         $('.popupBackground.main').css('display', 'block');
         
         $('#cancel').on('click', function() {
+            // Clear fields of popup
+            $('#names').val(function () {
+                return '';
+            });
+            $('#expiration').val(function () {
+                return '';
+            });
             re.controller.hidePopup();
             resetFridgeButtons();
+            re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
         });
         
         // Adds the fridge item to the database when the next item button is pressed
