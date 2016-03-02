@@ -7,6 +7,10 @@
 
 <!-- This section should dynamically insert all of the lists into the page-->
 <div id="list-tiles">
+{{#ifCond this.length '==' 0}}
+    <h4 class="pink-text center-align" style="margin: .5em">You currently have no lists</h4>
+{{/ifCond}}
+
 {{#each this}}
     <div class="list-item" id="{{ this._id }}" style="overflow: hidden;"><header class="white-text left-align" style="margin-bottom: .1em; font-size: 1.8em; line-height: 1.25em;">{{ this.name_of_list }}</header>
         <div class="divider teal lighten-5" id="popupDivider"></div>

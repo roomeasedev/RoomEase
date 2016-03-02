@@ -16,6 +16,10 @@
 </div>
 
 <div id="reservation-tiles">
+{{#ifCond this.length '==' 0}}
+    <h4 class="pink-text center-align" style="margin: .5em">You currently have no reservations</h4>
+{{/ifCond}}
+
 {{#each this}}
     {{#ifCond this.type '==' 'time'}}
         <div style="padding-left: 2%;">

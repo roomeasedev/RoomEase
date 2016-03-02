@@ -429,7 +429,6 @@ re.render = (function() {
                         // Add options to datalist field of popup
                         for(var name in re.fridgeController.fridgeNames) {
                             var currName = name.substr(0, 1).toUpperCase() + name.substr(1);
-                            console.log(currName);
                             // attempted workaround for iOS autofill
                             // TODO: look into JQueryUI as a fallback instead of this
                             $('#names-datalist-inner').append('<option value=' + currName + '>' + currName);

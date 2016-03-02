@@ -34,6 +34,10 @@
 <div class="row"></div>
 <div class="row"></div>
 <div id="fridge-tiles">
+{{#ifCond this.length '==' 0}}
+    <h4 class="pink-text center-align" style="margin: .5em">You currently have no fridge items</h4>
+{{/ifCond}}
+
 {{#each this}}
     {{#ifCond this.expiration_date '==' -1}}
         <div class="list-item" id="{{ this._id }}" style="background-color: #cdcdcd;">
