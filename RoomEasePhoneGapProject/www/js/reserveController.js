@@ -41,7 +41,7 @@ re.reserveController = (function() {
      *     invalid field, or time conflict)
      */
     function addReservation() {
-        filterValue = $("#new-reservation-dropdown").find(":selected").text();
+        modifyCurrentFilterValue($("#new-reservation-dropdown").find(":selected").text());
         var reserveName = filterValue;
         //Want to filter by the new type of reservation
         var start_time = $('#start-time').val().trim();
@@ -256,7 +256,7 @@ re.reserveController = (function() {
             var reserveName = dropdown.find(":selected").text();
             
             //Want to filter by the new type of reservation
-            filterValue = reserveName;
+            modifyCurrentFilterValue(reserveName);
             re.render.route();
         });
     }
@@ -331,6 +331,9 @@ re.reserveController = (function() {
         return dateTuple;
     }
     
+    function modifyCurrentFilterValue(newFilter){
+        filterValue = newFilter;
+    }
     function getFilteredReservations(reservations){
         var displayedReservations = [];
         if(filterValue == "All"){
@@ -356,6 +359,7 @@ re.reserveController = (function() {
         'currentReservationitems': currentReservationitems,
         'addNewReservationType':
         addNewReservationType,
-        'reservationToDateObjects': reservationToDateObjects
+        'reservationToDateObjects': reservationToDateObjects,
+        'modifyCurrentFilterValue': modifyCurrentFilterValue
 	}
 })();

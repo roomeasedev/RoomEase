@@ -335,6 +335,7 @@ re.render = (function() {
                 for(var i in allItems) {
                     var reservation = allItems[i];
                     $('#' + reservation._id).on('click', function() {
+                        re.reserveController.modifyCurrentFilterValue(reservation.name_of_item);
                         window.location.hash = "#reservations";
                     });
                 }
