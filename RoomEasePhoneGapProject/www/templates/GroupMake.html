@@ -21,7 +21,7 @@ After clicking on the create group, the user is given a generated group name and
      */ 
     function getGroupNameAndPassword() {
         re.loginHandler.createGroupAndDisplayInfo()
-        setTimeout(function(){ $("#continue").show(50); }, 3250);
+        setTimeout(function(){ $("#continue").show(); }, 3250);
         $("#back").hide();
         $("#create").hide();
     }
@@ -35,13 +35,15 @@ After clicking on the create group, the user is given a generated group name and
       <div class="card"></div>
       <div class="card">
         <h1 class="title" style="font-size: 1.75em">Create</h1>
-          <div class="button-container">
-            <button id="create" onclick="getGroupNameAndPassword()"><span>Create a group!</span></button>
+        <div class="button-container">
+            <a id="create" onclick="getGroupNameAndPassword()" class="waves-effect waves-light btn">Create!</a>
+                <br />
+                <br />
               <h5 style="font-size: 1.5em">Your Group Name:</h5>
               <h5 id="groupName"></h5>
               <h5 style="font-size: 1.5em">Your Group Password:</h5>
               <h5 id="groupPwd"></h5>
-            <button id="continue" onclick="goToFeedView()"><span>Continue</span></button>
+            <a id="continue" onclick="goToFeedView()" class="waves-effect waves-light btn" style="white-space: normal">Continue</a>
             <br />
             <a href="#gl" id="back" class="waves-effect waves-light btn">Back</a>
         </div>
