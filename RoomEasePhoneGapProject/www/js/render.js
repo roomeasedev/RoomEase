@@ -309,7 +309,7 @@ re.render = (function() {
                     reserveTime.setHours(item.start_time.substr(0, 2));
                     reserveTime.setMinutes(item.start_time.substr(3));
                     
-                    if(reserveTime.getTime() - currDate.getTime() < oneDay) {
+                    if(reserveTime.getTime() - currDate.getTime() < oneDay && item.uid == window.localStorage.getItem('user_id')) {
                         feedItems.push(re.feedController.createFeedItem(item));
                     }
                 }
