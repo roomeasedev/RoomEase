@@ -21,6 +21,10 @@ $(document).ready(function() {
         FastClick.attach(document.body);
     });
     
+    if (cordova.platformId == 'android') {
+        StatusBar.backgroundColorByHexString("#ff26a69a");
+    }
+    
     //Either set the values to empty string if you want to be directed to a certain page,
     // set them to the default test values if you want to bypass the groups/ids and just
     // go to the default test group, or comment out both and observe the natural flow of
@@ -34,8 +38,8 @@ $(document).ready(function() {
     //window.localStorage.setItem("user_name", "Nacho Cano");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f72f8c88");
     
-    //window.localStorage.setItem("user_id", "802839149821946");
-    //window.localStorage.setItem("user_name", "Sidd Gorti");
+    window.localStorage.setItem("user_id", "802839149821946");
+    window.localStorage.setItem("user_name", "Sidd Gorti");
     //window.localStorage.setItem("group_id", "");
     
     
