@@ -440,6 +440,7 @@ re.render = (function() {
                         then a jquery ui element w/polyfill is used to make a predective dropdown
                         list*/
                         if (!nativedatalist) {
+                            alert("iOS called");
                             $('input[list]').each(function () {
                                 var availableTags = $('#' + $(this).attr("list")).find('option').map(function () {
                                     return this.value;

@@ -23,8 +23,8 @@ $(document).ready(function() {
     
     $("device").ready(function() {
         if (cordova.platformId == 'android') {
-            alert("in here!");
-            StatusBar.backgroundColorByHexString("#ff26a69a");
+            StatusBar.backgroundColorByHexString("#26A69A");
+            BarTinter.navigationColor("#26A69A");
         }
     });
 
