@@ -244,7 +244,7 @@ re.render = (function() {
                                if(reservation.uid == window.localStorage.getItem("user_id")) {
                                    re.reserveController.editReservationItem(reservation._id);
                                } else {
-                                   Materialize.toast("You can't delete someone else's reservation");
+                                   Materialize.toast("You can't delete someone else's reservation", 2000);
                                }
                             });
                         })(reservations[i]);
