@@ -3,11 +3,9 @@
     src: url("../font/zag/Zag-Bold.otf") format("opentype");
 }
 
-/*
 html {
     -webkit-user-select: none;
 }
-*/
 
 /* Feed view style rules */
 .feedBtn {
