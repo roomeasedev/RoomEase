@@ -377,6 +377,8 @@ re.render = (function() {
                             item.owner = user_ids_to_names[item.owner];
                             var expDate = new Date(item.expiration_date);
                             var currDate = new Date();
+                            currDate.setHours(0,0,0,0);
+
 
                             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                             var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
