@@ -42,9 +42,9 @@
 
 #shortcut-container {
     position: fixed;
-    top: 82%;
+    top: 80%;
     width: 100%;
-    height: 20%;
+    height: 22%;
     box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.16), 10px 10px 10px 10px rgba(0, 0, 0, 0.12);
     transition: box-shadow .25s;
 }
