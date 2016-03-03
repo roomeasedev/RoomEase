@@ -426,7 +426,6 @@ re.render = (function() {
                                     Materialize.toast("You can't delete an item you don't own", 2000);
                                 }
                             });
-
                         }
                         
                         for(var name in re.fridgeController.fridgeNames) {
