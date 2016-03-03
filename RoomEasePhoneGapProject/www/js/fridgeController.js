@@ -4,6 +4,7 @@
 
 re.fridgeController = (function() {   
 /****************************** "PRIVATE" ****************************************/
+    var done = false;
     
     // Grab the value dictionary of fridge names to expiration dates from local storage
     // or set it to an empty Object if there is no locally stored data
@@ -28,6 +29,9 @@ re.fridgeController = (function() {
         }
     }
     
+    /**
+     * Adds a fridge item to the database by reading the user's input in the addItem popup.
+     */
     function addItem() {
         var itemName = $('#names').val();
         var expiration = $('#expiration').val();
@@ -40,23 +44,29 @@ re.fridgeController = (function() {
         
         // Check to see if input was valid
         if(itemName == "") {
+            $('#next-item').on('click', function() {
+                addItem();
+            });
+            $('#done').on('click', doneBtn);
+            done = false;
             Materialize.toast("Enter an item name", 2000);
             return false;
         } else if (expiration == "") {
+            $('#next-item').on('click', function() {
+                addItem();
+            });
+            $('#done').on('click', doneBtn);
+            done = false;
             Materialize.toast("Enter a valid expiration", 2000);
             return false;
         }
         
-        // Clear fields of popup
-        $('#names').val(function () {
-            return '';
-        });
-        $('#expiration').val(function () {
-            return '';
-        });
+        
 
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, fridgeAddCallBack);
+        
+        
         
         var expDate = new Date(expiration);        
         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
@@ -78,7 +88,22 @@ re.fridgeController = (function() {
      * @param {String} error            Describes error if error occured
      */
     function fridgeAddCallBack(isSuccess, revisedItem, error) {
-        if(!isSuccess) {
+        if(isSuccess) {
+            // Clear fields of popup
+            $('#names').val(function () {
+                return '';
+            });
+            $('#expiration').val(function () {
+                return '';
+            });
+            
+            if(done) {
+                re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
+                re.controller.hidePopup();
+                resetFridgeButtons();
+                done = false;
+            }
+        } else {
             re.newController.displayError(error);
         }
     }
@@ -99,6 +124,14 @@ re.fridgeController = (function() {
         return exp1 - exp2;
     }
     
+    function doneBtn() {
+        $('#next-item').off();
+        $('#done').off();
+        // Set done flag to true then add the item
+        done = true;
+        addItem();
+    }
+    
 /****************************** PUBLIC *********************************/ 
     
     /**
@@ -109,23 +142,25 @@ re.fridgeController = (function() {
         $('.popupBackground.main').css('display', 'block');
         
         $('#cancel').on('click', function() {
+            // Clear fields of popup
+            $('#names').val(function () {
+                return '';
+            });
+            $('#expiration').val(function () {
+                return '';
+            });
             re.controller.hidePopup();
             resetFridgeButtons();
+            re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
         });
         
         // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').click(function() {
+        $('#next-item').on('click', function() {
             addItem();
         });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
-        $('#done').click(function() {
-            if(addItem()) {
-                re.controller.hidePopup();
-                re.render.renderFridgeView(false);
-                resetFridgeButtons();
-            }
-        });
+        $('#done').on('click', doneBtn);
     }
     
     /**

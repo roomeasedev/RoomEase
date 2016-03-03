@@ -21,6 +21,13 @@ $(document).ready(function() {
         FastClick.attach(document.body);
     });
     
+    $("device").ready(function() {
+        if (cordova.platformId == 'android') {
+            StatusBar.backgroundColorByHexString("#26A69A");
+        }
+    });
+
+    
     //Either set the values to empty string if you want to be directed to a certain page,
     // set them to the default test values if you want to bypass the groups/ids and just
     // go to the default test group, or comment out both and observe the natural flow of

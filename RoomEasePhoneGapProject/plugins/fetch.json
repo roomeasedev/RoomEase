@@ -6,5 +6,21 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-statusbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-statusbar"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-bartinter": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-bartinter"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

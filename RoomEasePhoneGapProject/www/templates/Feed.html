@@ -6,9 +6,9 @@
 </script>
 
 <!-- The feed of items that come after-->
-<div id="feed-container">
+<div id="feed-container" style="height: 70%;">
     {{#ifCond this.length '==' 0}}
-        <h4 class="pink-text">You currently have no feed items</h4>
+        <h4 class="center-align" style="margin: .5em">You currently have no upcoming reservations or expiring food</h4>
     {{/ifCond}}
 
     {{#each this}}
@@ -32,9 +32,9 @@
 
 <!-- Buttons for going to the other pages of the application -->
 <div id="shortcut-container">
-    <a onClick="re.feedController.fridgeModuleButton()" style="margin-left: 2%;"><img src='res/buttons/FridgeIcon.png' width="30%"></a>
-    <a onClick="re.feedController.reservationModuleButton()" style="margin-left: 2%;"><img src='res/buttons/ReservationIcon.png' width="30%"></a>
-    <a onClick="re.feedController.listModuleButton()" style="margin-left: 2%;"><img src='res/buttons/ListIcon.png' width="30%"></a>
+    <a onClick="re.feedController.fridgeModuleButton()" style="margin-left: 2%;"><img src="img/FridgeIcon.png" width="30%"></a>
+    <a onClick="re.feedController.reservationModuleButton()" style="margin-left: 2%;"><img src="img/ReservationIcon.png" width="30%"></a>
+    <a onClick="re.feedController.listModuleButton()" style="margin-left: 2%;"><img src="img/ListIcon.png" width="30%"></a>
 </div>
 
 <!-- popup displayed in case trying to delete a fridge item, hidden by default -->

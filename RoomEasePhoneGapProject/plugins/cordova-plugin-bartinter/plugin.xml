@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+* Copyright Developing Wild 2016 ©
+*/
+
+/* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+-->
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:rim="http://www.blackberry.com/ns/widgets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-bartinter"
+    version="1.0.1">
+    <name>BarTinter</name>
+    <description>Cordova BarTinter Plugin</description>
+    <license>GNU General Public License 3</license>
+    <keywords>cordova,bartintner,statusbar,navigationbar</keywords>
+
+    <engines>
+            <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/BarTinter.js" name="BarTinter">
+        <clobbers target="window.BarTinter" />
+    </js-module>
+
+    <platform name="android">
+        <source-file src="src/android/BarTinter.java" target-dir="src/com/dw/bartinter" />
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="BarTinter">
+                <param name="android-package" value="com.dw.bartinter.BarTinter" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+    </platform>
+</plugin>

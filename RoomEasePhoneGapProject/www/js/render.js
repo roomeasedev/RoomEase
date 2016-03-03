@@ -309,7 +309,7 @@ re.render = (function() {
                     reserveTime.setHours(item.start_time.substr(0, 2));
                     reserveTime.setMinutes(item.start_time.substr(3));
                     
-                    if(reserveTime.getTime() - currDate.getTime() < oneDay) {
+                    if(reserveTime.getTime() - currDate.getTime() < oneDay && item.uid == window.localStorage.getItem('user_id')) {
                         feedItems.push(re.feedController.createFeedItem(item));
                     }
                 }
@@ -377,6 +377,8 @@ re.render = (function() {
                             item.owner = user_ids_to_names[item.owner];
                             var expDate = new Date(item.expiration_date);
                             var currDate = new Date();
+                            currDate.setHours(0,0,0,0);
+
 
                             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                             var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
@@ -424,16 +426,30 @@ re.render = (function() {
                                     Materialize.toast("You can't delete an item you don't own", 2000);
                                 }
                             });
-                       }
 
-                        // Add options to datalist field of popup
-                        for(var name in re.fridgeController.fridgeNames) {
-                            var currName = name.substr(0, 1).toUpperCase() + name.substr(1);
-                            console.log(currName);
-                            // attempted workaround for iOS autofill
-                            // TODO: look into JQueryUI as a fallback instead of this
-                            $('#names-datalist-inner').append('<option value=' + currName + '>' + currName);
                         }
+                        
+                        for(var name in re.fridgeController.fridgeNames) {
+                            $('#names-select').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>' + name.substr(0, 1).toUpperCase() + name.substr(1) + '</option');
+                        }
+                        
+                        var nativedatalist = !!('list' in document.createElement('input')) && 
+                        !!(document.createElement('datalist') && window.HTMLDataListElement);
+                        
+                        /* If support for datalist element doesn't exist (iOS, older devices)
+                        then a jquery ui element w/polyfill is used to make a predective dropdown
+                        list*/
+                        if (!nativedatalist) {
+                            alert("iOS called");
+                            $('input[list]').each(function () {
+                                var availableTags = $('#' + $(this).attr("list")).find('option').map(function () {
+                                    return this.value;
+                                }).get();
+                                console.log(availableTags);
+                                $(this).autocomplete({ source: availableTags });
+                            });
+                        }
+
 
                         // Check to see if the user entered a item that was used previously
                         $('#names').on('focusout', function () {
