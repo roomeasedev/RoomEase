@@ -440,10 +440,12 @@ re.render = (function() {
                         then a jquery ui element w/polyfill is used to make a predective dropdown
                         list*/
                         if (!nativedatalist) {
-                            var availableTags = $('names-datalist').find('option').map(function () {
-                                return this.value;
-                            }).get();
-                            $('#names').autocomplete({ source: availableTags });
+                            $('input[list]').each(function () {
+                                var availableTags = $('#' + $(this).attr("list")).find('option').map(function () {
+                                    return this.value;
+                                }).get();
+                                $(this).autocomplete({ source: availableTags });
+                            });
                         }
 
 
