@@ -14,12 +14,11 @@ var re = {};
 * Function to be called when the page has loaded.  Initializes the necessary
 * modules to start the page on the correct viewport.
 */
-console.log("testing");
 $(document).ready(function() {  
-    console.log("device ready");
     $(function() {
         FastClick.attach(document.body);
     });
+    
     
     $("device").ready(function() {
         if (cordova.platformId == 'android') {

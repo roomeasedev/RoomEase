@@ -429,7 +429,7 @@ re.render = (function() {
                         }
                         
                         for(var name in re.fridgeController.fridgeNames) {
-                            $('#names-select').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + '>' + name.substr(0, 1).toUpperCase() + name.substr(1) + '</option');
+                            $('#names-select').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + ' />');
                         }
                         
                         var nativedatalist = !!('list' in document.createElement('input')) && 
