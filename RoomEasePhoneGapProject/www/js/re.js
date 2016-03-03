@@ -21,11 +21,7 @@ $(document).ready(function() {
         FastClick.attach(document.body);
     });
     
-    $("device").ready(function() {
-        if (cordova.platformId == 'android') {
-            BarTinter.navigationColor("#26A69A");
-        }
-    });
+
 
     
     //Either set the values to empty string if you want to be directed to a certain page,

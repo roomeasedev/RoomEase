@@ -445,6 +445,7 @@ re.render = (function() {
                                 var availableTags = $('#' + $(this).attr("list")).find('option').map(function () {
                                     return this.value;
                                 }).get();
+                                console.log(availableTags);
                                 $(this).autocomplete({ source: availableTags });
                             });
                         }
