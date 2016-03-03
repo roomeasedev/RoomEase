@@ -26,6 +26,7 @@
             // to keep track of how long something was pressed
             var mouse_down_time;
             var timeout;
+            var firstTime = true;
 
             // mousedown or touchstart callback
             function mousedown_callback(e) {
@@ -34,8 +35,9 @@
 
                 // set a timeout to call the longpress callback when time elapses
                 timeout = setTimeout(function() {
-                    if (typeof longCallback === "function") {
+                    if (typeof longCallback === "function" && firstTime) {
                         longCallback.call(context, e);
+                        firstTime = false;
                     } else {
                         $.error('Callback required for long press. You provided: ' + typeof longCallback);
                     }
@@ -44,6 +46,7 @@
 
             // mouseup or touchend callback
             function mouseup_callback(e) {
+                firstTime = true;
                 var press_time = new Date().getTime() - mouse_down_time;
                 if (press_time < duration) {
                     // cancel the timeout
