@@ -44,10 +44,18 @@ re.fridgeController = (function() {
         
         // Check to see if input was valid
         if(itemName == "") {
+            $('#next-item').on('click', function() {
+                addItem();
+            });
+            $('#done').on('click', doneBtn);
             done = false;
             Materialize.toast("Enter an item name", 2000);
             return false;
         } else if (expiration == "") {
+            $('#next-item').on('click', function() {
+                addItem();
+            });
+            $('#done').on('click', doneBtn);
             done = false;
             Materialize.toast("Enter a valid expiration", 2000);
             return false;
@@ -116,6 +124,14 @@ re.fridgeController = (function() {
         return exp1 - exp2;
     }
     
+    function doneBtn() {
+        $('#next-item').off();
+        $('#done').off();
+        // Set done flag to true then add the item
+        done = true;
+        addItem();
+    }
+    
 /****************************** PUBLIC *********************************/ 
     
     /**
@@ -139,16 +155,12 @@ re.fridgeController = (function() {
         });
         
         // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').click(function() {
+        $('#next-item').on('click', function() {
             addItem();
         });
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
-        $('#done').click(function() {
-            // Set done flag to true then add the item
-            done = true;
-            addItem();
-        });
+        $('#done').on('click', doneBtn);
     }
     
     /**
