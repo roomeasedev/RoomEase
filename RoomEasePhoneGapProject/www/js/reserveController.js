@@ -104,7 +104,7 @@ re.reserveController = (function() {
 
                     // Check for time conflicts between the pending reservation and existing
                     // reservations.
-                    if((newStartTime < curResStartTime && newEndTime > curResStartTime) ||
+                    if((newStartTime <= curResStartTime && newEndTime > curResStartTime) ||
                         (newStartTime > curResStartTime && newStartTime < curResEndTime)) {
 
                         //Format the conflict string so the user knows the conflicting reservation
@@ -155,6 +155,7 @@ re.reserveController = (function() {
             }
             
             if(noConflicts){
+                $('#loading-icon').css('display', 'block');
                 re.requestHandler.addItem(newresv, re.newController.rhAddCallback);
                 return true;
             }
