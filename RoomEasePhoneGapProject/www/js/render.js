@@ -116,7 +116,7 @@ re.render = (function() {
             if(!isSuccess){
                 $("#loading-icon").css("display", "none");
                 console.log(error);
-                Materialize.toast("An error has occurred1, please try again.", 2000);
+                //Materialize.toast("An error has occurred1, please try again.", 2000);
             } 
             re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
                 if(error){
