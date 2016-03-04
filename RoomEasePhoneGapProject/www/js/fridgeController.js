@@ -69,9 +69,14 @@ re.fridgeController = (function() {
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, fridgeAddCallBack);
         
-        var expDate = new Date(expiration);        
+        var expDate = new Date(item.expiration_date);
+        expDate.setUTCHours(24,0,0,0);
+
+        var currDate = new Date();
+        currDate.setUTCHours(0,0,0,0);
+
         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-        var diffDays = Math.ceil(Math.abs((expDate.getTime() - new Date().getTime())/oneDay));
+        var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
         
         fridgeNames[itemName.toLowerCase()] = diffDays;
         window.localStorage.setItem("fridgeNames", JSON.stringify(fridgeNames));
@@ -175,25 +180,22 @@ re.fridgeController = (function() {
                 var item = fridgeItems[i];
                 var ownerId = item.owner;
                 item.owner = userIdsToNames[item.owner];
+                
                 var expDate = new Date(item.expiration_date);
+                expDate.setUTCHours(24,0,0,0);
+
                 var currDate = new Date();
-                currDate.setHours(0,0,0,0);
+                currDate.setUTCHours(0,0,0,0);
 
                 var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
+                var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
 
-                /* Because of the ceiling the diffdays will almost never be 0 to
-                 * account for this we set the expiration to 0 if diffdays is -1.
-                 * This is in order to show the user that an item is expiring today.
-                 * All other items that have expired are set to -1 simply to show the
-                 * user that their food has expired.
-                 */
-                if(diffDays == -1) {
-                    item.expiration_date = 0;
-                } else if (diffDays < -1) {
+                if(expDate < currDate) {
                     item.expiration_date = -1;
-                } else {
+                } else if (expDate > currDate) {
                     item.expiration_date = diffDays;
+                } else {
+                    item.expiration_date = 0;
                 }
 
                 if(isShared) {                        
@@ -242,7 +244,7 @@ re.fridgeController = (function() {
                     } else {
                         Materialize.toast("You can't delete an item you don't own", 2000);
                     }
-                });    
+                });
             })(currItems[i]);
         }
         

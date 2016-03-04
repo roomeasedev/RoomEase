@@ -83,13 +83,10 @@ re.feedController = (function() {
             var item = fridgeItems[i];
             
             var expDate = new Date(item.expiration_date);
-            expDate.setHours(0,0,0,0);
+            expDate.setUTCHours(24,0,0,0);
             
             var currDate = new Date();
-            currDate.setHours(0,0,0,0);
-            
-            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-            var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
+            currDate.setUTCHours(0,0,0,0);
 
             // Make expired items into feed items
             if(expDate < currDate) {
