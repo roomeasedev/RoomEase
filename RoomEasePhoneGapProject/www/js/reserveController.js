@@ -41,7 +41,7 @@ re.reserveController = (function() {
      *     invalid field, or time conflict)
      */
     function addReservation() {
-        modifyCurrentFilterValue($("#new-reservation-dropdown").find(":selected").text());
+        setFilterValue($("#new-reservation-dropdown").find(":selected").text());
         var reserveName = filterValue;
         //Want to filter by the new type of reservation
         var start_time = $('#start-time').val().trim();
@@ -464,7 +464,7 @@ re.reserveController = (function() {
             var reserveName = dropdown.find(":selected").text();
             
             //Want to filter by the new type of reservation
-            modifyCurrentFilterValue(reserveName);
+            setFilterValue(reserveName);
             re.render.route();
         });
     }
@@ -479,7 +479,7 @@ re.reserveController = (function() {
         
         if(!typeExists) {
             currentTypes.push(type);
-            modifyCurrentFilterValue(type);
+            setFilterValue(type);
         }
         return !typeExists;
     }
@@ -549,36 +549,39 @@ re.reserveController = (function() {
         return dateTuple;
     }
     
-    function modifyCurrentFilterValue(newFilter){
+    /*
+     *
+     */
+    function setFilterValue(newFilter){
         filterValue = newFilter;
     }
-    function getFilteredReservations(reservations){
+    
+    function getFilteredReservations(reservations) {
         var displayedReservations = [];
         if(filterValue == "All"){
                 displayedReservations = reservations;
-            } else {
-                for(var i = 0; i < reservations.length; i++){
-                    if(reservations[i].name_of_item == filterValue){
-                        displayedReservations.push(reservations[i]);
-                    }
+        } else {
+            for(var i = 0; i < reservations.length; i++){
+                if(reservations[i].name_of_item == filterValue){
+                    displayedReservations.push(reservations[i]);
                 }
             }
-            return displayedReservations;
         }
+        return displayedReservations;
+    }
     
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
-        'renderReservationView': renderReservationView,
+        'render': render,
         'makeNewReservation': makeNewReservation,
         'editReservationItem':  editReservationItem,
         'refreshFilterReservations': refreshFilterReservations,
         'getFilteredReservations': getFilteredReservations,
         'updateCurrentReservationItems':updateCurrentReservationItems,
         'currentReservationitems': currentReservationitems,
-        'addNewReservationType':
-        addNewReservationType,
+        'addNewReservationType': addNewReservationType,
         'reservationToDateObjects': reservationToDateObjects,
-        'modifyCurrentFilterValue': modifyCurrentFilterValue
+        'setFilterValue':setFilterValue
 	}
 })();

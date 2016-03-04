@@ -165,7 +165,7 @@ re.feedController = (function() {
         for(var i in reservationItems) {
             (function(reservation) {
                 $('#' + reservation._id).on('click', function() {
-                    re.reserveController.modifyCurrentFilterValue(reservation.name_of_item);
+                    re.reserveController.setFilterValue(reservation.name_of_item);
                     window.location.hash = "#reservations";
                 });
             })(reservationItems[i]);
