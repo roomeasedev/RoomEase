@@ -7,6 +7,8 @@
  */
 re.feedController = (function() {
 	var feedItems = {};
+    var quickAdd = false;
+
     
 	/**
 	 * Creates the JSON representing a feed item, which will not be added to the
@@ -174,6 +176,14 @@ re.feedController = (function() {
         window.location.hash = '#fridge-mine';
     }
     
+    /**
+     * Set's the quickAdd boolean flag
+     * @param {Boolean} flag    Value to set quickAdd to
+     */
+    function setQuickAdd(flag) {
+        quickAdd = flag;
+    }
+    
 	// Return the public API of re.feedController, which allows the fields
 	// and methods listed in this object to be visible to the other modules.
 	return {
@@ -185,6 +195,8 @@ re.feedController = (function() {
 		//'updateFeedItems': updateFeedItems,
 		'listModuleButton': listModuleButton,
 		'reservationModuleButton': reservationModuleButton,
-		'fridgeModuleButton':	fridgeModuleButton
+		'fridgeModuleButton':	fridgeModuleButton,
+        'quickAdd': quickAdd,
+        'setQuickAdd': setQuickAdd
 	};
 })();

@@ -13,13 +13,12 @@ re.render = (function() {
     var feedTemplate;
     var listTemplate; 
     var fridgeTemplate;
-    var reservationTemplate;
+    var scheduleTemplate;
     var facebookLoginTemplate;
     var accountTemplate;
     var groupMakeJoinTemplate;
     var groupMakeTemplate;
     var groupJoinTemplate;
-    var quickAdd = false;
     
     /**
      * Sets the HTML value of the injectable page area to the rendered chores view.
@@ -62,14 +61,6 @@ re.render = (function() {
     */
     function renderGroupJoinView() {
         $('.page').html(groupJoinTemplate());
-    }
-    
-    /**
-     * Set's the quickAdd boolean flag
-     * @param {Boolean} flag    Value to set quickAdd to
-     */
-    function setQuickAdd(flag) {
-        quickAdd = flag;
     }
     
     /**
@@ -147,14 +138,6 @@ re.render = (function() {
     // modules.
     return {
         'init': init,
-        'route': route,
-        'renderLoginView': renderFacebookLoginView,
-        'renderAccountView': renderAccountView,
-        'feedTemplate': feedTemplate,
-        'listTemplate': listTemplate,
-        'fridgeTemplate': fridgeTemplate,
-        'reservationTemplate': reservationTemplate,
-        'quickAdd': quickAdd,
-        'setQuickAdd': setQuickAdd
+        'route': route
     };
 })();
