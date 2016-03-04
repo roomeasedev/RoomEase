@@ -100,7 +100,7 @@ re.feedController = (function() {
             }
         }
             
-        var reservationItems = re.requestHandler.getAllItemsOfType("reservation", renderReservationItems);
+        var reservationItems = re.requestHandler.getAllItemsOfType("reservation", renderReservationItems(allItems, error));
     }
     
     /**
@@ -157,7 +157,7 @@ re.feedController = (function() {
         for(var i in fridgeItems) {
             (function(fridgeItem) {
                 $('#' + fridgeItem._id).longpress(function() {
-                    re.feedController.removeExpiredFood(item._id, item.item);
+                    re.feedController.removeExpiredFood(fridgeItem._id, fridgeItem.item);
                 });
             })(fridgeItems[i]);
         }
@@ -183,7 +183,7 @@ re.feedController = (function() {
         $('.page-title').html('Feed');
         
         // Store fridge and reservation items separately to add longpress listeners later
-        var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", renderFridgeItems);
+        var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", renderFridgeItems(allItems, error));
     }
 
     /*

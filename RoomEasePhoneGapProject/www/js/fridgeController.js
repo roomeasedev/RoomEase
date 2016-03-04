@@ -211,7 +211,7 @@ re.fridgeController = (function() {
             currItems.sort(fridgeItemComparator);
 
             // Compile page and inject into .page in main html view
-            $('.page').html(fridgeTemplate(currItems));
+            $('.page').html(re.render.fridgeTemplate(currItems));
             $("#loading-icon").css("display", "none");
 
             addListeners(currItems);
@@ -308,7 +308,7 @@ re.fridgeController = (function() {
         re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), function(isSuccess, map, error) {
             if(isSuccess) {
 				userIdsToNames = map;
-                re.requestHandler.getAllItemsOfType('fridge_item', renderFridgeItems);
+                re.requestHandler.getAllItemsOfType('fridge_item', renderFridgeItems(allItems, error));
             } else {
                 $("#loading-icon").css("display", "none");
                 console.log(error);
