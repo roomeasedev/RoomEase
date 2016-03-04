@@ -1,0 +1,31 @@
+{
+  "name": "cordova-plugin-bartinter",
+  "version": "1.0.1-release",
+  "description": "Cordova BarTinter Plugin",
+  "cordova": {
+    "id": "cordova-plugin-bartinter",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/developingwild/cordova-plugin-bartinter"
+  },
+  "keywords": [
+    "cordova",
+    "statusbar",
+    "navigationbar",
+    "bartinter",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Developing Wild",
+  "license": "GNU General Public License 3"
+}
