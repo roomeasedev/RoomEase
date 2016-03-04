@@ -242,6 +242,7 @@ re.listController = (function() {
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
+        'renderListView': renderListView,
         'list_items': list_items,
         'makeNewList': makeNewList,
         'editList': editList

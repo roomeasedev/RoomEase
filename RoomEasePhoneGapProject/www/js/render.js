@@ -22,8 +22,8 @@ re.render = (function() {
     var quickAdd = false;
     
     /**
-    * Sets the HTML value of the injectable page area to the rendered chores view.
-    */
+     * Sets the HTML value of the injectable page area to the rendered chores view.
+     */
     function renderAccountView() {
         $('.page-title').html('Account Details');
         $('.page').html(accountTemplate());
@@ -149,10 +149,6 @@ re.render = (function() {
         'init': init,
         'route': route,
         'renderLoginView': renderFacebookLoginView,
-        'renderFeedView': renderFeedView,
-        'renderListView': renderListView,
-        'renderFridgeView': renderFridgeView,
-        'renderSchedulerView': renderSchedulerView,
         'renderAccountView': renderAccountView,
         'quickAdd': quickAdd,
         'setQuickAdd': setQuickAdd

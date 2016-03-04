@@ -177,6 +177,7 @@ re.feedController = (function() {
 	// Return the public API of re.feedController, which allows the fields
 	// and methods listed in this object to be visible to the other modules.
 	return {
+        'renderFeedView': renderFeedView,
 		'feedItems': feedItems,
 		'createFeedItem': createFeedItem,
 		'removeExpiredFood': removeExpiredFood,

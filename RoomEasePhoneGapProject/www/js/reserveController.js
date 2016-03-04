@@ -573,6 +573,7 @@ re.reserveController = (function() {
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
+        'renderReservationView': renderReservationView,
         'makeNewReservation': makeNewReservation,
         'editReservationItem':  editReservationItem,
         'refreshFilterReservations': refreshFilterReservations,
