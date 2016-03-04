@@ -253,7 +253,7 @@ re.listController = (function() {
         $('#delete').click(function() {
             re.newController.hidePopup();
             re.requestHandler.deleteItem(listId, "list", re.newController.rhDelCallback);
-        }
+        });
     }
     
 /****************************** PUBLIC *********************************/    

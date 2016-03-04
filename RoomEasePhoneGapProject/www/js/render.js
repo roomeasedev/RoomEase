@@ -87,20 +87,20 @@ re.render = (function() {
         } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
         } else if (!hash || hash == "#feed") {
-            re.feedController.renderFeedView(true);
+            re.feedController.render(true);
         } else if (hash == "#list") { 
             re.listController.render(true);
         } else if (hash == "#fridge-mine") {
-            re.fridgeController.renderFridgeView(true, false);
+            re.fridgeController.render(true, false);
         } else if (hash == "#fridge-shared") {
-            re.fridgeController.renderFridgeView(true, true);
+            re.fridgeController.render(true, true);
         } else if (hash == "#reservations") {
             re.reserveController.renderReservationView();
         } else if(hash == "#account"){
             renderAccountView();
         } else {
             if (g_id && (hash == "#gm" || hash == "#gj" || hash == "#gl")) {
-                re.feedController.renderFeedView(true);
+                re.feedController.render(true);
             } else if (u_id) {
                 renderGroupMakeOrJoinView();
             } else {
