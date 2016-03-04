@@ -109,7 +109,7 @@ re.render = (function() {
             renderAccountView();
         } else {
             if (g_id && (hash == "#gm" || hash == "#gj" || hash == "#gl")) {
-                renderFeedView(true);
+                re.feedController.renderFeedView(true);
             } else if (u_id) {
                 renderGroupMakeOrJoinView();
             } else {
@@ -126,10 +126,10 @@ re.render = (function() {
     function init() {
         re.templates.load(["Feed", "List", "Fridge", "Reservations", "FacebookLogin",
 				"GroupJoin", "Account", "GroupMakeJoin", "GroupMake"]).done(function () {
-            feedTemplate = re.templates.get("Feed");
-            listTemplate = re.templates.get("List");
-            fridgeTemplate = re.templates.get("Fridge");
-            reservationTemplate = re.templates.get("Reservations");
+            re.render.feedTemplate = re.templates.get("Feed");
+            re.render.listTemplate = re.templates.get("List");
+            re.render.fridgeTemplate = re.templates.get("Fridge");
+            re.render.reservationTemplate = re.templates.get("Reservations");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupJoinTemplate = re.templates.get("GroupJoin");
             groupMakeJoinTemplate = re.templates.get("GroupMakeJoin");

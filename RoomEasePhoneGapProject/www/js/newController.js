@@ -144,6 +144,22 @@ re.newController = (function() {
         window.location.hash = "#gj"; 
     }
     
+    /**
+     * Attaches an xpull listener to an element of the given ID.
+     * The xpull listener will call re.render.route(), triggering a full
+     * refresh of the current page.
+     * @param {string} elementId    The ID of the element to which we are attaching the listener
+     */
+    function assignXPull(elementId) {
+        $('#' + elementId).xpull({
+            'paused': false,  // Is the pulling paused ?
+            'pullThreshold':200, // Pull threshold (in px)
+            'callback':function(){
+                re.render.route();
+            }
+        });
+    }
+    
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
@@ -157,6 +173,7 @@ re.newController = (function() {
         'rhUpdateCallback': rhUpdateCallback,
         'goToMakeView': goToMakeView,
         'goToJoinView': goToJoinView,
-        'displayError': displayError
+        'displayError': displayError,
+        'assignXPull': assignXPull
 	}
 })();
