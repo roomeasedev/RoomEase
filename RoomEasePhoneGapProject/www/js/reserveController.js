@@ -6,7 +6,7 @@ re.reserveController = (function() {
     
     var filterValue = "All";
     var currentReservationitems = [];
-    var currentReservationTypes = ["All"];
+    var currentTypes = ["All"];
 /****************************** "PRIVATE" ****************************************/
     
     /**
@@ -366,7 +366,7 @@ re.reserveController = (function() {
     *Function called make all of the resources visible to add a new reservation in the Reservation tremplate
     **/
     function makeNewReservation(){
-        if(currentReservationTypes.length == 1) {
+        if(currentTypes.length == 1) {
             addNewReservationType();
         } else {
             $('#name').val('');
@@ -469,18 +469,19 @@ re.reserveController = (function() {
         });
     }
     
-    function addNewReservationTypeToList(type){
-        var reservationTypeExists = false;
-        for(var i = 0; i < currentReservationTypes.length; i++){
-            if(currentReservationTypes[i].toLocaleLowerCase() === type.toLocaleLowerCase()){
-                reservationTypeExists = true;
+    function addType(type){
+        var typeExists = false;
+        for(var i = 0; i < currentTypes.length; i++){
+            if(currentTypes[i].toLocaleLowerCase() === type.toLocaleLowerCase()){
+                typeExists = true;
             }
         }
-        if(!reservationTypeExists) {
-            currentReservationTypes.push(type);
+        
+        if(!typeExists) {
+            currentTypes.push(type);
             modifyCurrentFilterValue(type);
         }
-        return !reservationTypeExists;
+        return !typeExists;
     }
     
     function addNewReservationType(){
@@ -489,42 +490,38 @@ re.reserveController = (function() {
         $("#add-new-reservation-type-btn").click(function(){
             var newType = $("#add-new-resevation-type-text").val().trim();
             if(newType != ''){
-                var newTypeAdded = addNewReservationTypeToList(newType);
-                    if(newTypeAdded){
+                    if(addType(newType)){
                         hidePopup('#background3');
                         makeNewReservation();
                     } else {
                         Materialize.toast("Similar reservation type already exists.", 2000); 
                     }
             } else {
-                $("#add-new-reservation-error-text").css("display", "block");
-                $("#add-new-reservation-error-text").html("Error: You did not enter a type.");
+                Materialize.toast("Please enter a type", 2000);
             }
         });
         
         $('#add-new-reservation-type-btn-cancel').click(function() {
             hidePopup('#background3');
-        }); 
-        
+        });
     }
     
     function getAllReservationTypes(){
-        
         for(var i = 0; i < currentReservationitems.length; i++){
            var resName = currentReservationitems[i].name_of_item; 
-           if(currentReservationTypes.indexOf(resName) == -1){
-                currentReservationTypes.push(resName);
+           if(currentTypes.indexOf(resName) == -1){
+                currentTypes.push(resName);
             }
         }
         
         //Put the filter value at the top of the array
-        var indexOfFilterVal = currentReservationTypes.indexOf(filterValue);
+        var indexOfFilterVal = currentTypes.indexOf(filterValue);
         if(indexOfFilterVal != -1){
-            currentReservationTypes.splice(indexOfFilterVal, 1);
-            currentReservationTypes.unshift(filterValue);
+            currentTypes.splice(indexOfFilterVal, 1);
+            currentTypes.unshift(filterValue);
         }
                 
-        return currentReservationTypes;
+        return currentTypes;
     }
     
     function reservationToDateObjects(reservation){
@@ -533,7 +530,6 @@ re.reserveController = (function() {
         var hours = parseInt(reservation.hours);
         var minutes = parseInt(reservation.minutes);
         var start_time_nums = reservation.start_time.split(":");
-
 
         var startDateObj = new Date(
                                     parseInt(start_date_nums[0]), 
