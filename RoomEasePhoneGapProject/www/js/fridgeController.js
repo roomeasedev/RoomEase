@@ -143,15 +143,15 @@ re.fridgeController = (function() {
      * @param   {String} error              String describing an error if one occured, null otherwise.
      */
     function renderFridgeItems (fridgeItems, error) {
-        if(allItems == null) {
+        if(fridgeItems == null) {
             $("#loading-icon").css("display", "none");
             console.log(error);
         } else {
             var currItems = [];
             
             // Determine which items will be displayed based on hash
-            for(var i = 0; i < allItems.length; i++) {
-                var item = allItems[i];
+            for(var i = 0; i < fridgeItems.length; i++) {
+                var item = fridgeItems[i];
                 var ownerId = item.owner;
                 item.owner = userIdsToNames[item.owner];
                 var expDate = new Date(item.expiration_date);
