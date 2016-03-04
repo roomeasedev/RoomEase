@@ -90,9 +90,7 @@ re.feedController = (function() {
             
             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
             var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
-            alert("Expiration: " + expDate + "\nCurrent: " + currDate);
-            
-            alert(expDate < currDate);
+
             // Make expired items into feed items
             if(expDate < currDate) {
                 feedItems.push(createFeedItem(item));
