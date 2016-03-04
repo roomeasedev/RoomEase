@@ -362,15 +362,15 @@ re.reserveController = (function() {
         var displayedReservations = [];
         if(filterValue == "All"){
                 displayedReservations = reservations;
-            } else {
-                for(var i = 0; i < reservations.length; i++){
-                    if(reservations[i].name_of_item == filterValue){
-                        displayedReservations.push(reservations[i]);
-                    }
+        } else {
+            for(var i = 0; i < reservations.length; i++){
+                if(reservations[i].name_of_item == filterValue){
+                    displayedReservations.push(reservations[i]);
                 }
             }
-            return displayedReservations;
         }
+        return displayedReservations;
+    }
     
     // Return the public API of the controller module,
     // making the following functions public to other modules.
@@ -381,8 +381,7 @@ re.reserveController = (function() {
         'getFilteredReservations': getFilteredReservations,
         'updateCurrentReservationItems':updateCurrentReservationItems,
         'currentReservationitems': currentReservationitems,
-        'addNewReservationType':
-        addNewReservationType,
+        'addNewReservationType': addNewReservationType,
         'reservationToDateObjects': reservationToDateObjects,
         'modifyCurrentFilterValue': modifyCurrentFilterValue
 	}

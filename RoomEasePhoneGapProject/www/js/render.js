@@ -280,6 +280,7 @@ re.render = (function() {
         // Store fridge and reservation items separately to add longpress listeners later
         var feedItems = [];
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
+            allItems.sort(re.fridgeController.fridgeItemComparator);
             for (var i = 0; i < allItems.length; i++) {
                 var item = allItems[i];
 
@@ -287,7 +288,7 @@ re.render = (function() {
                 var currDate = new Date();
 
                 var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-                var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
+                var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);//floor?
 
                 /* Because of the ceiling the diffdays will almost never be 0 to
                  * account for this we set the expiration to 0 if diffdays is -1.
@@ -300,6 +301,22 @@ re.render = (function() {
                 }
             }
             var reservationItems = re.requestHandler.getAllItemsOfType("reservation", function(allItems, error) {
+                // Sort reservations by time of day
+                allItems.sort(function(reserve1, reserve2) {
+                    var time1 = reserve1.start_time.split(':');
+                    var time2 = reserve2.start_time.split(':');
+                    var hours1 = parseInt(time1[0]);
+                    var hours2 = parseInt(time2[0]);
+                    var minutes1 = parseInt(time1[1]);
+                    var minutes2 = parseInt(time2[1]);
+                    
+                    if(hours1 == hours2) {
+                        return minutes1 - minutes2;
+                    } else {
+                        return hours1 - hours2;
+                    }
+                });
+                
                 for (var i = 0; i < allItems.length; i++) {
                     var item = allItems[i];
                     
