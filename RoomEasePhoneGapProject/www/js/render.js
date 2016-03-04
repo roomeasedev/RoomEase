@@ -435,14 +435,15 @@ re.render = (function() {
                         // Add longpress listener to fridge items to ask if the user wants to delete them
                         // or potentially inform them they don't own the item
                         for(var i = 0; i < currItems.length; i++) {
-                            var item = currItems[i];
-                            $('#' + item._id).longpress(function () {
-                                if(item.owner == window.localStorage.getItem("user_name")) {
-                                    re.fridgeController.removeItem(item._id, item.item);
-                                } else {
-                                    Materialize.toast("You can't delete an item you don't own", 2000);
-                                }
-                            });
+                           (function(item) {
+                                $('#' + item._id).longpress(function () {
+                                    if(item.owner == window.localStorage.getItem("user_name")) {
+                                        re.fridgeController.removeItem(item._id, item.item);
+                                    } else {
+                                        Materialize.toast("You can't delete an item you don't own", 2000);
+                                    }
+                                });
+                           })(currItems[i]);
                         }
                         
                         for(var name in re.fridgeController.fridgeNames) {
