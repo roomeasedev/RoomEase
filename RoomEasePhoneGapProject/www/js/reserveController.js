@@ -7,6 +7,7 @@ re.reserveController = (function() {
     var filterValue = "All";
     var currentReservationitems = [];
     var currentTypes = ["All"];
+    var uidMap = [];
 /****************************** "PRIVATE" ****************************************/
     
     /**
@@ -202,7 +203,8 @@ re.reserveController = (function() {
      * @param {string} error    An message describing an error when getting the uidMap, or null if 
      *     no error occurred
      */
-    function prepareRender(isSuccess, uidMap, error) {
+    function prepareRender(isSuccess, map, error) {
+        uidMap = map;
         // Now that we have the uid to user name map, get the reservation items to render
         re.requestHandler.getAllItemsOfType('reservation', renderItems);
     }
@@ -227,9 +229,12 @@ re.reserveController = (function() {
             // Format the reservations so they can be displayed properly
             reservations = getFilteredReservations(reservations);
             reservations = getFormattedReservations(reservations);
+
             //TODO: Make it so we use reservation_dictionary to aggregate all of the 
              //Reservations based off of what they are
-            $('.page').html(reservationTemplate(formattedReservations));
+            $('.page').html(re.render.reservationTemplate(reservations));
+            refreshFilterReservations();
+            
             $("#loading-icon").css("display", "none");
             re.reserveController.refreshFilterReservations();
 
@@ -608,6 +613,7 @@ re.reserveController = (function() {
         
         $('#add-new-reservation-type-btn-cancel').click(function() {
             hidePopup('#background3');
+            $('#add-new-reservation-type-text').html('');
         });
     }
     
