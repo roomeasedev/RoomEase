@@ -223,9 +223,6 @@ re.feedController = (function() {
      */
 	return {
         'render': render,
-		'feedItems': feedItems,
-		'createFeedItem': createFeedItem,
-		'removeExpiredFood': removeExpiredFood,
 		'listModuleButton': listModuleButton,
 		'reservationModuleButton': reservationModuleButton,
 		'fridgeModuleButton':	fridgeModuleButton,
