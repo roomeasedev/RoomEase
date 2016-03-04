@@ -10,7 +10,7 @@
  */
 
 re.listController = (function() {  
-    var list_items = {};
+    var listItems = {};
     
 /****************************** "PRIVATE" ****************************************/
         
@@ -143,7 +143,8 @@ re.listController = (function() {
             // Add listener for longclick to each list item
             for (var i in allLists) {
                 var list = allLists[i];
-                re.listController.list_items[list._id] = list; 
+                // update local storage of lists with the full information of the list objects
+                re.listController.listItems[list._id] = list; 
                 // wrap the assigned onlongpress function in a closure,
                 // so that we have a unique environment for each fn. This
                 // allows correct lookup of the "current" element for each
@@ -156,6 +157,7 @@ re.listController = (function() {
             }
         }
 
+        // Assign x pull so that you can pull down to refresh the list items
         re.newController.assignXPull('list-tiles');
 
         // Show add item popup if being rendered from quickAdd shortcut
@@ -205,25 +207,29 @@ re.listController = (function() {
     }
     
     /** 
-     * Brings up a popup that lets user edit an existing list with id listId. 
+     * Brings up a popup that lets user edit an existing list with the given id.
      * User can delete the list, or edit the name & items of the list
-     * @param listId: the ID of the list stored in database and localstorage
+     * @param {string} listId   The ID of the list stored in database and localstorage
      */
     function editList(listId) {
         setup();
         
-        //Change title of popup
+        //Change title of popup, since we share the menu with the add popup
         $('#popupTitle').html('Edit List');
         
-        // Display delete, cancel, and done buttons
+        // Display delete, cancel, and done 
         $('#delete').css('display', 'block');
         $('#cancel').css('width', '30%');
         $('#done').css('width', '30%');
         
-        // ** change after refactoring into local storage
-        thisList = list_items[listId];
+        // Get the data on this list from the given ID, and then load its contents into
+        // the edit list popup
+        thisList = listItems[listId];
         loadListItems(thisList);
         
+        // Assign the onclick for the done button, which hides the popup and edits the list with 
+        // the current value of the menu on success, or indicates to the user that the attempted 
+        // list edit is not valid (if there are no list elements or an empty list title). 
         $('#done').click(function() {
             if (!itemsValid() || !($('#name').val().length)) {
                 Materialize.toast('Please input a name and at least one item for the list', 4000);                
@@ -242,9 +248,12 @@ re.listController = (function() {
             }
         });
         
+        // Assign the onclick for the delete button, which hides the popup and removes the current
+        // list from the database and local storage
         $('#delete').click(function() {
             re.newController.hidePopup();
             re.requestHandler.deleteItem(listId, "list", re.newController.rhDelCallback);
+        }
     }
     
 /****************************** PUBLIC *********************************/    
@@ -258,10 +267,9 @@ re.listController = (function() {
     function renderListView(fullRefresh) {
         $("#loading-icon").css("display", "block");
         $('.page-title').html('List');
-        /* Gets all lists from database and renders the list view with these
-        *  lists embedded.
-        */
         
+        // Get all lists from database to render on the page
+        // TODO: logic for full refresh vs. local copies (call renderListItems with own copies)
         re.requestHandler.getAllItemsOfType('list', renderListItems);
     }
     
@@ -269,7 +277,7 @@ re.listController = (function() {
     // making the following functions public to other modules.
 	return {
         'renderListView': renderListView,
-        'list_items': list_items,
+        'listItems': listItems,
         'makeNewList': makeNewList,
         'editList': editList
 	}

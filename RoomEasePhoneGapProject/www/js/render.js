@@ -98,7 +98,7 @@ re.render = (function() {
         } else if (!hash || hash == "#feed") {
             re.feedController.renderFeedView(true);
         } else if (hash == "#list") { 
-            re.listController.renderListView(true);
+            re.listController.render(true);
         } else if (hash == "#fridge-mine") {
             re.fridgeController.renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {

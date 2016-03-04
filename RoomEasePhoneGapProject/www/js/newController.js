@@ -10,7 +10,7 @@
 re.newController = (function() {
 
     // TODO: Refactor these into a different module (localstorage)
-	var list_items = {};
+	//var list_items = {};
 	var fridge_items = [];
 	var reservation_items = [];
 	var chores_items = [];
@@ -120,7 +120,7 @@ re.newController = (function() {
     function rhUpdateCallback(is_success, was_deleted, updated_item, error) {
         if (is_success) {
             console.log("success");
-            list_items[updated_item._id] = updated_item;
+            re.listController.listItems[updated_item._id] = updated_item;
             re.render.route();
             // TODO: scroll to where the new list is
         } else {
@@ -164,7 +164,7 @@ re.newController = (function() {
     // making the following functions public to other modules.
 	return {
 		'init': init,
-        'list_items': list_items,
+        //'list_items': list_items,
         'reservation_items': reservation_items,
         'getUIDsMap': getUIDsMap,
         'hidePopup': hidePopup,
