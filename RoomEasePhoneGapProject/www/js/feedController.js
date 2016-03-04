@@ -160,17 +160,17 @@ re.feedController = (function() {
 	}
 
     function listModuleButton() {
-        re.render.setQuickAdd(true);
+        setQuickAdd(true);
         window.location.hash = '#list';
     }
     
     function reservationModuleButton() {
-        re.render.setQuickAdd(true);
+        setQuickAdd(true);
         window.location.hash = '#reservations';
     }
     
     function fridgeModuleButton() {
-        re.render.setQuickAdd(true);
+        setQuickAdd(true);
         window.location.hash = '#fridge-mine';
     }
     

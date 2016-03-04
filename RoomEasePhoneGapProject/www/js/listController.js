@@ -128,7 +128,7 @@ re.listController = (function() {
                 $("#loading-icon").css("display", "none");
                 console.log(error);
             } else {
-                $('.page').html(re.render.listTemplate(allLists));
+                $('.page').html(listTemplate(allLists));
                 $("#loading-icon").css("display", "none");
                
                 //Add listener for longclick
@@ -151,9 +151,9 @@ re.listController = (function() {
             });
             
             // Show add item popup if being rendered from quickAdd shortcut
-            if(quickAdd) {
+            if(re.feedController.quickAdd) {
                 re.listController.makeNewList();
-                quickAdd = false;
+                re.feedController.quickAdd = false;
             }
         });
     }

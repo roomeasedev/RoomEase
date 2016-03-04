@@ -328,7 +328,7 @@ re.reserveController = (function() {
 
                     //TODO: Make it so we use reservation_dictionary to aggregate all of the 
                      //Reservations based off of what they are
-                    $('.page').html(re.render.reservationTemplate(date_time_reservations));
+                    $('.page').html(scheduleTemplate(date_time_reservations));
                     $("#loading-icon").css("display", "none");
                     re.reserveController.refreshFilterReservations();
 
@@ -354,9 +354,9 @@ re.reserveController = (function() {
                 });
 
                 // Show add item popup if being rendered from quickAdd shortcut
-                if(quickAdd) {
+                if(re.feedController.quickAdd) {
                     re.reserveController.makeNewReservation();
-                    quickAdd = false;
+                    re.feedController.quickAdd = false;
                 }
             });
         });
