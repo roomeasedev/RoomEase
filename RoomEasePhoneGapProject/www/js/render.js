@@ -637,10 +637,6 @@ re.render = (function() {
         'init': init,
         'route': route,
         'renderLoginView': renderFacebookLoginView,
-        'renderFeedView': renderFeedView,
-        'renderListView': renderListView,
-        'renderFridgeView': renderFridgeView,
-        'renderSchedulerView': renderSchedulerView,
         'renderAccountView': renderAccountView,
         'quickAdd': quickAdd,
         'setQuickAdd': setQuickAdd

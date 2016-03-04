@@ -194,6 +194,7 @@ re.fridgeController = (function() {
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
+        'renderFridgeView': renderFridgeView,
         'makeNewFridgeItem': makeNewFridgeItem,
         'removeItem': removeItem,
         'fridgeNames': fridgeNames,
