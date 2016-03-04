@@ -73,6 +73,11 @@ html {
     margin: 0 -10%;
 }
 
+.select-dropdown {
+    font-family: Zag;
+    color: #26a69a;
+}
+
 ul {
     margin:0 0 0 1.25em;
     padding:0;
