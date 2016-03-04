@@ -69,11 +69,11 @@ re.fridgeController = (function() {
         var newItem = createFridgeItem(itemName, expiration, shared);
         re.requestHandler.addItem(newItem, fridgeAddCallBack);
         
-        var expDate = new Date(item.expiration_date);
-        expDate.setUTCHours(24,0,0,0);
+        var expDate = new Date(expiration);
+        expDate.setUTCHours(24, 0, 0, 0);
 
         var currDate = new Date();
-        currDate.setUTCHours(0,0,0,0);
+        currDate.setUTCHours(24, 0, 0, 0);
 
         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
         var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
