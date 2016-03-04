@@ -193,7 +193,7 @@ re.fridgeController = (function() {
             $('.page').html(fridgeTemplate(currItems));
             $("#loading-icon").css("display", "none");
 
-            addListeners();
+            addListeners(currItems);
 
             for(var name in re.fridgeController.fridgeNames) {
                 $('#names-select').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + ' />');
@@ -237,9 +237,11 @@ re.fridgeController = (function() {
     }
     
     /**
-     * Adds onClick and longpress listeners to the feed items
+     * Adds longpress listeners to the fridge items to allow the user
+     * to remove an item when they longpress an item.
+     * @param {Array<Object>} currItems     The items currently being displayed
      */
-    function addListeners() {
+    function addListeners(currItems) {
         // Add longpress listener to fridge items to ask if the user
         // wants to delete them or inform them they don't own the item
         for(var i = 0; i < currItems.length; i++) {
@@ -275,10 +277,7 @@ re.fridgeController = (function() {
         re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), function(isSuccess, map, error) {
             if(isSuccess) {
 				userIdsToNames = map;
-                
-                re.requestHandler.getAllItemsOfType('fridge_item', function(allItems, error) {
-                    
-                });
+                re.requestHandler.getAllItemsOfType('fridge_item', renderFridgeItems(allItems, error));
             } else {
                 $("#loading-icon").css("display", "none");
                 console.log(error);
