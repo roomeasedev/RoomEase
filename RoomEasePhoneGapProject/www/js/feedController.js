@@ -69,6 +69,86 @@ re.feedController = (function() {
         // Hide the item  
 	}
 
+    /**
+     * Sets the HTML value of the injectable page area to the rendered feed view.
+     * @param {boolean} fullRefresh Whether or not the rendering of the page should
+     *     contact the DB to get an updated set of items to display (if not, uses
+     *     the locally stored lists of the items)
+     */
+    function renderFeedView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
+        $('.page-title').html('Feed');
+        
+        // Store fridge and reservation items separately to add longpress listeners later
+        var feedItems = [];
+        var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", function(allItems, error) {
+            for (var i = 0; i < allItems.length; i++) {
+                var item = allItems[i];
+
+                var expDate = new Date(item.expiration_date);
+                var currDate = new Date();
+
+                var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                var diffDays = Math.ceil((expDate.getTime() - currDate.getTime())/oneDay);
+
+                /* Because of the ceiling the diffdays will almost never be 0 to
+                 * account for this we set the expiration to 0 if diffdays is -1.
+                 * This is in order to show the user that an item is expiring today.
+                 * All other items that have expired are set to -1 simply to show the
+                 * user that their food has expired.
+                 */
+                if(diffDays == -1) {
+                    feedItems.push(re.feedController.createFeedItem(item));
+                }
+            }
+            var reservationItems = re.requestHandler.getAllItemsOfType("reservation", function(allItems, error) {
+                for (var i = 0; i < allItems.length; i++) {
+                    var item = allItems[i];
+                    
+                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                    var currDate = new Date();
+                    var reserveTime = new Date(item.start_date);
+                    reserveTime.setHours(item.start_time.substr(0, 2));
+                    reserveTime.setMinutes(item.start_time.substr(3));
+                    
+                    if(reserveTime.getTime() - currDate.getTime() < oneDay && item.uid == window.localStorage.getItem('user_id')) {
+                        feedItems.push(re.feedController.createFeedItem(item));
+                    }
+                }
+                
+                $('.page').html(feedTemplate(feedItems));
+                
+                $('#feed-container').xpull({
+                    'paused': false,  // Is the pulling paused ?
+                    'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                    'callback':function(){
+                        re.render.route();
+                    }
+                });
+                
+                // Add longpress listeners to fridge items to allow them to be removed
+                for(var i in fridgeItems) {
+                    (function(fridgeItem) {
+                        $('#' + fridgeItem._id).longpress(function() {
+                            re.feedController.removeExpiredFood(item._id, item.item);
+                        });
+                    })(fridgeItems[i]);
+                }
+                
+                // Add onclick shortcut from reservation items to their corresponding area of reservation view
+                for(var i in allItems) {
+                    var reservation = allItems[i];
+                    $('#' + reservation._id).on('click', function() {
+                        re.reserveController.modifyCurrentFilterValue(reservation.name_of_item);
+                        window.location.hash = "#reservations";
+                    });
+                }
+                
+                $("#loading-icon").css("display", "none");
+            });
+        });
+    }
+    
 	/**
 	 * Interaction function for the reservation items in the feed.
 	 * Sends the user to the reservtion module with the filter set to

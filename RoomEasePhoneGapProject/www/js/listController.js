@@ -111,6 +111,53 @@ re.listController = (function() {
     
 /****************************** PUBLIC *********************************/    
     
+    /**
+     * Sets the HTML value of the injectable page area to the rendered list view.
+     * @param {boolean} fullRefresh Whether or not the rendering of the page should
+     *     contact the DB to get an updated set of items to display (if not, uses
+     *     the locally stored lists of the items)
+     */
+    function renderListView(fullRefresh) {
+        $("#loading-icon").css("display", "block");
+        $('.page-title').html('List');
+        /* Gets all lists from database and renders the list view with these
+        *  lists embedded.
+        */
+        re.requestHandler.getAllItemsOfType('list', function(allLists, error) {
+            if(allLists == null) {
+                $("#loading-icon").css("display", "none");
+                console.log(error);
+            } else {
+                $('.page').html(listTemplate(allLists));
+                $("#loading-icon").css("display", "none");
+               
+                //Add listener for longclick
+                for (var i in allLists) {
+                    var list = allLists[i];
+                    re.listController.list_items[list._id] = list; 
+                    (function (current) {
+                        $('#' + current._id).longpress(function() {
+                            re.listController.editList(current._id);
+                        })
+                    })(list);
+                }
+            }
+             $('#list-tiles').xpull({
+                'paused': false,  // Is the pulling paused ?
+                'pullThreshold':200, // Pull threshold - amount in  pixels required to pull to enable release callback
+                'callback':function(){
+                    re.render.route();
+                }
+            });
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(quickAdd) {
+                re.listController.makeNewList();
+                quickAdd = false;
+            }
+        });
+    }
+    
     /** 
      * Brings up a popup lets user add a new list to the module. Lists with no name and/or no items
      * will not be added; in such a situation, the user will be reminded of this usage.
