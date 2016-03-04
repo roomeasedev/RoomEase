@@ -81,21 +81,20 @@ re.feedController = (function() {
         fridgeItems = allItems;
         for (var i = 0; i < fridgeItems.length; i++) {
             var item = fridgeItems[i];
-
+            
             var expDate = new Date(item.expiration_date);
-            expDate.setHours(0);
-            expDate.setMinutes(0,0,0,0);
+            expDate.setHours(0,0,0,0);
+            
             var currDate = new Date();
-
+            currDate.setHours(0,0,0,0);
+            
             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
             var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
-
-            /* Items that have expired are set to have expired 1 day ago to
-             * make it simpler for the Handlebars template to detect that the
-             * item has expired.
-             */
-            if(diffDays < 0) {
-                item.expiration_date = -1;
+            alert("Expiration: " + expDate + "\nCurrent: " + currDate);
+            
+            alert(expDate < currDate);
+            // Make expired items into feed items
+            if(expDate < currDate) {
                 feedItems.push(re.feedController.createFeedItem(item));
             }
         }
@@ -140,7 +139,7 @@ re.feedController = (function() {
             }
         }
 
-        $('.page').html(re.render.feedTemplate(fridgeItems));
+        $('.page').html(re.render.feedTemplate(feedItems));
 
         addListeners();
         
@@ -179,6 +178,7 @@ re.feedController = (function() {
      * Sets the HTML value of the injectable page area to the rendered feed view.
      */
     function render() {
+        feedItems = [];
         $("#loading-icon").css("display", "block");
         $('.page-title').html('Feed');
         
