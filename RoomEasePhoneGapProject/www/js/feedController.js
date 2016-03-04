@@ -95,7 +95,7 @@ re.feedController = (function() {
             alert(expDate < currDate);
             // Make expired items into feed items
             if(expDate < currDate) {
-                feedItems.push(re.feedController.createFeedItem(item));
+                feedItems.push(createFeedItem(item));
             }
         }
             
@@ -135,7 +135,7 @@ re.feedController = (function() {
             reserveTime.setMinutes(item.start_time.substr(3));
 
             if(reserveTime.getTime() - currDate.getTime() < oneDay && item.uid == window.localStorage.getItem('user_id')) {
-                feedItems.push(re.feedController.createFeedItem(item));
+                feedItems.push(createFeedItem(item));
             }
         }
 
@@ -156,7 +156,7 @@ re.feedController = (function() {
         for(var i in fridgeItems) {
             (function(fridgeItem) {
                 $('#' + fridgeItem._id).longpress(function() {
-                    re.feedController.removeExpiredFood(fridgeItem._id, fridgeItem.item);
+                    removeExpiredFood(fridgeItem._id, fridgeItem.item);
                 });
             })(fridgeItems[i]);
         }
