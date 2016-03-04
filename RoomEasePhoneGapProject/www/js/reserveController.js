@@ -29,10 +29,6 @@ re.reserveController = (function() {
         };
     }
     
-    function updateCurrentReservationItems(newestReservations){
-        currentReservationitems = newestReservations;
-    }
-    
     /**
      * Function to add a new reservation item to the database, using the input
      * fields of the current popup.
@@ -198,148 +194,177 @@ re.reserveController = (function() {
     }
     
     /**
-     * Attempt to render the reservation items on the user's screen.
+     * Attempt to render the reservation items on the user's screen, by first grabbing the user ID
+     * to user name map for the current group.
      * @param {boolean} isSuccess   Whether the attempt to get the uID to user names map succeeded
      * @param {uidMap} uidMap   The map of user IDs to user names for the user's group, or null
      *     if the request for the uidMap was unsuccessful
      * @param {string} error    An message describing an error when getting the uidMap, or null if 
      *     no error occurred
      */
-    function renderItems(isSuccess, uidMap, error) {
-        re.requestHandler.getAllItemsOfType('reservation', function(reservations, error){
-            if(error){
-                $("#loading-icon").css("display", "none");
-                Materialize.toast("An error has occurred2, please try again.", 2000);
+    function prepareRender(isSuccess, uidMap, error) {
+        // Now that we have the uid to user name map, get the reservation items to render
+        re.requestHandler.getAllItemsOfType('reservation', renderItems);
+    }
+    
+    /**
+     * Renders the given reservation items onto the page for the user, then hides the loading
+     * icon and attaches the correct listeners.
+     * @param {Array<Object>} reservations  The list of reservation objects to be considered
+     *     for rendering
+     * @param {string} error    A message describing the error when grabbing the reservation
+     *     items, or null if no error occurred
+     */
+    function renderItems(reservations, error){
+        // In case of error, indicate that something went wrong and unlock the loading icon
+        // so user can try again.
+        if(error){
+            $("#loading-icon").css("display", "none");
+            Materialize.toast("An error has occurred, please try again.", 2000);
+        } else {
+            currentReservationitems = reservations;
+
+            // Format the reservations so they can be displayed properly
+            reservations = getFilteredReservations(reservations);
+            reservations = getFormattedReservations(reservations);
+            //TODO: Make it so we use reservation_dictionary to aggregate all of the 
+             //Reservations based off of what they are
+            $('.page').html(reservationTemplate(formattedReservations));
+            $("#loading-icon").css("display", "none");
+            re.reserveController.refreshFilterReservations();
+
+            //Add listener for longclick
+            for (var i in reservations) {
+                (function(reservation){
+                    $('#' + reservation._id).longpress(function () {
+                       if(reservation.uid == window.localStorage.getItem("user_id")) {
+                           re.reserveController.deleteReservation(reservation._id);
+                       } else {
+                           Materialize.toast("You can't delete someone else's reservation", 2000);
+                       }
+                    });
+                })(reservations[i]);
+            }
+        }
+    }
+    
+    /**
+     * Given an array of reservations, returns an array of those reservations formatted so they
+     * are ready to be rendered on the page.
+     * @param {Array<Object>} reservations  The input list of reservations to be rendered
+     * @return {Array<Object>} The formatted list of reservations which can be rendered
+     */
+    function getFormattedReservations(reservations) {
+        var formattedReservations = [];
+        // iterate through input array and format each reservation object
+        for(var i = 0; i < reservations.length; i++){
+            var reservationObj = {};
+            var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
+            var startDateObj = dateTuple.start;
+            var endDateObj = dateTuple.end;
+
+
+            //We only add the date to the timeline if we know that it gots over two seperate days
+            //Example: If a reservation starts at 11PM and end at 1AM
+            var startDateStr = "";
+            var endDateStr = "";
+
+            if(startDateObj.getDate() != endDateObj.getDate() ||
+                startDateObj.getMonth() != endDateObj.getMonth() ||
+                startDateObj.getYear() != endDateObj.getYear()) {
+
+                startDateStr += " (" + (startDateObj.getMonth() + 1) + "/" + startDateObj.getDate() + ")";
+                endDateStr += " (" + (endDateObj.getMonth() + 1) + "/" + endDateObj.getDate() + ") ";
+
+            }
+
+            var timeString = "" 
+                            + formatAMPM(startDateObj)
+                            + startDateStr 
+                            + " -- " 
+                            + formatAMPM(endDateObj)
+                            + endDateStr; 
+
+            var currentDate = new Date();
+
+
+            if(currentDate.getTime() > startDateObj.getTime() && currentDate.getTime() < endDateObj){
+                //Event currently happening
+                reservationObj["color_class"] = "reservation_happening_color"; 
+            } else if(currentDate.getTime() > endDateObj.getTime()) {
+                reservationObj["color_class"] = "reservation_happened_color"; 
             } else {
+                reservationObj["color_class"] = "reservation_not_happened_color"; 
+            }
 
-                re.reserveController.updateCurrentReservationItems(reservations);
+            reservationObj["time"] = timeString;
+            reservationObj["title"] = reservations[i].name_of_item;
+            reservationObj["_id"] = reservations[i]._id;
+            reservationObj['start_obj'] = startDateObj;
+            reservationObj['end_obj'] = endDateObj;
+            reservationObj['user'] = uidMap[reservations[i].uid];                
+            reservationObj["unix_start"] = startDateObj.getTime();
+            reservationObj["unix_end"] = endDateObj.getTime();
+            reservationObj["type"] = "reservation";
 
-                //Convert the date-time reservations int0 a more readable format
+            //Make sure that the reservation hasn't already passed
+            //TODO: Update this so that the reservation is automatically deleted
+            if((new Date()).getTime() < endDateObj){
+                formattedReservations.push(reservationObj);              
+            } else {
+                //TODO: Delete that reservation from the DB
+                formattedReservations.push(reservationObj);              
+            }
+        }
 
-                reservations = re.reserveController.getFilteredReservations(reservations);
-                var date_time_reservations = [];
-                for(var i = 0; i < reservations.length; i++){
-                    var reservationObj = {};
-                    var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
-                    var startDateObj = dateTuple.start;
-                    var endDateObj = dateTuple.end;
+        formattedReservations.sort(function(a, b){
+           return a.unix_start - b.unix_start; 
+        });
 
+        //Inject the headers that go above each reservation
+        var existing_header_labels = [];
+        for(var i = 0; i < formattedReservations.length; i++) {
+            var time_header_obj = {};
+            time_header_obj['type'] = 'time';
 
-                  var appendZero = function(number){
-                        if(number < 10) {
-                            return "0" + number;
-                        } else {
-                            return "" + number;
-                        }
-                    } 
+            var now_obj = new Date();
+            if(formattedReservations[i]["start_obj"].getTime() < now_obj.getTime()
+                     && formattedReservations[i]["end_obj"].getTime() > now_obj.getTime()){
+                time_header_obj['label'] = "Currently Active";
+            } else if(formattedReservations[i]["end_obj"].getTime() < now_obj.getTime()) {
+                time_header_obj['label'] = "Already Complete";
+            } else if (formattedReservations[i]['start_obj'].getTime() > now_obj.getTime()) {
+                time_header_obj['label'] = formattedReservations[i]['start_obj'].getMonthName() + " \ " 
+                                            + formattedReservations[i]['start_obj'].getDate();
 
-                    //We only add the date to the timeline if we know that it gots over two seperate days
-                    //Example: If a reservation starts at 11PM and end at 1AM
-                    var startDateStr = "";
-                    var endDateStr = "";
-
-                    if(startDateObj.getDate() != endDateObj.getDate() ||
-                        startDateObj.getMonth() != endDateObj.getMonth() ||
-                        startDateObj.getYear() != endDateObj.getYear()) {
-
-                        startDateStr += " (" + (startDateObj.getMonth() + 1) + "/" + startDateObj.getDate() + ")";
-                        endDateStr += " (" + (endDateObj.getMonth() + 1) + "/" + endDateObj.getDate() + ") ";
-
-                    }
-
-                    var timeString = "" 
-                                    + formatAMPM(startDateObj)
-                                    + startDateStr 
-                                    + " -- " 
-                                    + formatAMPM(endDateObj)
-                                    + endDateStr; 
-
-                    var currentDate = new Date();
-
-
-                    if(currentDate.getTime() > startDateObj.getTime() && currentDate.getTime() < endDateObj){
-                        //Event currently happening
-                        reservationObj["color_class"] = "reservation_happening_color"; 
-                    } else if(currentDate.getTime() > endDateObj.getTime()) {
-                        reservationObj["color_class"] = "reservation_happened_color"; 
-                    } else {
-                        reservationObj["color_class"] = "reservation_not_happened_color"; 
-                    }
-
-                    reservationObj["time"] = timeString;
-                    reservationObj["title"] = reservations[i].name_of_item;
-                    reservationObj["_id"] = reservations[i]._id;
-                    reservationObj['start_obj'] = startDateObj;
-                    reservationObj['end_obj'] = endDateObj;
-                    reservationObj['user'] = uidMap[reservations[i].uid];                
-                    reservationObj["unix_start"] = startDateObj.getTime();
-                    reservationObj["unix_end"] = endDateObj.getTime();
-                    reservationObj["type"] = "reservation";
-
-                    //Make sure that the reservation hasn't already passed
-                    //TODO: Update this so that the reservation is automatically deleted
-                    if((new Date()).getTime() < endDateObj){
-                        date_time_reservations.push(reservationObj);              
-                    } else {
-                        //TODO: Delete that reservation from the DB
-                        date_time_reservations.push(reservationObj);              
-                    }
-                }
-
-                date_time_reservations.sort(function(a, b){
-                   return a.unix_start - b.unix_start; 
-                });
-
-                //Inject the headers that go above each reservation
-                var existing_header_labels = [];
-                for(var i = 0; i < date_time_reservations.length; i++) {
-                    var time_header_obj = {};
-                    time_header_obj['type'] = 'time';
-
-                    var now_obj = new Date();
-                    if(date_time_reservations[i]["start_obj"].getTime() < now_obj.getTime()
-                             && date_time_reservations[i]["end_obj"].getTime() > now_obj.getTime()){
-                        time_header_obj['label'] = "Currently Active";
-                    } else if(date_time_reservations[i]["end_obj"].getTime() < now_obj.getTime()) {
-                        time_header_obj['label'] = "Already Complete";
-                    } else if (date_time_reservations[i]['start_obj'].getTime() > now_obj.getTime()) {
-                        time_header_obj['label'] = date_time_reservations[i]['start_obj'].getMonthName() + " \ " 
-                                                    + date_time_reservations[i]['start_obj'].getDate();
-
-                        //Append year if not this year
-                        if(date_time_reservations[i]['end_obj'].getYear() > now_obj.getYear()) {
-                             time_header_obj['label'] += ", " + date_time_reservations[i]['end_obj'].getFullYear();
-                        }
-                    }
-
-                    if (existing_header_labels.indexOf(time_header_obj.label) == -1){
-                        date_time_reservations.splice(i, 0, time_header_obj);
-                        existing_header_labels.push(time_header_obj.label);
-                        i++;
-                    }
-                }
-
-                //TODO: Make it so we use reservation_dictionary to aggregate all of the 
-                 //Reservations based off of what they are
-                $('.page').html(reservationTemplate(date_time_reservations));
-                $("#loading-icon").css("display", "none");
-                re.reserveController.refreshFilterReservations();
-
-                //Add listener for longclick
-                for (var i in reservations) {
-                    (function(reservation){
-                        $('#' + reservation._id).longpress(function () {
-                           if(reservation.uid == window.localStorage.getItem("user_id")) {
-                               re.reserveController.editReservationItem(reservation._id);
-                           } else {
-                               Materialize.toast("You can't delete someone else's reservation", 2000);
-                           }
-                        });
-                    })(reservations[i]);
+                //Append year if not this year
+                if(formattedReservations[i]['end_obj'].getYear() > now_obj.getYear()) {
+                     time_header_obj['label'] += ", " + formattedReservations[i]['end_obj'].getFullYear();
                 }
             }
-        });
+
+            if (existing_header_labels.indexOf(time_header_obj.label) == -1){
+                formattedReservations.splice(i, 0, time_header_obj);
+                existing_header_labels.push(time_header_obj.label);
+                i++;
+            }
+        }
+        return formattedReservations;
     }
+
+    /**
+     * Appends a zero to the front of a given number if it is less than 10, then returns the 
+     * result as a string.
+     * @param {number} number   The number to be formatted
+     * @return {string} The number as a String, with a leading zero if the number is less than 10
+     */
+    var appendZero = function(number){
+        if(number < 10) {
+            return "0" + number;
+        } else {
+            return "" + number;
+        }
+    } 
     
 /****************************** PUBLIC *********************************/    
 
@@ -358,7 +383,7 @@ re.reserveController = (function() {
                 
         // Get the name map of the current group so we can display who owns each reservation.
         // Then, the callback for that request will render the reservation items.
-        re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), renderItems);
+        re.requestHandler.getUidToNameMap(window.localStorage.getItem("group_id"), prepareRender);
     }
     
     /**
