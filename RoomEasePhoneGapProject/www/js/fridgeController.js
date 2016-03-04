@@ -110,9 +110,13 @@ re.fridgeController = (function() {
      * Removes the click listeners from the buttons in the fridge view popup.
      */
     function resetFridgeButtons() {
+        // Remove listeners for main popup and remove item popup
         $('#cancel').off();
         $('#next-item').off();
         $('#done').off();
+        
+        $('#cancel-remove').off();
+        $('#remove').off();
     }
     
     /**
@@ -138,9 +142,26 @@ re.fridgeController = (function() {
     }
     
     /**
+     * Hides the popup and clears its fields for the next time it is opened.
+     */
+    function cancelBtn() {
+        // Clear fields of popup
+        $('#names').val(function () {
+            return '';
+        });
+        $('#expiration').val(function () {
+            return '';
+        });
+        re.newController.hidePopup();
+        resetFridgeButtons();
+
+        render(false, isShared);
+    }
+    
+    /**
      * Processes the fridge items to display the ones that have expired and then renders them.
-     * @param   {Array<Object>} fridgeItems    List of all the fridge items
-     * @param   {String} error              String describing an error if one occured, null otherwise.
+     * @param   {Array<Object>} fridgeItems     List of all the fridge items
+     * @param   {String} error                  String describing an error if one occured, null otherwise.
      */
     function renderFridgeItems (fridgeItems, error) {
         if(fridgeItems == null) {
@@ -187,7 +208,7 @@ re.fridgeController = (function() {
             }
 
             // Sort the fridge items by expiration date
-            currItems.sort(re.fridgeController.fridgeItemComparator);
+            currItems.sort(fridgeItemComparator);
 
             // Compile page and inject into .page in main html view
             $('.page').html(fridgeTemplate(currItems));
@@ -195,7 +216,47 @@ re.fridgeController = (function() {
 
             addListeners(currItems);
 
-            for(var name in re.fridgeController.fridgeNames) {
+            autoCompleteSetup();
+        }
+
+        // Show add item popup if being rendered from quickAdd shortcut
+        if(re.feedController.quickAdd) {
+            makeNewFridgeItem();
+            re.feedController.quickAdd = false;
+        }
+    }
+    
+    /**
+     * Adds longpress listeners to the fridge items to allow the user
+     * to remove an item when they longpress an item.
+     * @param {Array<Object>} currItems     The items currently being displayed
+     */
+    function addListeners(currItems) {
+        // Add longpress listener to fridge items to ask if the user
+        // wants to delete them or inform them they don't own the item
+        for(var i = 0; i < currItems.length; i++) {
+            (function(item) {
+                $('#' + item._id).longpress(function () {
+                    if(item.owner == window.localStorage.getItem("user_name")) {
+                        removeItem(item._id, item.item);
+                    } else {
+                        Materialize.toast("You can't delete an item you don't own", 2000);
+                    }
+                });    
+            })(currItems[i]);
+        }
+        
+        re.newController.assignXPull('fridge-tiles');
+    }
+    
+    /**
+     * Sets up the auto complete functionality of the fridge popup allowing it to predict, what
+     * items the user might want to add, giving them a drop down as they type based on their
+     * previous entries. If they select an item that they had added previously the popup will then
+     * fill in the predicted date of expiration based on their most recent entry of that item.
+     */
+    function autoCompleteSetup() {
+        for(var name in fridgeNames) {
                 $('#names-select').append('<option value=' + name.substr(0, 1).toUpperCase() + name.substr(1) + ' />');
             }
 
@@ -215,48 +276,18 @@ re.fridgeController = (function() {
                 });
             }
 
-            // Check to see if the user entered a item that was used previously
+            // Check to see if the user entered an item that was used previously
             $('#names').on('focusout', function () {
-                for(var name in re.fridgeController.fridgeNames) {
+                for(var name in fridgeNames) {
                     if($('#names').val().toLowerCase() == name.toLowerCase()) {
                         var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                         var expDate = new Date();
-                        expDate.setTime(expDate.getTime() + (oneDay * re.fridgeController.fridgeNames[name]));
+                        expDate.setTime(expDate.getTime() + (oneDay * fridgeNames[name]));
 
                         $('#expiration').val(expDate.toISOString().substr(0, 10));
                     }
                 }
             });
-        }
-
-        // Show add item popup if being rendered from quickAdd shortcut
-        if(re.feedController.quickAdd) {
-            re.fridgeController.makeNewFridgeItem();
-            re.feedController.quickAdd = false;
-        }
-    }
-    
-    /**
-     * Adds longpress listeners to the fridge items to allow the user
-     * to remove an item when they longpress an item.
-     * @param {Array<Object>} currItems     The items currently being displayed
-     */
-    function addListeners(currItems) {
-        // Add longpress listener to fridge items to ask if the user
-        // wants to delete them or inform them they don't own the item
-        for(var i = 0; i < currItems.length; i++) {
-            (function(item) {
-                $('#' + item._id).longpress(function () {
-                    if(item.owner == window.localStorage.getItem("user_name")) {
-                        re.fridgeController.removeItem(item._id, item.item);
-                    } else {
-                        Materialize.toast("You can't delete an item you don't own", 2000);
-                    }
-                });    
-            })(currItems[i]);
-        }
-        
-        re.newController.assignXPull('fridge-tiles');
     }
     
 /****************************** PUBLIC *********************************/ 
@@ -294,26 +325,13 @@ re.fridgeController = (function() {
      * Function called make all of the resources visible to add a new fridge item in the Fridge tremplate
      */
     function makeNewFridgeItem() {
-        $('#new-fridge-item-btn').css('display', 'none');
         $('.popupBackground.main').css('display', 'block');
         
-        $('#cancel').on('click', function() {
-            // Clear fields of popup
-            $('#names').val(function () {
-                return '';
-            });
-            $('#expiration').val(function () {
-                return '';
-            });
-            re.newController.hidePopup();
-            resetFridgeButtons();
-            renderFridgeView(true, window.location.hash == '#fridge-shared');
-        });
+        // Hides popup and clears fields
+        $('#cancel').on('click', cancelBtn);
         
         // Adds the fridge item to the database when the next item button is pressed
-        $('#next-item').on('click', function() {
-            addItem();
-        });
+        $('#next-item').on('click', addItem);
         
         // Adds the fridge item to the database when the done button is pressed and hides the popup
         $('#done').on('click', doneBtn);
@@ -326,23 +344,18 @@ re.fridgeController = (function() {
      */
     function removeItem(id, name) {
         // Brings up the popup prompting the user if they would like to remove the selected fridge item
-        $('#new-fridge-item-btn').css('display', 'none');
         $('#removePopup').css('display', 'block');
         $('#removeHeader').html('Are you sure you want to remove ' + name + '?');
         
         $('#cancel-remove').on('click', function() {
-            $('#cancel-remove').off();
-            $('#remove').off();
+            resetFridgeButtons();
             $('#removePopup').css('display', 'none');
-            $('#new-fridge-item-btn').css('display', 'block');
         });
         
         // Removes the fridge item from the database
         $('#remove').on('click', function() {
-            $('#cancel-remove').off();
-            $('#remove').off();
+            resetFridgeButtons();
             $('#removePopup').css('display', 'none');
-            $('#new-fridge-item-btn').css('display', 'block');
             re.requestHandler.deleteItem(id, "fridge_item", re.newController.rhDelCallback);
         });
     }
