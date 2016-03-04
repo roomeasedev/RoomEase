@@ -170,7 +170,7 @@ re.reserveController = (function() {
      *     contact the DB to get an updated set of items to display (if not, uses
      *     the locally stored lists of the items)
      */
-    function renderReservationView(fullRefresh) {
+    function render(fullRefresh) {
         $("#loading-icon").css("display", "block");
         $(".page").on("end.pulltorefresh", function (evt, y){
             if(window.location.hash == "#reservations"){
@@ -328,7 +328,7 @@ re.reserveController = (function() {
 
                     //TODO: Make it so we use reservation_dictionary to aggregate all of the 
                      //Reservations based off of what they are
-                    $('.page').html(re.render.reservationTemplate(date_time_reservations));
+                    $('.page').html(reservationTemplate(date_time_reservations));
                     $("#loading-icon").css("display", "none");
                     re.reserveController.refreshFilterReservations();
 

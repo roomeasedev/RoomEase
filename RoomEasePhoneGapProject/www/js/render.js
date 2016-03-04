@@ -87,7 +87,7 @@ re.render = (function() {
         } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
         } else if (!hash || hash == "#feed") {
-            re.feedController.render(true);
+            re.feedController.render();
         } else if (hash == "#list") { 
             re.listController.render(true);
         } else if (hash == "#fridge-mine") {
@@ -95,12 +95,12 @@ re.render = (function() {
         } else if (hash == "#fridge-shared") {
             re.fridgeController.render(true, true);
         } else if (hash == "#reservations") {
-            re.reserveController.renderReservationView();
+            re.reserveController.render(true);
         } else if(hash == "#account"){
             renderAccountView();
         } else {
             if (g_id && (hash == "#gm" || hash == "#gj" || hash == "#gl")) {
-                re.feedController.render(true);
+                re.feedController.render();
             } else if (u_id) {
                 renderGroupMakeOrJoinView();
             } else {
