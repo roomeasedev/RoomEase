@@ -98,7 +98,7 @@ re.fridgeController = (function() {
             });
             
             if(done) {
-                re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
+                renderFridgeView(true, window.location.hash == '#fridge-shared');
                 re.newController.hidePopup();
                 resetFridgeButtons();
                 done = false;
@@ -295,7 +295,7 @@ re.fridgeController = (function() {
             });
             re.newController.hidePopup();
             resetFridgeButtons();
-            re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
+            renderFridgeView(true, window.location.hash == '#fridge-shared');
         });
         
         // Adds the fridge item to the database when the next item button is pressed
