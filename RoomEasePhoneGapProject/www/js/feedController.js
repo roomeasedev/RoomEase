@@ -86,7 +86,7 @@ re.feedController = (function() {
             expDate.setUTCHours(24,0,0,0);
             
             var currDate = new Date();
-            currDate.setUTCHours(0,0,0,0);
+            currDate.setUTCHours(24,0,0,0);
 
             // Make expired items into feed items
             if(expDate < currDate) {

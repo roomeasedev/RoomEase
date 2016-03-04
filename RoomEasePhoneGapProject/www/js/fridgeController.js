@@ -182,10 +182,10 @@ re.fridgeController = (function() {
                 item.owner = userIdsToNames[item.owner];
                 
                 var expDate = new Date(item.expiration_date);
-                expDate.setUTCHours(24,0,0,0);
+                expDate.setUTCHours(24, 0, 0, 0);
 
                 var currDate = new Date();
-                currDate.setUTCHours(0,0,0,0);
+                currDate.setUTCHours(24, 0, 0, 0);
 
                 var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
                 var diffDays = (expDate.getTime() - currDate.getTime())/oneDay;
