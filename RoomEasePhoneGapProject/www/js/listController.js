@@ -264,7 +264,7 @@ re.listController = (function() {
      *     contact the DB to get an updated set of items to display (if not, uses
      *     the locally stored lists of the items)
      */
-    function renderListView(fullRefresh) {
+    function render(fullRefresh) {
         $("#loading-icon").css("display", "block");
         $('.page-title').html('List');
         
@@ -276,7 +276,7 @@ re.listController = (function() {
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
-        'renderListView': renderListView,
+        'render': render,
         'listItems': listItems,
         'makeNewList': makeNewList,
         'editList': editList
