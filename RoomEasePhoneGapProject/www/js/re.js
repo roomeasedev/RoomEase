@@ -19,10 +19,13 @@ $(document).ready(function() {
         FastClick.attach(document.body);
     });
     
+    /* PLEASE COMMENT OUT WHEN TESTING ON CHROME AND SAFARI */
+    // UNCOMMENT WHEN BUILDING, THIS STYLES THE STATUS BAR
     
     $("device").ready(function() {
         if (cordova.platformId == 'android') {
             StatusBar.backgroundColorByHexString("#26A69A");
+            BarTinter.navigationColor("#26A69A"); 
         }
     });
 
