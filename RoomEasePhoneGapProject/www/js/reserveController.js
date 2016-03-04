@@ -362,8 +362,8 @@ re.reserveController = (function() {
     }
     
     /**
-    *Function called make all of the resources visible to add a new reservation in the Reservation tremplate
-    **/
+     * Brings up the popup to add a new reservation of the current filter type.
+     */
     function makeNewReservation(){
         if(currentTypes.length == 1) {
             addNewReservationType();
@@ -376,16 +376,16 @@ re.reserveController = (function() {
             var dropdown = $("#new-reservation-dropdown");
             dropdown.empty();
 
-            if(filterValue != "All"){
+            if(filterValue != "All") {
                 dropdown.append(
                       $("<option></option>")
                         .attr("reservationName", filterValue)
                         .text(filterValue));
             }
 
-            var reservationTypes = getAllReservationTypes();
-            for(var i = 0; i < reservationTypes.length; i++){
-                if(!(reservationTypes[i] == filterValue || reservationTypes[i] == "All")){
+            var reservationTypes = getAllTypes();
+            for(var i = 0; i < reservationTypes.length; i++) {
+                if(!(reservationTypes[i] == filterValue || reservationTypes[i] == "All")) {
                   dropdown.append(
                   $("<option></option>")
                     .attr("reservationName", reservationTypes[i])
@@ -413,8 +413,9 @@ re.reserveController = (function() {
         }
     }
     
-    /* Brings user back to whatever main module screen they're on (usually the onclick for a cancel button)
-     *
+    /**
+     * Brings user back to whatever main module screen they're on hiding the current popup
+     * @param {String} containerId  Id specifying which popup shouold be hidden
      */
     function hidePopup(containerId) {
         $('#new-reservation-btn').css('display', 'block');
@@ -423,8 +424,10 @@ re.reserveController = (function() {
         $("#reservation-create-error-text").css("display", "none");
     }
     
-    //Function called when a reservation item should be edited or deleted in the Reservation template
-    function editReservationItem(reservationId){
+    /**
+     * Function called when a reservation item should be edited or deleted in the Reservation template
+     */
+    function editReservationItem(reservationId) {
         $('#background2').css('display', 'block');
         $('#add-new-btn').css('display', 'none');
         $('.fixed-action-btn').css("display", "none");
@@ -443,14 +446,14 @@ re.reserveController = (function() {
     
     
     /**
-    *Creates the diolague to filter reservations based on their type
-    **/
-    function refreshFilterReservations(){
+     * Creates the diolague to filter reservations based on their type
+     */
+    function refreshFilterReservations() {
         var dropdown = $("#filter-dropdown");
         dropdown.empty();
-        var reservationTypes = getAllReservationTypes();
+        var reservationTypes = getAllTypes();
 
-        for(var i = 0; i < reservationTypes.length; i++){
+        for(var i = 0; i < reservationTypes.length; i++) {
              dropdown.append(
               $("<option></option>")
                 .attr("reservationName", reservationTypes[i])
@@ -468,10 +471,14 @@ re.reserveController = (function() {
         });
     }
     
-    function addType(type){
+    /**
+     * Adds a new type of reservation to the dropdown
+     * list and sets the current filter to that type.
+     */
+    function addTypeToList(type) {
         var typeExists = false;
-        for(var i = 0; i < currentTypes.length; i++){
-            if(currentTypes[i].toLocaleLowerCase() === type.toLocaleLowerCase()){
+        for(var i = 0; i < currentTypes.length; i++) {
+            if(currentTypes[i].toLocaleLowerCase() === type.toLocaleLowerCase()) {
                 typeExists = true;
             }
         }
@@ -483,13 +490,17 @@ re.reserveController = (function() {
         return !typeExists;
     }
     
-    function addNewReservationType(){
+    /**
+     * Reads the user input and adds a new type of reservation or prompts
+     * the user for input if the entry field was blank.
+     */
+    function addNewReservationType() {
         $('#background3').css('display', 'block');
         
-        $("#add-new-reservation-type-btn").click(function(){
+        $("#add-new-reservation-type-btn").click(function() {
             var newType = $("#add-new-resevation-type-text").val().trim();
-            if(newType != ''){
-                    if(addType(newType)){
+            if(newType != '') {
+                    if(addTypeToList(newType)) {
                         hidePopup('#background3');
                         makeNewReservation();
                     } else {
@@ -505,17 +516,21 @@ re.reserveController = (function() {
         });
     }
     
-    function getAllReservationTypes(){
-        for(var i = 0; i < currentReservationitems.length; i++){
+    /**
+     * Parses the reservations of the group to find all the types of reservations
+     * @return {Array<String>}  The array of the current types of reservations
+     */
+    function getAllTypes() {
+        for(var i = 0; i < currentReservationitems.length; i++) {
            var resName = currentReservationitems[i].name_of_item; 
-           if(currentTypes.indexOf(resName) == -1){
+           if(currentTypes.indexOf(resName) == -1) {
                 currentTypes.push(resName);
             }
         }
         
         //Put the filter value at the top of the array
         var indexOfFilterVal = currentTypes.indexOf(filterValue);
-        if(indexOfFilterVal != -1){
+        if(indexOfFilterVal != -1) {
             currentTypes.splice(indexOfFilterVal, 1);
             currentTypes.unshift(filterValue);
         }
@@ -523,7 +538,14 @@ re.reserveController = (function() {
         return currentTypes;
     }
     
-    function reservationToDateObjects(reservation){
+    /**
+     * Takes a reservation and returns a tuple containging two date objects
+     * representing the start and end times of the reservation.
+     * @param {Object} reservation  The reservation to be turned into date objects
+     * @return {Object}             Tuple containing the two date objects of
+     *                              the start and end times of the reservation
+     */
+    function reservationToDateObjects(reservation) {
         var dateTuple = {};
         var start_date_nums = reservation.start_date.split("-");
         var hours = parseInt(reservation.hours);
@@ -548,20 +570,26 @@ re.reserveController = (function() {
         return dateTuple;
     }
     
-    /*
-     *
+    /**
+     * Sets filterValue to a new filter
+     * @param {String} newFilter    The new filter to which filterValue is being set
      */
-    function setFilterValue(newFilter){
+    function setFilterValue(newFilter) {
         filterValue = newFilter;
     }
     
+    /**
+     * Gets the reservations of the current filter type
+     * @param {Array<Object>} reservations  List of all reservations to be filtered
+     * @return {Array<Object>}              List of reservations of current filter type
+     */
     function getFilteredReservations(reservations) {
         var displayedReservations = [];
-        if(filterValue == "All"){
-                displayedReservations = reservations;
+        if(filterValue == "All") {
+            displayedReservations = reservations;
         } else {
-            for(var i = 0; i < reservations.length; i++){
-                if(reservations[i].name_of_item == filterValue){
+            for(var i = 0; i < reservations.length; i++) {
+                if(reservations[i].name_of_item == filterValue) {
                     displayedReservations.push(reservations[i]);
                 }
             }
@@ -576,7 +604,6 @@ re.reserveController = (function() {
         'makeNewReservation': makeNewReservation,
         'editReservationItem':  editReservationItem,
         'refreshFilterReservations': refreshFilterReservations,
-        'getFilteredReservations': getFilteredReservations,
         'updateCurrentReservationItems':updateCurrentReservationItems,
         'currentReservationitems': currentReservationitems,
         'addNewReservationType': addNewReservationType,
