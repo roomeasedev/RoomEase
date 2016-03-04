@@ -1,5 +1,9 @@
 describe("List Controller suite", function() {
     
+    describe("Renders current list items & brings up appropriate buttons when called to", function() {
+        
+    });
+    
     describe("Make new list", function() {
 
         it("title test", function( ){
@@ -75,36 +79,36 @@ describe("List Controller suite", function() {
             }, "Make new list name test failed", 10000);
         });
 
-//        it("hide popup test", function( ){
-//            var listTemplate;
-//            var templateSet = false;
-//            re.templates.load(["List"]).done(function () {
-//                listTemplate = re.templates.get("List");
-//                $("body").append("<div id='test'></div>");
-//                $('#test').html($.parseHTML(listTemplate()));
-//            
-//                re.listController.makeNewList();
-//                $("#name").val("to do");
-//                $("#next-item").val("write more code");
-//                $("#next-item").val("write more code");
-//                
-//                $('#done').trigger('click');
-//
-//                var buttonDisplay = $('#new-list-btn').css('display');
-//                var popupDisplay = $('.popupBackground').css('display');
-//                console.log("buttonDisplay: " + buttonDisplay);
-//                console.log("popupDisplay: " + popupDisplay);
-//                expect(buttonDisplay).toEqual("block");
-//                expect(popupDisplay).toEqual("none");
-//                $('#test').html('');
-//                
-//                templateSet = true;
-//            });
-//            
-//            waitsFor(function(){
-//                return templateSet;
-//            }, "Make new list name test failed", 10000);
-//        });
+        it("cancels popup test", function( ){
+            var listTemplate;
+            var templateSet = false;
+            re.templates.load(["List"]).done(function () {
+                listTemplate = re.templates.get("List");
+                $("body").append("<div id='test'></div>");
+                $('#test').html($.parseHTML(listTemplate()));
+            
+                re.listController.makeNewList();
+                $("#name").val("to do");
+                $("#next-item").val("write more code");
+                $("#next-item").val("write more code");
+                
+                $('#done').trigger('click');
+
+                var buttonDisplay = $('#new-list-btn').css('display');
+                var popupDisplay = $('.popupBackground').css('display');
+                console.log("buttonDisplay: " + buttonDisplay);
+                console.log("popupDisplay: " + popupDisplay);
+                expect(buttonDisplay).toEqual("block");
+                expect(popupDisplay).toEqual("none");
+                $('#test').html('');
+                
+                templateSet = true;
+            });
+            
+            waitsFor(function(){
+                return templateSet;
+            }, "Make new list name test failed", 10000);
+        });
         
      });
     
