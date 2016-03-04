@@ -11,18 +11,18 @@ re.reserveController = (function() {
     
     /**
      * Creates a reservation JSON object that will be added to the database.
-     * nameOfRes: The name of the reservation item
-     * startTime: the statinf time of the reservation
-     * startDate: the date that the reservation starts
+     * name_of_res: The name of the reservation item
+     * start_time: the statinf time of the reservation
+     * start_date: the date that the reservation starts
      * hours: The number of hours in the reservation
      * minutes: The number of minutes in the reservation
      */
-    function createReservation(nameOfRes, startTime, startDate, hours, minutes){
-        return {
+    function createReservation(name_of_res, start_time, start_date, hours, minutes){
+        return test_reservations_item = {
             "type": "reservation",
-            "name_of_item" : nameOfRes,
-            "start_time" : startTime,
-            "start_date" : startDate,
+            "name_of_item" : name_of_res,
+            "start_time" : start_time,
+            "start_date" : start_date,
             "hours" : hours,
             "minutes" : minutes,
             'uid': window.localStorage.getItem('user_id')
@@ -40,32 +40,32 @@ re.reserveController = (function() {
         setFilterValue($("#new-reservation-dropdown").find(":selected").text());
         var reserveName = filterValue;
         //Want to filter by the new type of reservation
-        var startTime = $('#start-time').val().trim();
+        var start_time = $('#start-time').val().trim();
         var minutes = $("#reservation-minutes").val().trim();
         var hours = $("#reservation-hours").val().trim();
-        var startDate = $("#start-date").val().trim();
+        var start_date = $("#start-date").val().trim();
         // Check to see if input was valid, give the corresponding
         // toast error message if necessary, then return false to
         // indicate no reservation was added. The popup will not 
         // be hidden when the method returns false, the user can
         // immediately try again.
         
-         if(startDate == "") {
+         if(start_date == "") {
             Materialize.toast("Please enter a valid start date", 2000);
             return false;
          }
-        var digits = startDate.split("-");
+        var digits = start_date.split("-");
         var startDateObj  = new Date(digits[0], parseInt(digits[1]) - 1, digits[2]);
         var currentNumOfDays = Math.floor((new Date().getTime())/(60 * 60 * 24 * 1000));
         var inputNumOfDays = Math.floor((startDateObj.getTime())/(60 * 60 * 24 * 1000));
         
-        if(startDate == "" || inputNumOfDays < currentNumOfDays ) {
+        if(start_date == "" || inputNumOfDays < currentNumOfDays ) {
            // Allow the user to make a reservation at any time in the current date
            // (by correcting backward 24 hours). TODO: fix this logic to be more
            // accurate to the current time.
             Materialize.toast("Please enter a valid start date", 2000);
             return false;
-        } else if (startTime == "") {
+        } else if (start_time == "") {
             Materialize.toast("Please enter a valid start time", 2000);
             return false;   
         } else if (!hours || parseInt(hours) < 0) {
@@ -79,7 +79,7 @@ re.reserveController = (function() {
             return false;
         }
         
-        var newresv = createReservation(reserveName, startTime, startDate, hours, minutes);
+        var newresv = createReservation(reserveName, start_time, start_date, hours, minutes);
         var newResTuple = reservationToDateObjects(newresv);
         var newStartTime = newResTuple.start;
         var newEndTime = newResTuple.end;
@@ -224,28 +224,23 @@ re.reserveController = (function() {
         } else {
             currentReservationitems = reservations;
 
-            // Filter and format the reservations so they can be displayed properly
+            // Format the reservations so they can be displayed properly
             reservations = getFilteredReservations(reservations);
             reservations = getFormattedReservations(reservations);
-
-            
+            //TODO: Make it so we use reservation_dictionary to aggregate all of the 
+             //Reservations based off of what they are
             $('.page').html(reservationTemplate(formattedReservations));
-            refreshFilterReservations();
             $("#loading-icon").css("display", "none");
+            re.reserveController.refreshFilterReservations();
 
             //Add listener for longclick
             for (var i in reservations) {
-                // wrap the assigned onlongpress function in a closure,
-                // so that we have a unique environment for each fn. This
-                // allows correct lookup of the "current" element for each
-                // of the assigned longpress functions
                 (function(reservation){
                     $('#' + reservation._id).longpress(function () {
-                        // longpress function to delete the reservation, only if you are the owner
-                        if(reservation.uid == window.localStorage.getItem("user_id")) {
-                            deleteReservation(reservation._id);
-                        } else {
-                            Materialize.toast("You can't delete someone else's reservation", 2000);
+                       if(reservation.uid == window.localStorage.getItem("user_id")) {
+                           re.reserveController.deleteReservation(reservation._id);
+                       } else {
+                           Materialize.toast("You can't delete someone else's reservation", 2000);
                        }
                     });
                 })(reservations[i]);
@@ -264,16 +259,16 @@ re.reserveController = (function() {
         // iterate through input array and format each reservation object
         for(var i = 0; i < reservations.length; i++){
             var reservationObj = {};
-            var dateTuple = reservationToDateObjects(reservations[i]);
+            var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
             var startDateObj = dateTuple.start;
             var endDateObj = dateTuple.end;
 
 
-            // If necessary, create the date Strings to display which days the reservation occurs
-            // We only add the date to the timeline if we know that it gots over two seperate days
-            // Example: If a reservation starts at 11PM and end at 1AM
+            //We only add the date to the timeline if we know that it gots over two seperate days
+            //Example: If a reservation starts at 11PM and end at 1AM
             var startDateStr = "";
             var endDateStr = "";
+
             if(startDateObj.getDate() != endDateObj.getDate() ||
                 startDateObj.getMonth() != endDateObj.getMonth() ||
                 startDateObj.getYear() != endDateObj.getYear()) {
@@ -283,19 +278,18 @@ re.reserveController = (function() {
 
             }
 
-            // We create the time string to be displayed for this reservation object
             var timeString = "" 
                             + formatAMPM(startDateObj)
                             + startDateStr 
                             + " -- " 
                             + formatAMPM(endDateObj)
                             + endDateStr; 
+
             var currentDate = new Date();
 
 
-            // Assign a color to each of the reservation objects based on whether they
-            // are currently happening, are in the future, or have already happened.
             if(currentDate.getTime() > startDateObj.getTime() && currentDate.getTime() < endDateObj){
+                //Event currently happening
                 reservationObj["color_class"] = "reservation_happening_color"; 
             } else if(currentDate.getTime() > endDateObj.getTime()) {
                 reservationObj["color_class"] = "reservation_happened_color"; 
@@ -303,7 +297,6 @@ re.reserveController = (function() {
                 reservationObj["color_class"] = "reservation_not_happened_color"; 
             }
 
-            // Create the formatted reservation object  for this reservation
             reservationObj["time"] = timeString;
             reservationObj["title"] = reservations[i].name_of_item;
             reservationObj["_id"] = reservations[i]._id;
@@ -314,50 +307,45 @@ re.reserveController = (function() {
             reservationObj["unix_end"] = endDateObj.getTime();
             reservationObj["type"] = "reservation";
 
-            // Make sure that the reservation hasn't already passed, delete the
-            // item from the DB if it happened yesterday or earlier
-            var currentDate = new Date();
-            currentDate.setHours(0, 0, 0, 0);
-            // currentDate represents today at midnight (previous night)
-            if(currentDate < endDateObj){
+            //Make sure that the reservation hasn't already passed
+            //TODO: Update this so that the reservation is automatically deleted
+            if((new Date()).getTime() < endDateObj){
                 formattedReservations.push(reservationObj);              
             } else {
-                re.requestHandler.deleteItem(reservations[i]._id, "reservation", 
-                                             re.newController.rhDelCallback);              
+                //TODO: Delete that reservation from the DB
+                formattedReservations.push(reservationObj);              
             }
         }
 
-        // sort the reservations so they appear in chronological order on the screen
         formattedReservations.sort(function(a, b){
            return a.unix_start - b.unix_start; 
         });
 
         //Inject the headers that go above each reservation
-        var existingHeaders= [];
+        var existing_header_labels = [];
         for(var i = 0; i < formattedReservations.length; i++) {
-            var timeHeader = {};
-            timeHeader['type'] = 'time';
+            var time_header_obj = {};
+            time_header_obj['type'] = 'time';
 
-            var currTime = new Date();
-            if(formattedReservations[i]["start_obj"].getTime() < currTime.getTime()
-                     && formattedReservations[i]["end_obj"].getTime() > currTime.getTime()){
-                timeHeader['label'] = "Currently Active";
-            } else if(formattedReservations[i]["end_obj"].getTime() < currTime.getTime()) {
-                timeHeader['label'] = "Already Complete";
-            } else if (formattedReservations[i]['start_obj'].getTime() > currTime.getTime()) {
-                timeHeader['label'] = formattedReservations[i]['start_obj'].getMonthName() + " \ " 
+            var now_obj = new Date();
+            if(formattedReservations[i]["start_obj"].getTime() < now_obj.getTime()
+                     && formattedReservations[i]["end_obj"].getTime() > now_obj.getTime()){
+                time_header_obj['label'] = "Currently Active";
+            } else if(formattedReservations[i]["end_obj"].getTime() < now_obj.getTime()) {
+                time_header_obj['label'] = "Already Complete";
+            } else if (formattedReservations[i]['start_obj'].getTime() > now_obj.getTime()) {
+                time_header_obj['label'] = formattedReservations[i]['start_obj'].getMonthName() + " \ " 
                                             + formattedReservations[i]['start_obj'].getDate();
 
-                // Append year if not this year
-                if(formattedReservations[i]['end_obj'].getYear() > currTime.getYear()) {
-                     timeHeader['label'] += ", " + formattedReservations[i]['end_obj'].getFullYear();
+                //Append year if not this year
+                if(formattedReservations[i]['end_obj'].getYear() > now_obj.getYear()) {
+                     time_header_obj['label'] += ", " + formattedReservations[i]['end_obj'].getFullYear();
                 }
             }
 
-            // add the new header label only if we don't have that time header yet
-            if (existingHeaders.indexOf(timeHeader.label) == -1){
-                formattedReservations.splice(i, 0, timeHeader);
-                existingHeaders.push(timeHeader.label);
+            if (existing_header_labels.indexOf(time_header_obj.label) == -1){
+                formattedReservations.splice(i, 0, time_header_obj);
+                existing_header_labels.push(time_header_obj.label);
                 i++;
             }
         }
@@ -605,7 +593,7 @@ re.reserveController = (function() {
         $('#background3').css('display', 'block');
         
         $("#add-new-reservation-type-btn").click(function() {
-            var newType = $("#add-new-resevation-type-text").val().trim();
+            var newType = $("#add-new-reservation-type-text").val().trim();
             if(newType != '') {
                 if(addTypeToList(newType)) {
                     hidePopup('#background3');
@@ -631,7 +619,7 @@ re.reserveController = (function() {
         filterValue = newFilter;
     }
     
-    // Return the public API of the reserveController module,
+    // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
         'render': render,
