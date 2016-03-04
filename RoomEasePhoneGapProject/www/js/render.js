@@ -102,7 +102,7 @@ re.render = (function() {
         } else if (hash == "#fridge-mine") {
             re.fridgeController.renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {
-            renderFridgeView(true, true);
+            re.fridgeController.renderFridgeView(true, true);
         } else if (hash == "#reservations") {
             re.reserveController.renderReservationView();
         } else if(hash == "#account"){
@@ -129,7 +129,7 @@ re.render = (function() {
             feedTemplate = re.templates.get("Feed");
             listTemplate = re.templates.get("List");
             fridgeTemplate = re.templates.get("Fridge");
-            scheduleTemplate = re.templates.get("Reservations");
+            reservationTemplate = re.templates.get("Reservations");
             facebookLoginTemplate = re.templates.get("FacebookLogin");
             groupJoinTemplate = re.templates.get("GroupJoin");
             groupMakeJoinTemplate = re.templates.get("GroupMakeJoin");
