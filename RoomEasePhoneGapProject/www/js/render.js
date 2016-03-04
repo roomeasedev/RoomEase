@@ -13,12 +13,13 @@ re.render = (function() {
     var feedTemplate;
     var listTemplate; 
     var fridgeTemplate;
-    var scheduleTemplate;
+    var reservationTemplate;
     var facebookLoginTemplate;
     var accountTemplate;
     var groupMakeJoinTemplate;
     var groupMakeTemplate;
     var groupJoinTemplate;
+    var quickAdd = false;
     
     /**
      * Sets the HTML value of the injectable page area to the rendered chores view.
@@ -64,6 +65,14 @@ re.render = (function() {
     }
     
     /**
+     * Set's the quickAdd boolean flag
+     * @param {Boolean} flag    Value to set quickAdd to
+     */
+    function setQuickAdd(flag) {
+        quickAdd = flag;
+    }
+    
+    /**
      * Renders the correct view for the injectable area of the viewport.
      * Uses the current hash of the URL to determine which view should be
      * rendered, then calls the appropriate rendering function. The default
@@ -87,15 +96,15 @@ re.render = (function() {
         } else if ((!g_id) && hash == "#gj") {
             renderGroupJoinView();
         } else if (!hash || hash == "#feed") {
-            renderFeedView(true);
+            re.feedController.renderFeedView(true);
         } else if (hash == "#list") { 
-            renderListView(true);
+            re.listController.renderListView(true);
         } else if (hash == "#fridge-mine") {
-            renderFridgeView(true, false);
+            re.fridgeController.renderFridgeView(true, false);
         } else if (hash == "#fridge-shared") {
             renderFridgeView(true, true);
         } else if (hash == "#reservations") {
-            renderSchedulerView();
+            re.reserveController.renderReservationView();
         } else if(hash == "#account"){
             renderAccountView();
         } else {
@@ -138,6 +147,14 @@ re.render = (function() {
     // modules.
     return {
         'init': init,
-        'route': route
+        'route': route,
+        'renderLoginView': renderFacebookLoginView,
+        'renderAccountView': renderAccountView,
+        'feedTemplate': feedTemplate,
+        'listTemplate': listTemplate,
+        'fridgeTemplate': fridgeTemplate,
+        'reservationTemplate': reservationTemplate,
+        'quickAdd': quickAdd,
+        'setQuickAdd': setQuickAdd
     };
 })();
