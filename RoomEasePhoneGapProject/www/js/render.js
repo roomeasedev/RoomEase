@@ -13,7 +13,7 @@ re.render = (function() {
     var feedTemplate;
     var listTemplate; 
     var fridgeTemplate;
-    var scheduleTemplate;
+    var reservationTemplate;
     var facebookLoginTemplate;
     var accountTemplate;
     var groupMakeJoinTemplate;
@@ -150,6 +150,10 @@ re.render = (function() {
         'route': route,
         'renderLoginView': renderFacebookLoginView,
         'renderAccountView': renderAccountView,
+        'feedTemplate': feedTemplate,
+        'listTemplate': listTemplate,
+        'fridgeTemplate': fridgeTemplate,
+        'reservationTemplate': reservationTemplate,
         'quickAdd': quickAdd,
         'setQuickAdd': setQuickAdd
     };
