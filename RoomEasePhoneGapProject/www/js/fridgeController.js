@@ -96,7 +96,7 @@ re.fridgeController = (function() {
             });
             
             if(done) {
-                renderFridgeView(true, window.location.hash == '#fridge-shared');
+                render(true, isShared);
                 re.newController.hidePopup();
                 resetFridgeButtons();
                 done = false;
