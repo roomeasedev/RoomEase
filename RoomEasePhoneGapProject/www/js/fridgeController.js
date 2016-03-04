@@ -268,7 +268,7 @@ re.fridgeController = (function() {
      *     the locally stored lists of the items)
      * @param {boolean} shared          Indicates which of the "shared" and "mine" views should be rendered
      */
-    function renderFridgeView(fullRefresh, shared) {
+    function render(fullRefresh, shared) {
         isShared = shared;
         
         $('.page-title').html('Fridge');
@@ -350,7 +350,7 @@ re.fridgeController = (function() {
     // Return the public API of the controller module,
     // making the following functions public to other modules.
 	return {
-        'renderFridgeView': renderFridgeView,
+        'render': render,
         'makeNewFridgeItem': makeNewFridgeItem,
         'removeItem': removeItem,
         'fridgeNames': fridgeNames,
