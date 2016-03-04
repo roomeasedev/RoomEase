@@ -99,7 +99,7 @@ re.fridgeController = (function() {
             
             if(done) {
                 re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
-                re.controller.hidePopup();
+                re.newController.hidePopup();
                 resetFridgeButtons();
                 done = false;
             }
@@ -293,7 +293,7 @@ re.fridgeController = (function() {
             $('#expiration').val(function () {
                 return '';
             });
-            re.controller.hidePopup();
+            re.newController.hidePopup();
             resetFridgeButtons();
             re.render.renderFridgeView(true, window.location.hash == '#fridge-shared');
         });

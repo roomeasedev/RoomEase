@@ -1,10 +1,10 @@
 /**
- * re.controller is a module that contains much of the UI-driven logic of the application.
+ * re.newController is a module that contains much of the UI-driven logic of the application.
  * Contains functions that are tied to various buttons and interactive elements that drive
  * events such as adding or updating database items. This modules serves as a wrapper and
  * middle man of the request handler calls, so that error handling and results from the DB
  * can be properly transferred to the front end.
- * @return {Object} the re.controller object, which has a public API containing functions
+ * @return {Object} the re.newController object, which has a public API containing functions
  *     for various buttons and interactive elements within the application. 
  */
 re.newController = (function() {

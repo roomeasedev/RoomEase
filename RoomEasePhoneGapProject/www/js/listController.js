@@ -4,7 +4,7 @@
  * events such as adding or updating list items to the database. This modules serves as a wrapper and
  * middle man of List's request handler calls, so that error handling and results from the DB
  * can be properly transferred to the front end.
- * @return {Object} the re.controller object, which has a public API containing functions
+ * @return {Object} the re.newController object, which has a public API containing functions
  *     for various buttons and interactive elements within the application. 
  */
 
@@ -178,7 +178,7 @@ re.listController = (function() {
             if (!itemsValid() || !($('#name').val().length)) {
                 Materialize.toast('Please input a name and at least one item for the list', 4000);
             } else {
-                re.controller.hidePopup();
+                re.newController.hidePopup();
                 var listName = $('#name').val();
                 var listItems = [];
                 var inputs = $('#list-items :input');
@@ -219,7 +219,7 @@ re.listController = (function() {
             if (!itemsValid() || !($('#name').val().length)) {
                 Materialize.toast('Please input a name and at least one item for the list', 4000);                
             } else {
-                re.controller.hidePopup();
+                re.newController.hidePopup();
                 var updatedItems = [];
                 $('#list-items :input').each(function() {
                     if ($(this).val() != '') {
@@ -234,7 +234,7 @@ re.listController = (function() {
         });
         
         $('#delete').click(function() {
-            re.controller.hidePopup();
+            re.newController.hidePopup();
             re.requestHandler.deleteItem(listId, "list", re.newController.rhDelCallback);
         });
     }

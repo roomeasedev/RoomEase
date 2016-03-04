@@ -7,7 +7,7 @@ describe("Controller suite", function() {
         var date = "date";
         var assigned = "assigned";
         
-        var chore_item = re.controller.createChore(choreName, recurring, date, assigned);
+        var chore_item = re.newController.createChore(choreName, recurring, date, assigned);
         
         expect(chore_item[type]).toEqual("chore");
         expect(chore_item[chore_item]).toEqual(choreName);
@@ -23,7 +23,7 @@ describe("Controller suite", function() {
         var expiration = "date";
         var shared = true;
         
-        var fridge_item = re.controller.createFridgeItem(name, expiration, shared);
+        var fridge_item = re.newController.createFridgeItem(name, expiration, shared);
         
         expect(fridge_item[type]).toEqual("food");
         expect(fridge_item[name]).toEqual(name);
