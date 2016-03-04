@@ -236,14 +236,14 @@ re.reserveController = (function() {
             refreshFilterReservations();
             
             $("#loading-icon").css("display", "none");
-            re.reserveController.refreshFilterReservations();
+            refreshFilterReservations();
 
             //Add listener for longclick
             for (var i in reservations) {
                 (function(reservation){
                     $('#' + reservation._id).longpress(function () {
                        if(reservation.uid == window.localStorage.getItem("user_id")) {
-                           re.reserveController.deleteReservation(reservation._id);
+                           deleteReservation(reservation._id);
                        } else {
                            Materialize.toast("You can't delete someone else's reservation", 2000);
                        }
@@ -264,7 +264,7 @@ re.reserveController = (function() {
         // iterate through input array and format each reservation object
         for(var i = 0; i < reservations.length; i++){
             var reservationObj = {};
-            var dateTuple = re.reserveController.reservationToDateObjects(reservations[i]);
+            var dateTuple = reservationToDateObjects(reservations[i]);
             var startDateObj = dateTuple.start;
             var endDateObj = dateTuple.end;
 
@@ -613,7 +613,9 @@ re.reserveController = (function() {
         
         $('#add-new-reservation-type-btn-cancel').click(function() {
             hidePopup('#background3');
-            $('#add-new-reservation-type-text').html('');
+            $('#add-new-reservation-type-text').val(function () {
+                return '';
+            });
         });
     }
     
