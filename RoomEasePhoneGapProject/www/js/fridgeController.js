@@ -199,7 +199,7 @@ re.fridgeController = (function() {
                         currItems.sort(re.fridgeController.fridgeItemComparator);
 
                         // Compile page and inject into .page in main html view
-                        $('.page').html(fridgeTemplate(currItems));
+                        $('.page').html(re.render.fridgeTemplate(currItems));
                         $("#loading-icon").css("display", "none");
 
                         // Add longpress listener to fridge items to ask if the user wants to delete them

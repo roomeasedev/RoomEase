@@ -128,7 +128,7 @@ re.listController = (function() {
                 $("#loading-icon").css("display", "none");
                 console.log(error);
             } else {
-                $('.page').html(listTemplate(allLists));
+                $('.page').html(re.render.listTemplate(allLists));
                 $("#loading-icon").css("display", "none");
                
                 //Add listener for longclick

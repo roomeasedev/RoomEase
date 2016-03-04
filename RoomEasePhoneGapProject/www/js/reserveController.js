@@ -328,7 +328,7 @@ re.reserveController = (function() {
 
                     //TODO: Make it so we use reservation_dictionary to aggregate all of the 
                      //Reservations based off of what they are
-                    $('.page').html(scheduleTemplate(date_time_reservations));
+                    $('.page').html(re.render.reservationTemplate(date_time_reservations));
                     $("#loading-icon").css("display", "none");
                     re.reserveController.refreshFilterReservations();
 

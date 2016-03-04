@@ -116,7 +116,7 @@ re.feedController = (function() {
                     }
                 }
                 
-                $('.page').html(feedTemplate(feedItems));
+                $('.page').html(re.render.feedTemplate(feedItems));
                 
                 $('#feed-container').xpull({
                     'paused': false,  // Is the pulling paused ?
