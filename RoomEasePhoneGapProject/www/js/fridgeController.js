@@ -274,7 +274,7 @@ re.fridgeController = (function() {
                         return this.value;
                     }).get();
                     console.log(availableTags);
-                    $(this).autocomplete({ source: availableTags });
+                    $(this).autocomplete().setOptions(availableTags);
                 });
             }
 
