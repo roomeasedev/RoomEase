@@ -140,17 +140,17 @@ re.listController = (function() {
             $('.page').html(re.render.listTemplate(allLists));
             $("#loading-icon").css("display", "none");
 
-            // Add listener for longclick to each list item
+            // Add listener for click to each list item
             for (var i in allLists) {
                 var list = allLists[i];
                 // update local storage of lists with the full information of the list objects
                 re.listController.listItems[list._id] = list; 
-                // wrap the assigned onlongpress function in a closure,
+                // wrap the assigned onclick function in a closure,
                 // so that we have a unique environment for each fn. This
                 // allows correct lookup of the "current" element for each
-                // of the assigned longpress functions
+                // of the assigned click functions
                 (function (current) {
-                    $('#' + current._id).longpress(function() {
+                    $('#' + current._id).on('click', function() {
                         re.listController.editList(current._id);
                     })
                 })(list);
