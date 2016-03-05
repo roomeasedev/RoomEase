@@ -19,8 +19,8 @@ $(document).ready(function() {
         FastClick.attach(document.body);
     });
     
-    /* PLEASE COMMENT OUT WHEN TESTING ON CHROME AND SAFARI */
-    // UNCOMMENT WHEN BUILDING, THIS STYLES THE STATUS BAR
+    /* PLEASE COMMENT OUT WHEN TESTING IN BROWSER */
+    // UNCOMMENT WHEN BUILDING, THIS STYLES THE STATUS AND NAV BAR
     /*
     $("device").ready(function() {
         if (cordova.platformId == 'android') {
@@ -31,7 +31,8 @@ $(document).ready(function() {
 
     //User 1
     //window.localStorage.setItem("user_id", "795578070");
-    //window.localStorage.setItem("user_name", "Nacho Cano");
+    //window.localStorage.setItem("user_name", "Matthew Mans");
+    //window.localStorage.setItem("group_id", "");
     //window.localStorage.setItem("group_id", "089d6e77903ccfb44b5bcad1f72f8c88");
     
     re.newController.init();

@@ -229,16 +229,16 @@ re.fridgeController = (function() {
     }
     
     /**
-     * Adds longpress listeners to the fridge items to allow the user
-     * to remove an item when they longpress an item.
+     * Adds onlick listeners to the fridge items to allow the user
+     * to remove an item when they onclick an item.
      * @param {Array<Object>} currItems     The items currently being displayed
      */
     function addListeners(currItems) {
-        // Add longpress listener to fridge items to ask if the user
+        // Add onlclick listener to fridge items to ask if the user
         // wants to delete them or inform them they don't own the item
         for(var i = 0; i < currItems.length; i++) {
             (function(item) {
-                $('#' + item._id).longpress(function () {
+                $('#' + item._id).on('click', function () {
                     if(item.owner == window.localStorage.getItem("user_name")) {
                         removeItem(item._id, item.item);
                     } else {

@@ -57,6 +57,7 @@ re.feedController = (function() {
             $('#remove').off();
             $('#removePopup').css('display', 'none');
             $('#new-fridge-item-btn').css('display', 'block');
+            re.requestHandler.deleteItem(null, "fridge_item", re.newController.rhDelCallback);
         });
         
         $('#remove').on('click', function() {
@@ -150,7 +151,7 @@ re.feedController = (function() {
         // Add longpress listeners to fridge items to allow them to be removed
         for(var i in fridgeItems) {
             (function(fridgeItem) {
-                $('#' + fridgeItem._id).longpress(function() {
+                $('#' + fridgeItem._id).on('click', function() {
                     removeExpiredFood(fridgeItem._id, fridgeItem.item);
                 });
             })(fridgeItems[i]);
