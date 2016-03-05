@@ -1,5 +1,7 @@
 describe("List Controller suite", function() {
     
+    window.location.hash = "#list";
+    
     describe("Renders current list items & brings up appropriate buttons when called to", function() {
         
     });
@@ -11,7 +13,7 @@ describe("List Controller suite", function() {
             var templateSet = false;
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
-                $("body").append("<div id='test'></div>");
+                $("body").append("<div class='page' id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
               
                 re.listController.makeNewList();
@@ -35,7 +37,7 @@ describe("List Controller suite", function() {
             var templateSet = false;
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
-                $("body").append("<div id='test'></div>");
+                $("body").append("<div class='page' id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
                 
                 re.listController.makeNewList();
@@ -58,7 +60,7 @@ describe("List Controller suite", function() {
             var templateSet = false;
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
-                $("body").append("<div id='test'></div>");
+                $("body").append("<div class='page' id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
             
                 re.listController.makeNewList();
@@ -84,15 +86,14 @@ describe("List Controller suite", function() {
             var templateSet = false;
             re.templates.load(["List"]).done(function () {
                 listTemplate = re.templates.get("List");
-                $("body").append("<div id='test'></div>");
+                $("body").append("<div class='page' id='test'></div>");
                 $('#test').html($.parseHTML(listTemplate()));
             
-                re.listController.makeNewList();
+                $("#new-list-btn").trigger("click");
                 $("#name").val("to do");
                 $("#next-item").val("write more code");
-                $("#next-item").val("write more code");
-                
-                $('#done').trigger('click');
+                $("#next-item").val("write more code");                
+                $('#cancel').trigger('click');
 
                 var buttonDisplay = $('#new-list-btn').css('display');
                 var popupDisplay = $('.popupBackground').css('display');
