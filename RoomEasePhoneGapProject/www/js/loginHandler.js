@@ -20,6 +20,8 @@ re.loginHandler = (function() {
 			databases[tables[i]] = 
 			new PouchDB(database_location + tables[i]);
 		}
+        return databases;
+        
 	}
 
 	/**

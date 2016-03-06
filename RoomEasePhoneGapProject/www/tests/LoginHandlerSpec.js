@@ -1,13 +1,35 @@
 
 
 describe("Login Handler suite", function() {
-	var db_location = "http://40.114.43.49:5984/";
-	var facebook_id = (Math.floor((Math.random() * 1000000000) + 1)).toString();
-	var group_num = "-1";
-	var name = "Matthew Mans";
-	var group_login_name = null;
-	var group_login_password = null;
-	re.loginHandler.init(db_location);
+    var db_location;
+    var facebook_id;
+    var group_num;
+    var name;
+    var group_login_name;
+    var group_login_password;
+    var initReturn;
+    
+    beforeEach(function() {
+        db_location = "http://40.114.43.49:5984/";
+        facebook_id = (Math.floor((Math.random() * 1000000000) + 1)).toString();
+        group_num = "-1";
+        name = "Matthew Mans";
+        group_login_name = null;
+        group_login_password = null;
+        initReturn = re.loginHandler.init(db_location); 
+    });
+    
+    it ("Initialize", function(){
+        var first = initReturn["groups"];
+        var second = initReturn["users"];
+        var third = initReturn["group_login"];
+        console.log("groups: " + first);
+        console.log("users: " + second);
+        console.log("group_login: " + third);
+        expect(first).toBeDefined;
+        expect(second).toBeDefined;
+        expect(third).toBeDefined;
+    });
 	
 	it("Create New Group", function( ){
 		
@@ -27,8 +49,9 @@ describe("Login Handler suite", function() {
 		waitsFor(function(){
 			return finished;
 		}, "Create new group never returned", 5000);
-		
+        
 		runs(function(){
+            console.log("Create new group group ID: " + grp_id_val);
 			expect(grp_id_val).not.toBeNull();
 			expect(error_val).toBeNull();
 		});
@@ -67,21 +90,35 @@ describe("Login Handler suite", function() {
 
 		var success = false;
 		var error = null;
-		var finished = false;
+        var firstFinished = false;
+		var secondFinished = false;
 		var prev_reg = false;
-
-		var callback = function(is_success, prevously_reg, err){
+        
+        var callback = function(is_success, prevously_reg, err) {
+            firstFinished = true;
+        }
+        
+        var callback2 = function(is_success, prevously_reg, err){
 			success = is_success;
 			error = err;
 			prev_reg = prevously_reg;
-			finished = true;
+			secondFinished = true;
 		}
-		
-		waitsFor(function(){
-			return finished;
+        runs(function(){
+          re.loginHandler.registerNewUser(facebook_id, name, callback);  
+        });
+        
+        waitsFor(function(){
+			return firstFinished;
 		}, "Add new user never returned", 5000);
-
-		re.loginHandler.registerNewUser(facebook_id, name, callback);
+		
+        runs(function(){
+            re.loginHandler.registerNewUser(facebook_id, name, callback2);
+        });
+            
+		waitsFor(function(){
+			return secondFinished;
+		}, "Add new user never returned", 5000);
 		
 		runs(function(){
 			expect(prev_reg).toBeTruthy();
@@ -95,21 +132,37 @@ describe("Login Handler suite", function() {
 		var success = false;
 		var in_grp = false;
 		var error = null;
-		var finished = false;
-
-		var callback = function(is_success, already_in_grp, err){
+        var createGroupFinished = false;
+		var addUserFinished = false;
+        
+        var createGroupCallback = function(group_id, error){
+			group_num = group_id;
+            createGroupFinished = true;
+		}   
+        
+        var callback = function(is_success, already_in_grp, err){
 			success = is_success;
 			in_grp = already_in_grp;
 			error = err;
-			finished = true;
+			addUserFinished = true;
 		}
+        
+        runs(function(){
+            re.loginHandler.createNewGroup(createGroupCallback);
+        });
 		
 		waitsFor(function(){
-			return finished;
-		}, "Add new user never returned", 5000);
+			return createGroupFinished;
+		}, "create group never returned", 5000);
 
-		re.loginHandler.addUserToGroup(facebook_id, group_num, callback);
-		
+        runs(function(){
+		  re.loginHandler.addUserToGroup(facebook_id, group_num, callback);
+        });
+             
+        waitsFor(function(){
+			return addUserFinished;
+		}, "add user never returned", 5000);
+             
 		runs(function(){
 			expect(success).toBeTruthy();
 			expect(in_grp).not.toBeTruthy();
@@ -123,8 +176,15 @@ describe("Login Handler suite", function() {
 		var in_grp = false;
 		var error = null;
 		var finished = false;
+        
+        var createGroupCallback = function(group_id, error){
+			group_num = group_id;
+		}    
+        re.loginHandler.createNewGroup(createGroupCallback);
 
-		var callback = function(is_success, already_in_grp, err){
+        var callback = function(is_success, already_in_grp, err) {}
+        
+		var callback2 = function(is_success, already_in_grp, err){
 			success = is_success;
 			in_grp = already_in_grp;
 			error = err;
@@ -136,6 +196,7 @@ describe("Login Handler suite", function() {
 		}, "Add new user never returned", 10000);
 
 		re.loginHandler.addUserToGroup(facebook_id, group_num, callback);
+        re.loginHandler.addUserToGroup(facebook_id, group_num, callback2);
 		
 		runs(function(){
 			expect(success).not.toBeTruthy();
