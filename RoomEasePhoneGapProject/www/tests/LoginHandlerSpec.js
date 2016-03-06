@@ -7,7 +7,7 @@ describe("Login Handler suite", function() {
     var name;
     var group_login_name;
     var group_login_password;
-    var initReturn;
+//    var initReturn;
     
     beforeEach(function() {
         db_location = "http://40.114.43.49:5984/";
@@ -16,20 +16,21 @@ describe("Login Handler suite", function() {
         name = "Matthew Mans";
         group_login_name = null;
         group_login_password = null;
-        initReturn = re.loginHandler.init(db_location); 
+        re.loginHandler.init(db_location)
+//        initReturn = re.loginHandler.init(db_location); 
     });
     
-    it ("Initialize", function(){
-        var first = initReturn["groups"];
-        var second = initReturn["users"];
-        var third = initReturn["group_login"];
-        console.log("groups: " + first);
-        console.log("users: " + second);
-        console.log("group_login: " + third);
-        expect(first).toBeDefined;
-        expect(second).toBeDefined;
-        expect(third).toBeDefined;
-    });
+//    it ("Initialize", function(){
+//        var first = initReturn["groups"];
+//        var second = initReturn["users"];
+//        var third = initReturn["group_login"];
+//        console.log("groups: " + first);
+//        console.log("users: " + second);
+//        console.log("group_login: " + third);
+//        expect(first).toBeDefined;
+//        expect(second).toBeDefined;
+//        expect(third).toBeDefined;
+//    });
 	
 	it("Create New Group", function( ){
 		

@@ -19,9 +19,7 @@ re.loginHandler = (function() {
 		for (var i = 0; i < tables.length; i++) {
 			databases[tables[i]] = 
 			new PouchDB(database_location + tables[i]);
-		}
-        return databases;
-        
+		}        
 	}
 
 	/**
