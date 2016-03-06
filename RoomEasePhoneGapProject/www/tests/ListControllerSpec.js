@@ -19,6 +19,7 @@ describe("List Controller suite", function() {
                 
                 $("#name").val("name");
                 $("#first-item").val("first item");
+                $("#next-item").val("next item");
                 $("#done").trigger("click");
                 expect($('#new-list-btn').css('display')).toEqual("block");
                 expect($('.popupBackground').css('display')).toEqual("none");
@@ -29,7 +30,7 @@ describe("List Controller suite", function() {
             
             waitsFor(function(){
                 return templateSet;
-            }, "displays popup test failed", 10000);
+            }, "displays popup test failed", 100000);
         });
 
         it("clears new list popup when cancelled", function( ){
@@ -61,7 +62,7 @@ describe("List Controller suite", function() {
             
             waitsFor(function(){
                 return templateSet;
-            }, "clears popup after cancel failed", 10000);
+            }, "clears popup after cancel failed", 100000);
         });
 
         it("stops user from adding invalid lists", function() {
@@ -96,7 +97,7 @@ describe("List Controller suite", function() {
             
             waitsFor(function(){
                 return templateSet;
-            }, "allows user to add a list with invalid fields", 10000);
+            }, "allows user to add a list with invalid fields", 100000);
         });
         
      });
@@ -118,7 +119,7 @@ describe("List Controller suite", function() {
             
             waitsFor(function(){
                 return templateSet;
-            }, "displays popup test failed", 10000);
+            }, "displays popup test failed", 100000);
 
         });        
     });
