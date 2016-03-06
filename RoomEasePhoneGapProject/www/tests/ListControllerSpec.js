@@ -1,87 +1,9 @@
 describe("List Controller suite", function() {
     
-    window.location.hash = "#list";
+    window.location.hash = "";
     
-    describe("Renders current list items & brings up appropriate buttons when called to", function() {
-        
-    });
-    
-    describe("Make new list", function() {
-
-        it("title test", function( ){
-            var listTemplate;
-            var templateSet = false;
-            re.templates.load(["List"]).done(function () {
-                listTemplate = re.templates.get("List");
-                $("body").append("<div class='page' id='test'></div>");
-                $('#test').html($.parseHTML(listTemplate()));
-              
-                re.listController.makeNewList();
-            
-                var title = $('#popupTitle').html();
-                console.log("title: " + title);
-                expect(title).toEqual("New List");
-                $('#test').html('');
-                
-                templateSet = true;
-            });    
-            
-            waitsFor(function(){
-                return templateSet;
-            }, "Make new list title test failed", 10000);
-
-        });
-
-        it("name test", function( ){
-            var listTemplate;
-            var templateSet = false;
-            re.templates.load(["List"]).done(function () {
-                listTemplate = re.templates.get("List");
-                $("body").append("<div class='page' id='test'></div>");
-                $('#test').html($.parseHTML(listTemplate()));
-                
-                re.listController.makeNewList();
-
-                var name = $('#name').html();
-                console.log("name: " + name);
-                expect(name).toEqual("");
-                $('#test').html('');
-                
-                templateSet = true;
-            });
-            
-            waitsFor(function(){
-                return templateSet;
-            }, "Make new list name test failed", 10000);
-        });
-
-        it("popup test", function( ){
-            var listTemplate;
-            var templateSet = false;
-            re.templates.load(["List"]).done(function () {
-                listTemplate = re.templates.get("List");
-                $("body").append("<div class='page' id='test'></div>");
-                $('#test').html($.parseHTML(listTemplate()));
-            
-                re.listController.makeNewList();
-
-                var buttonDisplay = $('#new-list-btn').css('display');
-                var popupDisplay = $('.popupBackground').css('display');
-                console.log("buttonDisplay: " + buttonDisplay);
-                console.log("popupDisplay: " + popupDisplay);
-                expect(buttonDisplay).toEqual("none");
-                expect(popupDisplay).toEqual("block");
-                $('#test').html('');
-                
-                templateSet = true;
-            });
-            
-            waitsFor(function(){
-                return templateSet;
-            }, "Make new list name test failed", 10000);
-        });
-
-        it("cancels popup test", function( ){
+    describe("Add a list tests", function() {        
+        it("displays & closes a popup after adding a valid list", function() {
             var listTemplate;
             var templateSet = false;
             re.templates.load(["List"]).done(function () {
@@ -90,73 +12,114 @@ describe("List Controller suite", function() {
                 $('#test').html($.parseHTML(listTemplate()));
             
                 $("#new-list-btn").trigger("click");
-                $("#name").val("to do");
-                $("#next-item").val("write more code");
-                $("#next-item").val("write more code");                
-                $('#cancel').trigger('click');
-
-                var buttonDisplay = $('#new-list-btn').css('display');
-                var popupDisplay = $('.popupBackground').css('display');
-                console.log("buttonDisplay: " + buttonDisplay);
-                console.log("popupDisplay: " + popupDisplay);
-                expect(buttonDisplay).toEqual("block");
-                expect(popupDisplay).toEqual("none");
-                $('#test').html('');
+                expect($('#new-list-btn').css('display')).toEqual("none");
+                expect($('.popupBackground').css('display')).toEqual("block");
+                expect($('#name').val()).toEqual("");
+                expect($('#popupTitle').html()).toEqual("New List");
                 
+                $("#name").val("name");
+                $("#first-item").val("first item");
+                $("#done").trigger("click");
+                expect($('#new-list-btn').css('display')).toEqual("block");
+                expect($('.popupBackground').css('display')).toEqual("none");
+                
+                $('#test').empty();                
                 templateSet = true;
             });
             
             waitsFor(function(){
                 return templateSet;
-            }, "Make new list name test failed", 10000);
+            }, "displays popup test failed", 10000);
+        });
+
+        it("clears new list popup when cancelled", function( ){
+            var listTemplate;
+            var templateSet = false;
+            re.templates.load(["List"]).done(function () {
+                listTemplate = re.templates.get("List");
+                $("body").append("<div class='page' id='test'></div>");
+                $('#test').html($.parseHTML(listTemplate()));
+            
+                $("#new-list-btn").trigger("click"); 
+                $('#name').html("SoMething");
+                $('#first-item').val("here is a first item");
+                
+                $('#cancel').trigger('click');
+                var buttonDisplay = $('#new-list-btn').css('display');
+                var popupDisplay = $('.popupBackground').css('display');
+                expect(buttonDisplay).toEqual("block");
+                expect(popupDisplay).toEqual("none");
+                
+                $("#new-list-btn").trigger("click");
+                expect($('#popupTitle').html()).toEqual("New List");
+                expect($('#name').html()).toEqual("");
+                expect($('#first-item').val()).toEqual("");
+                
+                $('#test').empty();                
+                templateSet = true;
+            });
+            
+            waitsFor(function(){
+                return templateSet;
+            }, "clears popup after cancel failed", 10000);
+        });
+
+        it("stops user from adding invalid lists", function() {
+            var listTemplate;
+            var templateSet = false;
+            re.templates.load(["List"]).done(function () {
+                listTemplate = re.templates.get("List");
+                $("body").append("<div class='page' id='test'></div>");
+                $('#test').html($.parseHTML(listTemplate()));
+            
+                $("#new-list-btn").trigger("click");                
+                $("#name").val("name");
+                $("#done").trigger("click");
+                expect($('#new-list-btn').css('display')).toEqual("none");
+                expect($('.popupBackground').css('display')).toEqual("block");
+                
+                $("#name").val("");
+                $("#first-item").val("blah");
+                $("#done").trigger("click");
+                expect($('#new-list-btn').css('display')).toEqual("none");
+                expect($('.popupBackground').css('display')).toEqual("block");
+                
+                $("#name").val("");
+                $("#first-item").val("");
+                $("#done").trigger("click");
+                expect($('#new-list-btn').css('display')).toEqual("none");
+                expect($('.popupBackground').css('display')).toEqual("block");
+                
+                $('#test').empty();                
+                templateSet = true;
+            });
+            
+            waitsFor(function(){
+                return templateSet;
+            }, "allows user to add a list with invalid fields", 10000);
         });
         
      });
     
-//    describe("Edit list", function() {
-//        var list;
-//        var id = "123";
-//        
-//        beforeEach(function() {
-//            list = {
-//                "type": "list",
-//                "name_of_list": "food",
-//                "text": "hello",
-//                "items": ["milk", "cheese"],
-//                "visible_users":
-//                    ["12345567878", //Hardcoding in IDs for now
-//                        "124444433333"], 
-//                "modifiable_users":
-//                    ["12344444", //Hardcoded
-//                    "1124444444"]
-//            }
-//        });
-//        
-//        it("title test", function( ){
-//            var listTemplate;
-//            var templateSet = false;
-//            re.templates.load(["List"]).done(function () {
-//                listTemplate = re.templates.get("List");
-//                $("body").append("<div id='test'></div>");
-//                $('#test').html($.parseHTML(listTemplate()));
-//                
-//                re.listController.list_items.id = id;
-//                
-//                re.listController.editList(id);
-//            
-//                var title = $('#popupTitle').html();
-//                console.log("title: " + title);
-//                expect(title).toEqual("Edit List");
-//                $('#test').html('');
-//                
-//                templateSet = true;
-//            });    
-//            
-//            waitsFor(function(){
-//                return templateSet;
-//            }, "Make new list title test failed", 10000);
-//
-//        });
-//    });
-    
+    describe("Edit list tests", function() {
+        it("displays & closes a popup after adding a valid list", function() {
+            var listTemplate;
+            var templateSet = false;
+            re.templates.load(["List"]).done(function () {
+                listTemplate = re.templates.get("List");
+                $("body").append("<div class='page' id='test'></div>");
+                $('#test').html($.parseHTML(listTemplate()));   
+                
+                var items = $('#list-item');
+                
+                $('#test').empty();                
+                templateSet = true;
+            });
+            
+            waitsFor(function(){
+                return templateSet;
+            }, "displays popup test failed", 10000);
+
+        });        
+    });
 });
