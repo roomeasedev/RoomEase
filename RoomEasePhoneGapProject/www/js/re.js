@@ -21,13 +21,13 @@ $(document).ready(function() {
     
     /* PLEASE COMMENT OUT WHEN TESTING IN BROWSER */
     // UNCOMMENT WHEN BUILDING, THIS STYLES THE STATUS AND NAV BAR
-    /*
+    
     $("device").ready(function() {
         if (cordova.platformId == 'android') {
             StatusBar.backgroundColorByHexString("#26A69A");
             BarTinter.navigationColor("#26A69A"); 
         }
-    });*/
+    });
 
     //User 1
     //window.localStorage.setItem("user_id", "795578070");
