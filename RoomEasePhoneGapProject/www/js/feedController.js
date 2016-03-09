@@ -57,7 +57,6 @@ re.feedController = (function() {
             $('#remove').off();
             $('#removePopup').css('display', 'none');
             $('#new-fridge-item-btn').css('display', 'block');
-            re.requestHandler.deleteItem(null, "fridge_item", re.newController.rhDelCallback);
         });
         
         $('#remove').on('click', function() {
@@ -65,7 +64,7 @@ re.feedController = (function() {
             $('#remove').off();
             $('#removePopup').css('display', 'none');
             $('#new-fridge-item-btn').css('display', 'block');
-            re.requestHandler.deleteItem(id, "fridge_item", re.newController.rhDelCallback);
+            re.requestHandler.deleteItem(foodId, "fridge_item", re.newController.rhDelCallback);
         });
         
         // Remove item from local list of feed items
