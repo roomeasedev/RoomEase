@@ -142,12 +142,12 @@ re.feedController = (function() {
     }
     
     /**
-     * Adds onClick and longpress listeners to the feed items
+     * Adds onClick listeners to the feed items
      */
     function addListeners() {
         re.newController.assignXPull('feed-container');
 
-        // Add longpress listeners to fridge items to allow them to be removed
+        // Add click listeners to fridge items to allow them to be removed
         for(var i in fridgeItems) {
             (function(fridgeItem) {
                 $('#' + fridgeItem._id).on('click', function() {
@@ -177,7 +177,7 @@ re.feedController = (function() {
         $("#loading-icon").css("display", "block");
         $('.page-title').html('Feed');
         
-        // Store fridge and reservation items separately to add longpress listeners later
+        // Store fridge and reservation items separately to add click listeners later
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", renderFridgeItems);
     }
 
