@@ -24,7 +24,7 @@ $(document).ready(function() {
     
     $("device").ready(function() {
         if (cordova.platformId == 'android') {
-            StatusBar.backgroundColorByHexString("#00695C");
+            StatusBar.backgroundColorByHexString("#00897B");
             BarTinter.navigationColor("#26A69A"); 
         }
     });
