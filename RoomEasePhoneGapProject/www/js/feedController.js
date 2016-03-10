@@ -57,7 +57,6 @@ re.feedController = (function() {
             $('#remove').off();
             $('#removePopup').css('display', 'none');
             $('#new-fridge-item-btn').css('display', 'block');
-            re.requestHandler.deleteItem(null, "fridge_item", re.newController.rhDelCallback);
         });
         
         $('#remove').on('click', function() {
@@ -65,7 +64,7 @@ re.feedController = (function() {
             $('#remove').off();
             $('#removePopup').css('display', 'none');
             $('#new-fridge-item-btn').css('display', 'block');
-            re.requestHandler.deleteItem(id, "fridge_item", re.newController.rhDelCallback);
+            re.requestHandler.deleteItem(foodId, "fridge_item", re.newController.rhDelCallback);
         });
         
         // Remove item from local list of feed items
@@ -143,12 +142,12 @@ re.feedController = (function() {
     }
     
     /**
-     * Adds onClick listeners to the feed items
+     * Adds onClick and longpress listeners to the feed items
      */
     function addListeners() {
         re.newController.assignXPull('feed-container');
 
-        // Add click listeners to fridge items to allow them to be removed
+        // Add longpress listeners to fridge items to allow them to be removed
         for(var i in fridgeItems) {
             (function(fridgeItem) {
                 $('#' + fridgeItem._id).on('click', function() {
@@ -178,7 +177,7 @@ re.feedController = (function() {
         $("#loading-icon").css("display", "block");
         $('.page-title').html('Feed');
         
-        // Store fridge and reservation items separately to add click listeners later
+        // Store fridge and reservation items separately to add longpress listeners later
         var fridgeItems = re.requestHandler.getAllItemsOfType("fridge_item", renderFridgeItems);
     }
 

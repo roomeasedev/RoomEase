@@ -238,10 +238,10 @@ re.reserveController = (function() {
             $("#loading-icon").css("display", "none");
             refreshFilterReservations();
 
-            //Add listener for click
+            //Add listener for longclick
             for (var i in reservations) {
                 (function(reservation){
-                    $('#' + reservation._id).click(function () {
+                    $('#' + reservation._id).longpress(function () {
                        if(reservation.uid == window.localStorage.getItem("user_id")) {
                            deleteReservation(reservation._id);
                        } else {
