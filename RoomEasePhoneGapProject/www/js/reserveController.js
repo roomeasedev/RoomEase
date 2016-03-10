@@ -250,6 +250,8 @@ re.reserveController = (function() {
                     });
                 })(reservations[i]);
             }
+            
+            re.newController.assignXPull('reservation-tiles');
         }
     }
     
@@ -611,8 +613,10 @@ re.reserveController = (function() {
             }
         });
         
-        $('#add-new-reservation-type-btn-cancel').click(function() {
+        $('#add-new-reservation-type-btn-cancel').on('click', function() {
             hidePopup('#background3');
+            $('#add-new-reservation-type-btn-cancel').off('click');
+            $('#add-new-reservation-type-btn').off('click');
             $('#add-new-reservation-type-text').val(function () {
                 return '';
             });
