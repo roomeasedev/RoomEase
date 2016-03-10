@@ -252,6 +252,12 @@ re.reserveController = (function() {
             }
             
             re.newController.assignXPull('reservation-tiles');
+            
+            // Show add item popup if being rendered from quickAdd shortcut
+            if(re.feedController.quickAdd) {
+                makeNewReservation();
+                re.feedController.quickAdd = false;
+            }
         }
     }
     

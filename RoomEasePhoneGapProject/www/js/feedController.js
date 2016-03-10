@@ -185,7 +185,7 @@ re.feedController = (function() {
      * Shortcut to the add popup of the list module
      */
     function listModuleButton() {
-        setQuickAdd(true);
+        re.feedController.quickAdd = true;
         window.location.hash = '#list';
     }
     
@@ -193,7 +193,7 @@ re.feedController = (function() {
      * Shortcut to the add popup of the reservation module
      */
     function reservationModuleButton() {
-        setQuickAdd(true);
+        re.feedController.quickAdd = true;
         window.location.hash = '#reservations';
     }
     
@@ -201,18 +201,10 @@ re.feedController = (function() {
      * Shortcut to the add popup of the fridge module
      */
     function fridgeModuleButton() {
-        setQuickAdd(true);
+        re.feedController.quickAdd = true;
         window.location.hash = '#fridge-mine';
     }
-    
-    /**
-     * Set's the quickAdd boolean flag
-     * @param {boolean} flag    Value to set quickAdd to
-     */
-    function setQuickAdd(flag) {
-        quickAdd = flag;
-    }
-    
+
 	/* Return the public API of re.feedController, which allows the fields
 	 * and methods listed in this object to be visible to the other modules.
      */
@@ -221,7 +213,6 @@ re.feedController = (function() {
 		'listModuleButton': listModuleButton,
 		'reservationModuleButton': reservationModuleButton,
 		'fridgeModuleButton':	fridgeModuleButton,
-        'quickAdd': quickAdd,
-        'setQuickAdd': setQuickAdd
+        'quickAdd': quickAdd
 	};
 })();
