@@ -266,7 +266,7 @@ re.listController = (function() {
      */
     function render(fullRefresh) {
         $("#loading-icon").css("display", "block");
-        $('.page-title').html('List');
+        $('.page-title').html('Lists');
         
         // Get all lists from database to render on the page
         // TODO: logic for full refresh vs. local copies (call renderListItems with own copies)

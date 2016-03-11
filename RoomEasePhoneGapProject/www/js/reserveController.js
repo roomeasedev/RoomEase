@@ -61,7 +61,7 @@ re.reserveController = (function() {
         var currentNumOfDays = Math.floor((new Date().getTime()  - 1000*60*60*8)/(60.0 * 60 * 24 * 1000));
         var inputNumOfDays = Math.floor((startDateObj.getTime() - 1000*60*60*8)/(60.0 * 60 * 24 * 1000));
         
-        if(start_date == "" || inputNumOfDays < currentNumOfDays ) {
+        if(start_date == "" || inputNumOfDays < currentNumOfDays) {
            // Allow the user to make a reservation at any time in the current date
            // (by correcting backward 24 hours). TODO: fix this logic to be more
            // accurate to the current time.
@@ -242,8 +242,8 @@ re.reserveController = (function() {
             //Add listener for click
             for (var i in reservations) {
                 (function(reservation){
-                    $('#' + reservation._id).on('click', function () {
-                       if(reservation.user_id == window.localStorage.getItem("user_id")) {
+                    $('#' + reservation._id).on('click', function () {                        
+                       if(reservation.uid == window.localStorage.getItem("user_id")) {
                            deleteReservation(reservation._id);
                        } else {
                            Materialize.toast("You can't delete someone else's reservation", 2000);
@@ -320,7 +320,7 @@ re.reserveController = (function() {
             reservationObj["unix_start"] = startDateObj.getTime();
             reservationObj["unix_end"] = endDateObj.getTime();
             reservationObj["type"] = "reservation";
-            reservationObj["user_id"] = window.localStorage.getItem("user_id");
+            reservationObj["uid"] = reservations[i].uid;
 
             //Make sure that the reservation hasn't already passed
             //TODO: Update this so that the reservation is automatically deleted
@@ -419,8 +419,7 @@ re.reserveController = (function() {
         $('#delete-reservation-popup').css('display', 'block');
 
         $('#delete-delete').click(function() {
-            re.requestHandler.deleteItem(reservationId, "reservation",
-                re.newController.rhDelCallback);
+            re.requestHandler.deleteItem(reservationId, "reservation", re.newController.rhDelCallback);
             hidePopup('#background2');
         });
 
