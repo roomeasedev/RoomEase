@@ -125,11 +125,15 @@ re.feedController = (function() {
 
             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
             var currDate = new Date();
-            var reserveTime = new Date(item.start_date);
-            reserveTime.setHours(item.start_time.substr(0, 2));
-            reserveTime.setMinutes(item.start_time.substr(3));
+            currDate.setHours(0,0,0,0);
+            
+            var reserveDate = new Date(item.start_date);
+            
+            reserveDate.setUTCHours(24, 0, 0, 0);
+            reserveDate.setHours(item.start_time.substr(0, 2), item.start_time.substr(3), 0,0);
 
-            if(reserveTime.getTime() - currDate.getTime() < oneDay && item.uid == window.localStorage.getItem('user_id')) {
+            if(reserveDate.getTime() - currDate.getTime() < oneDay && item.uid == window.localStorage.getItem('user_id')) {
+                item.start_time = re.reserveController.formatAMPM(reserveDate);
                 feedItems.push(createFeedItem(item));
             }
         }

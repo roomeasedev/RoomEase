@@ -643,6 +643,7 @@ re.reserveController = (function() {
         'render': render,
         'makeNewReservation': makeNewReservation,
         'addNewReservationType': addNewReservationType,
-        'setFilterValue':setFilterValue
+        'setFilterValue':setFilterValue,
+        'formatAMPM': formatAMPM
 	}
 })();
