@@ -57,8 +57,9 @@ re.reserveController = (function() {
          }
         var digits = start_date.split("-");
         var startDateObj  = new Date(digits[0], parseInt(digits[1]) - 1, digits[2]);
-        var currentNumOfDays = Math.floor((new Date().getTime())/(60 * 60 * 24 * 1000));
-        var inputNumOfDays = Math.floor((startDateObj.getTime())/(60 * 60 * 24 * 1000));
+        
+        var currentNumOfDays = Math.floor((new Date().getTime()  - 1000*60*60*8)/(60.0 * 60 * 24 * 1000));
+        var inputNumOfDays = Math.floor((startDateObj.getTime() - 1000*60*60*8)/(60.0 * 60 * 24 * 1000));
         
         if(start_date == "" || inputNumOfDays < currentNumOfDays ) {
            // Allow the user to make a reservation at any time in the current date
