@@ -241,8 +241,8 @@ re.reserveController = (function() {
             //Add listener for click
             for (var i in reservations) {
                 (function(reservation){
-                    $('#' + reservation._id).click(function () {
-                       if(reservation.uid == window.localStorage.getItem("user_id")) {
+                    $('#' + reservation._id).on('click', function () {
+                       if(reservation.user_id == window.localStorage.getItem("user_id")) {
                            deleteReservation(reservation._id);
                        } else {
                            Materialize.toast("You can't delete someone else's reservation", 2000);
@@ -319,6 +319,7 @@ re.reserveController = (function() {
             reservationObj["unix_start"] = startDateObj.getTime();
             reservationObj["unix_end"] = endDateObj.getTime();
             reservationObj["type"] = "reservation";
+            reservationObj["user_id"] = window.localStorage.getItem("user_id");
 
             //Make sure that the reservation hasn't already passed
             //TODO: Update this so that the reservation is automatically deleted
