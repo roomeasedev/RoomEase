@@ -24,7 +24,7 @@ re.newController = (function() {
      */
 	function init() {
         //Initialize login handler and requestHandler
-        re.loginHandler.init("http://50.181.254.171:5984/");
+        re.loginHandler.init("http://50.181.254.171:5985/");
 		if (!userId){
 			console.log("we couldn't find a UID! need to do FB Login");
             window.location.hash = "#fb";
@@ -33,7 +33,7 @@ re.newController = (function() {
             window.location.hash = "#gl";
 		} else {
 			console.log("we found both a uid and a group id");
-            re.requestHandler.init("http://50.181.254.171:5984/", userId, groupId);
+            re.requestHandler.init("http://50.181.254.171:5985/", userId, groupId);
             var onGetGroupIDs = function(isSucces, map, error){
                 if(isSucces) {
                     user_ids_to_names = map;

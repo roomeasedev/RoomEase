@@ -3,7 +3,7 @@
 
 
 describe("Request Handler suite", function() {
-	var db_location = "http://40.114.43.49:5984/";
+	var db_location = "http://40.114.43.49:5985/";
 	var facebook_id = (Math.floor((Math.random() * 1000000000) + 1)).toString();
 	var group_num = "-1";
 	var name = "Matthew Mans";

@@ -9,7 +9,7 @@ describe("Login Handler suite", function() {
     var group_login_password;
     
     beforeEach(function() {
-        db_location = "http://40.114.43.49:5984/";
+        db_location = "http://40.114.43.49:5985/";
         facebook_id = (Math.floor((Math.random() * 1000000000) + 1)).toString();
         group_num = "-1";
         name = "Matthew Mans";
