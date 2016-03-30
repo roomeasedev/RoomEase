@@ -165,7 +165,7 @@ re.newController = (function() {
 	return {
 		'init': init,
         //'list_items': list_items,
-        'reservation_items': reservation_items,
+        'reservationItems': reservationItems,
         'getUIDsMap': getUIDsMap,
         'hidePopup': hidePopup,
         'rhAddCallback': rhAddCallback,
