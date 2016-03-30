@@ -7,7 +7,7 @@ re.requestHandler = (function(){
 	var user_id = null;
 	var group_id = null;
 	var databases = {};
-	var user_ids_to_names = {};
+	var userIdsToNames = {};
     
 	var type_to_table = {
 		"chore":'chores',
@@ -38,10 +38,10 @@ re.requestHandler = (function(){
         
         var onGetGroupIDs = function(isSucces, map, error) {
             if(isSucces) {
-				user_ids_to_names = map;
+				userIdsToNames = map;
                 console.log("Map set!");
                 console.log("Map");
-                console.log(user_ids_to_names);
+                console.log(userIdsToNames);
             } else {
                 console.log(error);
             }
@@ -52,7 +52,7 @@ re.requestHandler = (function(){
 	}
     
     function getLocalUserIdsToNames(){
-        return user_ids_to_names;
+        return userIdsToNames;
     }
 
 

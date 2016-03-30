@@ -239,7 +239,7 @@ re.loginHandler = (function() {
                 window.localStorage.setItem('group_password', group_password);
                 $('#groupName').html(group_name);
                 $('#groupPwd').html(group_password);
-                re.requestHandler.init("http://40.114.43.49:5984/",
+                re.requestHandler.init("http://50.181.254.171:5984/",
                                        u_id, window.localStorage.getItem('group_id'));
 				addUserToGroup(u_id, window.localStorage.getItem('group_id'), function(is_success, already_in_grp, error) {
 					if (!is_success) {
@@ -289,7 +289,7 @@ re.loginHandler = (function() {
                         window.localStorage.setItem("group_id", groupNum);
                         window.localStorage.setItem('group_name', name);
                         window.localStorage.setItem('group_password', password);
-                        re.requestHandler.init("http://40.114.43.49:5984/", userId, groupNum);
+                        re.requestHandler.init("http://50.181.254.171:5984/", userId, groupNum);
                         window.location.hash = "";
                         re.render.route();
                     }else if (alreadyIn) {
@@ -297,7 +297,7 @@ re.loginHandler = (function() {
                         window.localStorage.setItem("group_id", groupNum);
                         window.localStorage.setItem('group_name', name);
                         window.localStorage.setItem('group_password', password);
-                        re.requestHandler.init("http://40.114.43.49:5984/", userId, groupNum);
+                        re.requestHandler.init("http://50.181.254.171:5984/", userId, groupNum);
                         window.location.hash = "";
                         re.render.route();
                     } else {
