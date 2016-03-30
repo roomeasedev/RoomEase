@@ -9,6 +9,9 @@
  */
 //TODO: refactor this file to remove the request handler calls from this module
 re.render = (function() {
+    // Timeout for toast notifications
+    var TOAST_TIMEOUT = 3000;
+    
     // Define various templates, which hold the compiled templates for each of the views.
     var feedTemplate;
     var listTemplate; 
@@ -139,6 +142,7 @@ re.render = (function() {
     return {
         'init': init,
         'route': route,
+        'TOAST_TIMEOUT': TOAST_TIMEOUT,
         'renderLoginView': renderFacebookLoginView,
         'renderAccountView': renderAccountView,
         'feedTemplate': feedTemplate,

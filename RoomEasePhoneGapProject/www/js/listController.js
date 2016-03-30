@@ -186,7 +186,7 @@ re.listController = (function() {
         // user that their attempted input is invalid, allowing them to try again
         $('#done').click(function() {
             if (!itemsValid() || !($('#name').val().length)) {
-                Materialize.toast('Please input a name and at least one item for the list', 4000);
+                Materialize.toast('Please input a name and at least one item for the list', re.render.TOAST_TIMEOUT);
             } else {
                 // successful case, we will add the list to the database
                 re.newController.hidePopup();
@@ -232,7 +232,7 @@ re.listController = (function() {
         // list edit is not valid (if there are no list elements or an empty list title). 
         $('#done').click(function() {
             if (!itemsValid() || !($('#name').val().length)) {
-                Materialize.toast('Please input a name and at least one item for the list', 4000);                
+                Materialize.toast('Please input a name and at least one item for the list', re.render.TOAST_TIMEOUT);                
             } else {
                 re.newController.hidePopup();
                 var updatedItems = [];

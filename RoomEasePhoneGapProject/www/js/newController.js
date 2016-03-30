@@ -59,7 +59,7 @@ re.newController = (function() {
     function displayError(error) {
         console.log(error);
         // let user know an error occurred and prompt them to try again
-        Materialize.toast('Sorry! Something went wrong. Please try again', 4000);
+        Materialize.toast('Sorry! Something went wrong. Please try again', re.render.TOAST_TIMEOUT);
     }
     
 /****************************** PUBLIC *********************************/ 

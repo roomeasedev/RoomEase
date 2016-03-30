@@ -54,7 +54,7 @@ re.fridgeController = (function() {
             });
             $('#done').on('click', doneBtn);
             done = false;
-            Materialize.toast("Enter an item name", 2000);
+            Materialize.toast("Enter an item name", re.render.TOAST_TIMEOUT);
             return false;
         } else if (expiration == "") {
             $('#next-item').on('click', function() {
@@ -62,7 +62,7 @@ re.fridgeController = (function() {
             });
             $('#done').on('click', doneBtn);
             done = false;
-            Materialize.toast("Enter a valid expiration", 2000);
+            Materialize.toast("Enter a valid expiration", re.render.TOAST_TIMEOUT);
             return false;
         }        
 
@@ -242,7 +242,7 @@ re.fridgeController = (function() {
                     if(item.owner == window.localStorage.getItem("user_name")) {
                         removeItem(item._id, item.item);
                     } else {
-                        Materialize.toast("You can't delete an item you don't own", 2000);
+                        Materialize.toast("You can't delete an item you don't own", re.render.TOAST_TIMEOUT);
                     }
                 });
             })(currItems[i]);

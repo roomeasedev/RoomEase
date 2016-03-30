@@ -52,7 +52,7 @@ re.reserveController = (function() {
         // immediately try again.
         
          if(start_date == "") {
-            Materialize.toast("Please enter a valid start date", 2000);
+            Materialize.toast("Please enter a valid start date", re.render.TOAST_TIMEOUT);
             return false;
          }
         var digits = start_date.split("-");
@@ -65,19 +65,19 @@ re.reserveController = (function() {
            // Allow the user to make a reservation at any time in the current date
            // (by correcting backward 24 hours). TODO: fix this logic to be more
            // accurate to the current time.
-            Materialize.toast("Please enter a valid start date", 2000);
+            Materialize.toast("Please enter a valid start date", re.render.TOAST_TIMEOUT);
             return false;
         } else if (start_time == "") {
-            Materialize.toast("Please enter a valid start time", 2000);
+            Materialize.toast("Please enter a valid start time", re.render.TOAST_TIMEOUT);
             return false;   
         } else if (!hours || parseInt(hours) < 0) {
-            Materialize.toast("Please enter a valid duation (hours)", 2000);
+            Materialize.toast("Please enter a valid duation (hours)", re.render.TOAST_TIMEOUT);
             return false;
         } else if (!minutes || parseInt(minutes) < 0) {
-             Materialize.toast("Please enter a valid duration (minutes)", 2000);
+             Materialize.toast("Please enter a valid duration (minutes)", re.render.TOAST_TIMEOUT);
              return false;
         } else if (parseInt(minutes) == 0 && parseInt(hours) == 0) {
-            Materialize.toast("Invalid duration of reservation", 2000);
+            Materialize.toast("Invalid duration of reservation", re.render.TOAST_TIMEOUT);
             return false;
         }
         
@@ -146,7 +146,7 @@ re.reserveController = (function() {
                             + endDateStr; 
 
 
-                        Materialize.toast("This reservation conflicts: " + timeString, 2000);
+                        Materialize.toast("This reservation conflicts: " + timeString, re.render.TOAST_TIMEOUT);
                         noConflicts = false;
                     }      
                 }
@@ -223,7 +223,7 @@ re.reserveController = (function() {
         // so user can try again.
         if(error){
             $("#loading-icon").css("display", "none");
-            Materialize.toast("An error has occurred, please try again.", 2000);
+            Materialize.toast("An error has occurred, please try again.", re.render.TOAST_TIMEOUT);
         } else {
             currentReservationitems = reservations;
 
@@ -246,7 +246,7 @@ re.reserveController = (function() {
                        if(reservation.uid == window.localStorage.getItem("user_id")) {
                            deleteReservation(reservation._id);
                        } else {
-                           Materialize.toast("You can't delete someone else's reservation", 2000);
+                           Materialize.toast("You can't delete someone else's reservation", re.render.TOAST_TIMEOUT);
                        }
                     });
                 })(reservations[i]);
@@ -613,10 +613,10 @@ re.reserveController = (function() {
                     hidePopup('#background3');
                     makeNewReservation();
                 } else {
-                    Materialize.toast("Similar reservation type already exists.", 2000); 
+                    Materialize.toast("Similar reservation type already exists.", re.render.TOAST_TIMEOUT); 
                 }
             } else {
-                Materialize.toast("Please enter a type", 2000);
+                Materialize.toast("Please enter a type", re.render.TOAST_TIMEOUT);
             }
         });
         
